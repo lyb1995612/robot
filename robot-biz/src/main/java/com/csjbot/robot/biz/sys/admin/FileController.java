@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.csjbot.robot.base.util.FileUtil;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.sys.service.SysAttachService;
+import com.csjbot.robot.biz.util.FileUtil;
 
 @Controller
 @RequestMapping(value = "/attach")
