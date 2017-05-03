@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjbot.robot.biz.sys.dao.SysVersionRobotDao" >
+  <resultMap id="BaseResultMap" type="com.csjbot.robot.biz.sys.model.SysVersionRobot" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="category_name" property="category_name" jdbcType="VARCHAR" />
+    <result column="channel" property="channel" jdbcType="INTEGER" />
+    <result column="channel_name" property="channel_name" jdbcType="VARCHAR" />
+    <result column="version_code" property="version_code" jdbcType="INTEGER" />
+    <result column="version_name" property="version_name" jdbcType="VARCHAR" />
+    <result column="md5" property="md5" jdbcType="VARCHAR" />
+    <result column="platform" property="platform" jdbcType="TINYINT" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="valid" property="valid" jdbcType="TINYINT" />
+    <result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
+    <result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
+    <result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
+    <result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, category, channel, version_code, version_name, md5, platform, memo, valid, updater_fk, 
+    creator_fk, date_update, date_create
+  </sql>
+  <select id="page" parameterType="map" resultMap="BaseResultMap">
+		select 
+		id, category, (select `name` from sys_data_dictionary where id = category) category_name , channel,(select memo from sys_data_dictionary where id = channel) channel_name , version_code, version_name, md5, platform, memo, valid, updater_fk, 
+         creator_fk, date_update, date_create
+		from sys_version_robot where valid = 1
+       <if test="version_name != null and version_name !=''">
+          and ( upper(`version_name`) LIKE CONCAT('%', #{version_name},'%'))
+       </if>     
+       <if test="category != null and category !='' and category != '-1' ">
+          and ( upper(`category`) LIKE CONCAT('%', #{category},'%'))
+       </if>   
+       <if test="channel != null and channel !='' and channel != '-1' ">
+          and ( upper(`channel`) LIKE CONCAT('%', #{channel},'%'))
+       </if>               
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_version_robot
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_version_robot
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.csjbot.robot.biz.sys.model.SysVersionRobot" >
+    insert into sys_version_robot (id, category, channel, 
+      version_code, version_name, md5, 
+      memo, 
+      updater_fk, creator_fk, date_update, 
+      date_create)
+    values (#{id,jdbcType=CHAR}, #{category,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}, 
+      #{version_code,jdbcType=INTEGER}, #{version_name,jdbcType=VARCHAR}, #{md5,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, 
+      #{updater_fk,jdbcType=CHAR}, #{creator_fk,jdbcType=CHAR}, now(), 
+      now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.csjbot.robot.biz.sys.model.SysVersionRobot" >
+    insert into sys_version_robot
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="version_code != null" >
+        version_code,
+      </if>
+      <if test="version_name != null" >
+        version_name,
+      </if>
+      <if test="md5 != null" >
+        md5,
+      </if>
+      <if test="platform != null" >
+        platform,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="valid != null" >
+        valid,
+      </if>
+      <if test="updater_fk != null" >
+        updater_fk,
+      </if>
+      <if test="creator_fk != null" >
+        creator_fk,
+      </if>
+      <if test="date_update != null" >
+        date_update,
+      </if>
+      <if test="date_create != null" >
+        date_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="version_code != null" >
+        #{version_code,jdbcType=INTEGER},
+      </if>
+      <if test="version_name != null" >
+        #{version_name,jdbcType=VARCHAR},
+      </if>
+      <if test="md5 != null" >
+        #{md5,jdbcType=VARCHAR},
+      </if>
+      <if test="platform != null" >
+        #{platform,jdbcType=TINYINT},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null" >
+        #{valid,jdbcType=TINYINT},
+      </if>
+      <if test="updater_fk != null" >
+        #{updater_fk,jdbcType=CHAR},
+      </if>
+      <if test="creator_fk != null" >
+        #{creator_fk,jdbcType=CHAR},
+      </if>
+      <if test="date_update != null" >
+        #{date_update,jdbcType=TIMESTAMP},
+      </if>
+      <if test="date_create != null" >
+        #{date_create,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csjbot.robot.biz.sys.model.SysVersionRobot" >
+    update sys_version_robot
+    <set >
+      <if test="category != null" >
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="version_code != null" >
+        version_code = #{version_code,jdbcType=INTEGER},
+      </if>
+      <if test="version_name != null" >
+        version_name = #{version_name,jdbcType=VARCHAR},
+      </if>
+      <if test="md5 != null" >
+        md5 = #{md5,jdbcType=VARCHAR},
+      </if>
+      <if test="platform != null" >
+        platform = #{platform,jdbcType=TINYINT},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null" >
+        valid = #{valid,jdbcType=TINYINT},
+      </if>
+      <if test="updater_fk != null" >
+        updater_fk = #{updater_fk,jdbcType=CHAR},
+      </if>
+      <if test="creator_fk != null" >
+        creator_fk = #{creator_fk,jdbcType=CHAR},
+      </if>
+        date_update = now(),
+      <if test="date_create != null" >
+        date_create = #{date_create,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csjbot.robot.biz.sys.model.SysVersionRobot" >
+    update sys_version_robot
+    set category = #{category,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=INTEGER},
+      version_code = #{version_code,jdbcType=INTEGER},
+      version_name = #{version_name,jdbcType=VARCHAR},
+      md5 = #{md5,jdbcType=VARCHAR},
+      platform = #{platform,jdbcType=TINYINT},
+      memo = #{memo,jdbcType=VARCHAR},
+      valid = #{valid,jdbcType=TINYINT},
+      updater_fk = #{updater_fk,jdbcType=CHAR},
+      creator_fk = #{creator_fk,jdbcType=CHAR},
+      date_update = now(),
+      date_create = #{date_create,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

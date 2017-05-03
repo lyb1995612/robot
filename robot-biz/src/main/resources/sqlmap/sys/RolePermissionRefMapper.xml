@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csjbot.robot.biz.sys.dao.RolePermissionRefDao">
+
+  <resultMap id="rolePermissionRefResultMap" type="com.csjbot.robot.biz.sys.model.RolePermissionRef">
+    <id property="id" column="id" />
+    <result property="role_fk" column="role_fk" />
+    <result property="permission_fk" column="permission_fk" />
+    <result property="memo" column="memo" />
+    <result property="updater_fk" column="updater_fk" />
+    <result property="creator_fk" column="creator_fk" />
+    <result property="dateOfCreate" column="date_create" />
+    <result property="dateOfUpdate" column="date_update" />
+    <result property="isValid" column="valid" />
+  </resultMap>
+  <resultMap id="pageResultMap" type="java.util.HashMap" extends="rolePermissionRefResultMap"></resultMap>
+  <resultMap id="findResultMap" type="java.util.HashMap" extends="rolePermissionRefResultMap"></resultMap>
+  
+  <resultMap id="rolePermission" type="java.util.HashMap">
+    <result property="checked" column="checked" javaType="boolean" jdbcType="TINYINT" />
+    <result property="permission_id" column="permission_id" />
+    <result property="code" column="code" />
+    <result property="name" column="name" />
+  </resultMap>
+  
+  <insert id="insert" parameterType="com.csjbot.robot.biz.sys.model.RolePermissionRef">
+    insert into sys_role_permission_ref (
+      id,
+      role_fk,
+      permission_fk,
+      memo,
+      updater_fk,
+      creator_fk,
+      date_create,
+      date_update,
+      valid
+    )values (
+      #{id},
+      #{role_fk},
+      #{permission_fk},
+      #{memo},
+      #{updater_fk},
+      #{creator_fk},
+      #{dateOfCreate},
+      #{dateOfUpdate},
+      #{isValid}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.csjbot.robot.biz.sys.model.RolePermissionRef">
+    UPDATE sys_role_permission_ref
+    SET role_fk=#{role_fk},
+      permission_fk=#{permission_fk},
+      memo=#{memo},
+      updater_fk=#{updater_fk},
+      date_update=now(),
+      valid=#{isValid}
+    WHERE id=#{id}
+  </update>
+  
+  <update id="removeByRoleId" parameterType="map">
+    UPDATE sys_role_permission_ref
+    SET valid=0
+    WHERE role_fk=#{roleId}
+      AND valid = 1
+  </update>
+
+  <delete id="delete" parameterType="map">
+    DELETE 
+    FROM sys_role_permission_ref
+    WHERE id=#{id}
+  </delete>
+
+  <select id="get" parameterType="map" resultMap="rolePermissionRefResultMap">
+    SELECT *
+    FROM sys_role_permission_ref
+    where id=#{id}
+  </select>
+
+  <select id="findOne" parameterType="map" resultMap="findResultMap">
+    select *
+    from sys_role_permission_ref
+    where id=#{id}
+  </select>
+
+  <select id="find" parameterType="map" resultMap="findResultMap">
+    select *
+    from sys_role_permission_ref
+    <where>
+      <if test="role_fk != null">
+        and role_fk=#{role_fk}
+      </if>
+      <if test="permission_fk != null">
+        and permission_fk=#{permission_fk}
+      </if>
+      <if test="memo != null">
+        and memo=#{memo}
+      </if>
+      <if test="updater_fk != null">
+        and updater_fk=#{updater_fk}
+      </if>
+      <if test="creator_fk != null">
+        and creator_fk=#{creator_fk}
+      </if>
+      <if test="dateOfCreate != null">
+        and date_create=#{dateOfCreate}
+      </if>
+      <if test="dateOfUpdate != null">
+        and date_update=#{dateOfUpdate}
+      </if>
+      <if test="isValid != null">
+        and valid=#{isValid}
+      </if>
+    </where>
+  </select>
+
+  <select id="page" parameterType="map" resultMap="pageResultMap">
+    select *
+    from sys_role_permission_ref
+    <where>
+      <if test="id != null">
+        id=#{id}
+      </if>
+      <if test="role_fk != null">
+        and role_fk=#{role_fk}
+      </if>
+      <if test="permission_fk != null">
+        and permission_fk=#{permission_fk}
+      </if>
+      <if test="memo != null">
+        and memo=#{memo}
+      </if>
+      <if test="updater_fk != null">
+        and updater_fk=#{updater_fk}
+      </if>
+      <if test="creator_fk != null">
+        and creator_fk=#{creator_fk}
+      </if>
+      <if test="dateOfCreate != null">
+        and date_create=#{dateOfCreate}
+      </if>
+      <if test="dateOfUpdate != null">
+        and date_update=#{dateOfUpdate}
+      </if>
+      <if test="isValid != null">
+        and valid=#{isValid}
+      </if>
+    </where>
+  </select>
+  
+  <select id="getRolePermissionRef" parameterType="map" resultMap="rolePermission">
+    SELECT IFNULL(rpr.valid = 1, 0) AS checked, rpr.id,
+	p.id AS permission_id, p.code AS code, p.name AS name
+	FROM (
+	    SELECT *
+	    FROM sys_permission
+	) p
+	LEFT JOIN sys_role_permission_ref rpr
+	ON p.id = rpr.permission_fk
+	    AND rpr.role_fk = #{roleId}
+	order by p.code;
+  </select>
+</mapper> 

@@ -1,0 +1,39 @@
+@charset 'UTF-8';
+*{
+	margin: 0;
+	padding: 0;
+}
+.radioList-horizontal {
+    text-align: right;
+}
+
+.radioList-horizontal-first {
+    margin-left: 10px;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    text-align: center
+}
+
+.inlineWrap {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.table-operation-column a {
+  padding-right: 10px;
+}
+ .container-sum{
+  text-align: left; 
+  padding-left: 65px;
+}
+.sum-important{
+  color: #FF3300;
+}
+.sum-space{
+  display: inline-block;
+  width: 10px;
+}
+.sum-head{
+  padding-bottom: 3px;
+}

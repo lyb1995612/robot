@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csjbot.robot.biz.sys.dao.UserRoleRefDao">
+
+  <resultMap id="userRoleRefResultMap" type="com.csjbot.robot.biz.sys.model.UserRoleRef">
+    <id property="id" column="id" />
+    <result property="user_fk" column="user_fk" />
+    <result property="role_fk" column="role_fk" />
+    <result property="memo" column="memo" />
+    <result property="updater_fk" column="updater_fk" />
+    <result property="creator_fk" column="creator_fk" />
+    <result property="dateOfCreate" column="date_create" />
+    <result property="dateOfUpdate" column="date_update" />
+    <result property="valid" column="valid" />
+  </resultMap>
+  <resultMap id="pageResultMap" type="java.util.HashMap" extends="userRoleRefResultMap"></resultMap>
+  <resultMap id="findResultMap" type="java.util.HashMap" extends="userRoleRefResultMap"></resultMap>
+  
+  <resultMap id="adminUserResultMap" type="java.util.HashMap">
+    <id property="id" column="id" />
+    <result property="checked" column="checked" javaType="boolean" jdbcType="TINYINT" />
+    <result property="user_fk" column="user_fk" />
+    <result property="account" column="account" />
+    <result property="username" column="username" />
+    <result property="cellphone" column="cellphone" />
+    <result property="userStatus" column="user_status" />
+    <result property="userType" column="user_type" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.csjbot.robot.biz.sys.model.UserRoleRef">
+    INSERT INTO sys_user_role_ref (
+      id,
+      user_fk,
+      role_fk,
+      memo,
+      updater_fk,
+      creator_fk,
+      date_create,
+      date_update,
+      valid
+    ) VALUES (
+      #{id},
+      #{user_fk},
+      #{role_fk},
+      #{memo},
+      #{updater_fk},
+      #{creator_fk},
+      #{dateOfCreate},
+      #{dateOfUpdate},
+      #{valid}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.csjbot.robot.biz.sys.model.UserRoleRef">
+    UPDATE sys_user_role_ref
+    SET user_fk=#{user_fk},
+      role_fk=#{role_fk},
+      memo=#{memo},
+      updater_fk=#{updater_fk},
+      date_update=now(),
+      valid=#{valid}
+    WHERE id=#{id}
+  </update>
+
+  <update id="removeByRoleId" parameterType="map">
+    UPDATE sys_user_role_ref
+    SET is_valid = 0
+    WHERE role_fk=#{roleId}
+      AND is_valid = 1
+  </update>
+
+  <delete id="delete" parameterType="map">
+    DELETE 
+    FROM sys_user_role_ref
+    WHERE id=#{id}
+  </delete>
+
+  <select id="get" parameterType="map" resultMap="userRoleRefResultMap">
+    SELECT id,
+      user_fk,
+      role_fk,
+      memo,
+      updater_fk,
+      creator_fk,
+      date_create,
+      date_update,
+      valid
+    FROM sys_user_role_ref
+    WHERE id=#{id}
+  </select>
+
+  <select id="findOne" parameterType="map" resultMap="findResultMap">
+    select *
+    from sys_user_role_ref
+    where
+    id=#{id}
+  </select>
+
+  <select id="find" parameterType="map" resultMap="findResultMap">
+    select *
+    FROM sys_user_role_ref
+    <where>
+      <if test="id != null">
+        id=#{id}
+      </if>
+      <if test="user_fk != null">
+        and user_fk=#{user_fk}
+      </if>
+      <if test="role_fk != null">
+        and role_fk=#{role_fk}
+      </if>
+      <if test="memo != null">
+        and memo=#{memo}
+      </if>
+      <if test="updater_fk != null">
+        and updater_fk=#{updater_fk}
+      </if>
+      <if test="creator_fk != null">
+        and creator_fk=#{creator_fk}
+      </if>
+      <if test="dateOfCreate != null">
+        and date_create=#{dateOfCreate}
+      </if>
+      <if test="dateOfUpdate != null">
+        and date_update=#{dateOfUpdate}
+      </if>
+      <if test="isValid != null">
+        and valid=#{isValid}
+      </if>
+    </where>
+  </select>
+
+  <select id="page" parameterType="map" resultMap="pageResultMap">
+    SELECT *
+    FROM sys_user_role_ref
+    <where>
+      <if test="id != null">
+        id=#{id}
+      </if>
+      <if test="user_fk != null">
+        and user_fk=#{user_fk}
+      </if>
+      <if test="role_fk != null">
+        and role_fk=#{role_fk}
+      </if>
+      <if test="memo != null">
+        and memo=#{memo}
+      </if>
+      <if test="updater_fk != null">
+        and updater_fk=#{updater_fk}
+      </if>
+      <if test="creator_fk != null">
+        and creator_fk=#{creator_fk}
+      </if>
+      <if test="dateOfCreate != null">
+        and date_create=#{dateOfCreate}
+      </if>
+      <if test="dateOfUpdate != null">
+        and date_update=#{dateOfUpdate}
+      </if>
+    </where>
+  </select>
+  
+  <select id="countRoleUserSize" parameterType="map" resultType="int">
+	SELECT COUNT(urr.user_fk) AS user_size
+    FROM sys_user_role_ref urr, ums_user u
+    WHERE urr.valid = 1
+      AND u.status = 1
+      AND urr.user_fk = u.id
+      AND urr.role_fk = #{roleId}
+  </select>
+  
+  <select id="listAdmins" parameterType="map" resultMap="adminUserResultMap">
+    SELECT *
+    FROM (
+        SELECT urr.id, IFNULL(urr.valid = 1, 0) AS checked, 
+        u.id AS user_fk, u.username AS account, u.realname AS username, 
+        u.phone AS cellphone, 
+        u.status,
+        (CASE WHEN u.status = 1 THEN '启用' ELSE '停用' END) AS user_status
+      FROM (
+        SELECT *
+        FROM ums_user
+        WHERE status = 1
+      ) u 
+        LEFT JOIN sys_user_role_ref urr
+      ON u.id = urr.user_fk
+        AND urr.role_fk = #{roleId}
+    ) tbl
+    <where>
+      <if test="status != null">
+        AND tbl.status = #{status}
+      </if>
+      <if test="username != null and username != ''">
+        AND tbl.username LIKE CONCAT(CONCAT('%', #{username}), '%')
+      </if>
+      <if test="account != null and account != ''">
+        AND tbl.account LIKE CONCAT(CONCAT('%', #{account}), '%')
+      </if>
+    </where>
+    ORDER BY tbl.checked DESC, tbl.username DESC
+  </select>
+  
+</mapper> 

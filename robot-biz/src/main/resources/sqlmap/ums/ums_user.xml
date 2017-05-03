@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.csjbot.robot.biz.ums.dao.UserDao">
+
+	<resultMap id="userResultMap"
+		type="com.csjbot.robot.biz.ums.model.User">
+		<id property="id" column="id" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="salt" column="salt" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+		<result property="realname" column="realName" />
+		<result property="sex" column="sex" />
+		<result property="idCard" column="idCard" />
+		<result property="isSuperAdmin" column="is_super_admin" />
+		<result property="passwordChanged" column="password_changed" />
+		<result property="lastLoginTime" column="last_login_time" />
+		<result property="status" column="status" />
+		<result property="dateEffect" column="date_effect" />
+		<result property="dateExpire" column="date_expire" />
+		<result property="dateOfCreate" column="date_create" />
+		<result property="dateOfUpdate" column="date_update" />
+		<result property="creator_fk" column="creator_fk" />
+		<result property="updater_fk" column="updater_fk" />
+	</resultMap>
+	
+	<sql id="user_column_list">
+		id             ,
+		username       ,
+		password       ,
+		salt           ,
+		phone          ,
+		email          ,
+		realName       ,
+		sex            ,
+		idCard         ,
+		is_super_admin ,
+		password_changed ,
+		last_login_time,
+		status         ,
+		date_effect    ,
+		date_expire    ,
+		date_create    ,
+		date_update    ,
+		creator_fk     ,
+		updater_fk     
+    </sql>
+    
+    <resultMap id="pageResultMap" type="java.util.HashMap"
+		extends="userResultMap">
+		<result property="creater" column="creater" />
+		<result property="updater" column="updater" />
+	</resultMap>
+	
+	<select id="getByUsername" parameterType="map" resultMap="userResultMap">
+		SELECT
+		<include refid="user_column_list" />
+		FROM ums_user
+		<where>
+			<if test="username != null and username !=''">
+				username=#{username}
+			</if>
+			<if test="status != null and status > 0">
+				AND status=#{status}
+			</if>
+		</where>
+	</select>
+	
+	<select id="listRolesByUsername" parameterType="String" resultType="String">
+		SELECT urr.role_fk
+		FROM ums_user u, sys_user_role_ref urr, sys_role r
+		WHERE u.id = urr.user_fk
+    		AND r.id = urr.role_fk
+    		AND urr.valid = 1
+    		AND r.valid = 1
+    		AND u.username = #{username}
+	</select>
+
+	<select id="listPermissionsByUsername" parameterType="String" resultType="String">
+		SELECT p.code
+		FROM ums_user u, sys_user_role_ref urr, sys_role r, sys_role_permission_ref rpr, sys_permission p
+		WHERE  urr.valid = 1
+    		AND r.valid = 1
+    		AND rpr.valid = 1
+    		AND p.valid = 1
+    		AND u.id = urr.user_fk
+    		AND urr.role_fk = r.id
+    		AND r.id = rpr.role_fk
+    		AND rpr.permission_fk = p.id
+    		AND u.username = #{username}
+	</select>
+	
+	<select id="page" parameterType="com.csjbot.robot.biz.ums.model.param.UserAdminSearchParam" resultMap="pageResultMap">
+	    SELECT
+		id             ,
+		username       ,
+		password       ,
+		salt           ,
+		phone          ,
+		email          ,
+		realName       ,
+		sex            ,
+		idCard         ,
+		is_super_admin ,
+		password_changed ,
+		last_login_time,
+		status         ,
+		date_effect    ,
+		date_expire    ,
+		date_create    ,
+		date_update    ,
+		(select realName from ums_user where id = a.creator_fk) as creater ,
+		(select realName from ums_user where id = a.updater_fk) as updater    
+		from ums_user  a where 1=1 
+		
+		<!-- and date_effect &lt; now() and date_expire &gt; now() -->
+		
+		<if test="username != null and username !=''">
+				AND username LIKE CONCAT(CONCAT('%', #{username}),'%')
+		</if>
+		<if test="realname != null and realname !=''">
+			AND realName LIKE CONCAT(CONCAT('%', #{realname}),'%')
+		</if>
+		
+		<if test="sorter=='update'">
+			ORDER BY date_update DESC
+		</if>
+		<if test="sorter=='create'">
+			ORDER BY date_create DESC
+		</if>
+		<if test="sorter=='login'">
+			ORDER BY last_login_time DESC
+		</if>
+		
+	</select>
+	
+		<select id="checkUserExist" parameterType="map" resultType="int">
+		SELECT
+		COUNT(id)
+		FROM ums_user
+		<where>
+			<if test="username != null and username !=''">
+				username=#{username}
+			</if>
+			<if test="phone != null and phone !=''">
+				OR phone=#{phone}
+			</if>
+			AND status = 1
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.csjbot.robot.biz.ums.model.User">
+			INSERT INTO ums_user (
+			<include refid="user_column_list" />
+			)VALUES (
+			#{id},
+			#{username},
+			#{password},
+			#{salt},
+			#{phone},
+			#{email},
+			#{realname},
+			#{sex},
+			#{idCard},
+			#{isSuperAdmin},
+			#{passwordChanged},
+			#{lastLoginTime},
+			#{status},
+			#{dateEffect},
+			#{dateExpire},
+			now(),
+			now(),
+			#{creator_fk},
+			#{updater_fk}
+			)
+	</insert>
+	
+		<select id="get" parameterType="map" resultMap="userResultMap">
+		SELECT 
+				id             ,
+		username       ,
+		password       ,
+		salt           ,
+		phone          ,
+		email          ,
+		realName       ,
+		sex            ,
+		idCard         ,
+		is_super_admin ,
+		password_changed ,
+		last_login_time,
+		status         ,
+		DATE_FORMAT(date_effect,'%Y-%m-%d %H-%i-%s') as date_effect  ,
+		DATE_FORMAT(date_expire,'%Y-%m-%d %H-%i-%s') as date_expire  ,
+		date_create    ,
+		date_update    ,
+		(select name from sys_data_dictionary where id = creator_fk)  ,
+		(select name from sys_data_dictionary where id = updater_fk)    
+		FROM
+		ums_user
+		WHERE id=#{id}
+	</select>
+	
+		<update id="updateFinancialPlanner" parameterType="com.csjbot.robot.biz.ums.model.User">
+		UPDATE ums_user
+		<set>
+			<if test="username !=null and username !=''">
+				username =#{username},
+			</if>
+			status=#{status},
+			phone=#{phone},
+			email=#{email},
+			realName=#{realname},
+			idCard=#{idCard},
+			sex=#{sex},
+			date_effect=#{dateEffect},
+			date_expire=#{dateExpire},
+			updater_fk=#{updater_fk},
+			date_update=now()
+		</set>
+		WHERE
+		id=#{id}
+	</update>
+	
+	<select id="getByPhone" parameterType="map" resultMap="userResultMap">
+		SELECT
+		<include refid="user_column_list" />
+		FROM ums_user
+		<where>
+			<if test="phone != null and phone !=''">
+				phone=#{phone}
+			</if>
+		</where>
+	</select>
+	
+		<update id="update" parameterType="com.csjbot.robot.biz.ums.model.User">
+		UPDATE ums_user
+		<set>
+			<if test="username !=null and username !=''">
+				username=#{username},
+			</if>
+			<if test="password !=null and password !=''">
+				password=#{password},
+			</if>
+			<if test="passwordChanged !=null and passwordChanged !=''">
+				password_changed=#{passwordChanged},
+			</if>
+			<if test="salt !=null and salt !=''">
+				salt=#{salt},
+			</if>
+			phone=#{phone},
+			email=#{email},
+			realName=#{realname},
+			idCard=#{idCard},
+			<if test="status !=null">
+				status=#{status},
+			</if>
+			sex=#{sex},
+			last_login_time=#{lastLoginTime},
+			<if test="updater_fk !=null">
+				updater_fk=#{updater_fk},
+			</if>
+			date_update=now(),
+			date_effect=#{dateEffect},
+			date_expire=#{dateExpire}
+			
+		</set>
+		WHERE
+		id=#{id}
+	</update>
+	
+		
+	<select id="findRolesName" parameterType="String" resultType="String">
+		SELECT r.name
+		FROM ums_user u, sys_user_role_ref urr, sys_role r
+		WHERE u.id = urr.user_fk
+    		AND r.id = urr.role_fk
+    		AND urr.valid = 1
+    		AND r.valid = 1
+    		AND u.username = #{username}
+	</select>
+	
+</mapper> 

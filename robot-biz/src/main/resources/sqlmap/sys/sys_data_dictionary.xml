@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.csjbot.robot.biz.sys.dao.SysDataDictionaryDao">
+
+  <resultMap id="BaseResultMap" type="com.csjbot.robot.biz.sys.model.SysDataDictionary">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="data_fk" property="dataFk" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="min" property="min" jdbcType="INTEGER" />
+    <result column="max" property="max" jdbcType="INTEGER" />
+    <result column="rule" property="rule" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="valid" property="valid" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <resultMap id="getResultMap" type="java.util.HashMap" extends="BaseResultMap"></resultMap>
+  
+  <sql id="column_list">
+			id         ,
+			data_fk    ,
+			name       ,
+			memo       ,
+			min        ,
+			max        ,
+			rule       ,
+			sort       ,
+			valid     
+   </sql>
+  
+  <select id="findDicById" parameterType="map" resultMap="getResultMap">
+		select a.id,a.data_fk,a.name,a.memo,a.sort,b.valid,a.rule from (select * from sys_data_dictionary where data_fk = #{data_fk} and valid=1) a 
+		left join  (select * from cpm_tenant_dictionary where tenant_fk = #{tenant_fk}) b
+		on a.id = b.dictionary_fk order by a.sort
+  </select>
+  
+  <select id="findDictionaryByCode" parameterType="map" resultMap="BaseResultMap">
+		select 
+		    id         ,
+            data_fk    ,
+            name       ,
+            memo       ,
+            IFNULL(min, -1) AS min,
+            max        ,
+            rule       ,
+            sort       ,
+            valid  
+		 from sys_data_dictionary where data_fk = (select id from sys_data where code = #{code}) order by sort
+  </select>  
+  
+  <select id="page" parameterType="map" resultMap="BaseResultMap">
+    select 	<include refid="column_list"/>, (CASE WHEN valid  = 1 THEN '启用' ELSE '停用' END) AS status
+		 from sys_data_dictionary where data_fk = #{data_fk}  order by sort
+  </select>
+  
+   <select id="findSysDataDicById" parameterType="map" resultMap="BaseResultMap">
+		select 
+		<include refid="column_list"/>
+		from sys_data_dictionary where id = #{id}
+  </select>
+  
+  <update id="dicDataUpdate" parameterType="com.csjbot.robot.biz.sys.model.SysDataDictionary">
+   	    update sys_data_dictionary set 
+  	    name =#{name}    ,
+		memo =#{memo}    ,
+		min  =#{min}     ,
+		max  =#{max}     ,
+		<if test="rule != null">
+		  rule = #{rule} ,
+		</if>
+		sort =#{sort}    ,
+		valid =#{valid}    
+   	    where id = #{id}
+  </update>
+  
+  <insert id="dicDataInsert" parameterType="com.csjbot.robot.biz.sys.model.SysDataDictionary">
+	    INSERT INTO sys_data_dictionary 
+	    (<include refid="column_list"/>)
+	     VALUES (
+			#{id}         ,
+			#{dataFk }    ,
+			#{name }      ,
+			#{memo }      ,
+			#{min }       ,
+			#{max  }      ,
+			#{rule}       ,
+			#{sort  }     ,
+			#{valid }    
+	    )
+  </insert>
+  
+</mapper>

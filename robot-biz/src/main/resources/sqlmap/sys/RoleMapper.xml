@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csjbot.robot.biz.sys.dao.RoleDao">
+
+  <resultMap id="roleResultMap" type="com.csjbot.robot.biz.sys.model.Role">
+    <id property="id" column="id" />
+    <result property="name" column="name" />
+    <result property="memo" column="memo" />
+    <result property="updater_fk" column="updater_fk" />
+    <result property="creator_fk" column="creator_fk" />
+    <result property="dateOfCreate" column="date_create" />
+    <result property="dateOfUpdate" column="date_update" />
+    <result property="valid" column="valid" />
+  </resultMap>
+  <resultMap id="pageResultMap" type="java.util.HashMap" extends="roleResultMap">
+    <result property="userSize" column="user_size" />
+    <result property="creator" column="creator" />
+  </resultMap>
+  <resultMap id="findResultMap" type="java.util.HashMap" extends="roleResultMap"></resultMap>
+
+  <insert id="insert" parameterType="com.csjbot.robot.biz.sys.model.Role">
+    INSERT INTO sys_role (
+      id,
+      name,
+      memo,
+      updater_fk,
+      creator_fk,
+      date_create,
+      date_update,
+      valid
+    ) VALUES (
+      #{id},
+      #{name},
+      #{memo},
+      #{updater_fk},
+      #{creator_fk},
+      #{dateOfCreate},
+      #{dateOfUpdate},
+      #{valid}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.csjbot.robot.biz.sys.model.Role">
+    UPDATE sys_role
+    SET name=#{name},
+      memo=#{memo},
+      valid=#{valid},
+      updater_fk=#{updater_fk},
+      date_update=now()
+    WHERE id=#{id}
+  </update>
+
+  <delete id="delete" parameterType="map">
+    delete from
+    sys_role
+    where
+    id=#{id}
+  </delete>
+
+  <select id="get" parameterType="map" resultMap="roleResultMap">
+    SELECT id,
+      name,
+      memo,
+      updater_fk,
+      creator_fk,
+      date_create,
+      date_update,
+      valid
+    FROM sys_role
+    WHERE id=#{id}
+  </select>
+
+  <select id="findOne" parameterType="map" resultMap="findResultMap">
+    select *
+    from sys_role
+    where id=#{id}
+  </select>
+
+  <select id="find" parameterType="map" resultMap="findResultMap">
+    SELECT *
+    FROM sys_role
+    <where>
+      <if test="id != null">
+        id=#{id}
+      </if>
+      <if test="name != null">
+        and name=#{name}
+      </if>
+      <if test="memo != null">
+        and memo=#{memo}
+      </if>
+      <if test="valid != null">
+        and valid=#{valid}
+      </if>
+      <if test="updater_fk != null">
+        and updater_fk=#{updater_fk}
+      </if>
+      <if test="creator_fk != null">
+        and creator_fk=#{creator_fk}
+      </if>
+    </where>
+  </select>
+
+  <select id="page" parameterType="com.csjbot.robot.biz.sys.model.param.RoleParam" resultMap="pageResultMap">
+    SELECT r.*, (CASE WHEN r.valid  = 1 THEN '启用' ELSE '停用' END) AS status, 
+    IFNULL(us.user_size, 0) AS user_size, u.realname AS creator
+    FROM sys_role r
+    	INNER JOIN ums_user u
+    		ON r.creator_fk = u.id 
+    	LEFT JOIN (
+    		SELECT urr.role_fk, COUNT(urr.user_fk) AS user_size
+            FROM sys_user_role_ref urr, ums_user u
+            WHERE urr.valid  = 1
+    			AND u.status= 1
+                AND urr.user_fk = u.id
+    		GROUP by urr.role_fk
+        ) AS us
+    		ON r.id = us.role_fk
+    <where>
+      <if test="name != null and name != ''">
+        r.name LIKE CONCAT(CONCAT('%',#{name}),'%')
+      </if>
+      <if test="valid &lt; 2">
+        AND r.valid =#{valid}
+      </if>
+      <if test="creator_fk != null">
+        AND r.creator_fk=#{creator_fk}
+      </if>
+    </where>
+    ORDER BY r.date_update DESC
+  </select>
+  
+</mapper> 

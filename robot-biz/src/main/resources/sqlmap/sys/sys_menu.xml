@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csjbot.robot.biz.sys.dao.SysMenuDao">
+
+  <resultMap id="sysMenuResultMap" type="com.csjbot.robot.biz.sys.model.SysMenu">
+    <id property="id" column="id" />
+    <result property="name" column="name" />
+    <result property="style" column="style" />
+    <result property="parent_fk" column="parent_fk" />
+    <result property="permission_fk" column="permission_fk" />
+    <result property="url" column="url" />
+    <result property="level" column="level" />
+    <result property="sorter" column="sorter" />
+    <result property="activeId" column="activeId" />
+    <result property="valid" column="valid" />
+    <result property="updater_fk" column="updater_fk" />
+    <result property="creator_fk" column="creator_fk" />
+    <result property="date_create" column="date_create" />
+    <result property="date_update" column="date_update" />
+  </resultMap>
+
+  <resultMap id="findResultMap" type="java.util.HashMap" extends="sysMenuResultMap"></resultMap>
+  
+  <sql id="base_column">
+    id,
+    name,
+    style,
+    parent_fk,
+    permission_fk,
+    url,
+    level,
+    sorter,
+    activeId,
+    valid,
+    updater_fk,
+    creator_fk,
+    date_update,
+    date_create
+  </sql>
+    
+  <insert id="insert" parameterType="com.csjbot.robot.biz.sys.model.SysMenu">
+    INSERT INTO sys_menu (
+      <include refid="base_column" />
+    ) VALUES (
+      #{id},
+      #{name},
+      #{style},
+      #{parent_fk},
+      #{permission_fk},
+      #{url},
+      #{level},
+      #{sorter},
+      #{activeId},
+      #{valid},
+      #{updater_fk},
+      #{creator_fk},
+      now(),
+      now()
+    )
+  </insert>
+
+  <update id="update" parameterType="com.csjbot.robot.biz.sys.model.SysMenu">
+    UPDATE sys_menu
+    <set>
+        <if test="name != null">
+            name = #{name},
+        </if>
+        <if test="style != null">
+            style = #{style},
+        </if>
+        <if test="parent_fk != null">
+            parent_fk = #{parent_fk},
+        </if>
+        <if test="permission_fk != null">
+            permission_fk = #{permission_fk},
+        </if>
+        <if test="url != null">
+            url = #{url},
+        </if>
+        <if test="level != null">
+            level = #{level},
+        </if>
+        <if test="sorter != 0">
+            sorter = #{sorter},
+        </if>
+        <if test="activeId != null">
+            activeId = #{activeId},
+        </if>
+        <if test="valid == 0 or valid == 1">
+            valid = #{valid},
+        </if>
+        updater_fk = #{updater_fk},
+        date_update = now()
+    </set>
+    WHERE id=#{id}
+  </update>
+
+  <select id="findOne" parameterType="map" resultMap="sysMenuResultMap">
+    select *
+    from sys_menu
+    where id=#{id}
+  </select>
+
+  <select id="listAll" parameterType="map" resultMap="sysMenuResultMap">
+    SELECT *
+    FROM sys_menu 
+    <if test="valid != null">
+        where valid = #{valid}
+    </if>
+    order by level, sorter;
+  </select>
+  
+  <delete id="delete" parameterType="map">
+    delete from sys_menu
+    where id=#{id}
+  </delete>
+  
+  <select id="getMenuPermissions" resultType="map">
+     select id, name, code from sys_permission 
+     where type = 1 and valid = 1
+  </select>
+  
+  <select id="getMenuParents" resultType="map">
+    select id, name from sys_menu
+    where level = 1 and valid = 1 and (url is null or url = '') order by sorter
+  </select>
+  
+  <select id="getMenuPermissionById" resultType="map"  parameterType="map">
+     select id, name, code from sys_permission 
+     where type = 1 and valid = 1 and id = #{id}
+  </select>
+  
+</mapper> 

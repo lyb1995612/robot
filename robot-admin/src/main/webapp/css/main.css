@@ -1,0 +1,101 @@
+.navbar {
+	-webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid #d4d4d4;
+}
+
+.sidebar-nav {
+	position: fixed;
+	width: 200px;
+	left: 15px;
+	bottom: 0;
+	top: 61px;
+	padding: 9px 0;
+}
+
+.page-body {
+	margin-left: 200px;
+	margin-top: 10px;
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+	position: relative;
+	word-wrap: break-word;
+}
+
+.account .user-title {
+	text-align: right;
+}
+
+.account .dropdown-menu {
+	background-color: #3c3c3c;
+	border: none;
+}
+
+.account .dropdown-menu li a {
+	color: #ffffff;
+	font-weight: 400;
+	font-size: 13px;
+	padding: 4px 15px;
+}
+
+.subHeader {
+	padding: 5px;
+}
+
+.row-padding {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.text-strong-red {
+	color: red;
+	font-weight: bolder;
+}
+
+.hidden {
+	display: none !important;
+}
+
+.text-strong-default {
+	color: black;
+	font-weight: bolder;
+}
+
+.error-tip {
+	color: #a94442;
+}
+
+@media ( min-width : 992px) {
+	.col-md-left {
+		padding-right: 5px;
+	}
+	.col-md-middle {
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+	.col-md-right {
+		padding-left: 5px;
+	}
+}
+
+.col-xs-left {
+	padding-right: 5px;
+}
+
+.col-xs-middle {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.col-xs-right {
+	padding-left: 5px;
+}
+
+.form-control[disabled],.form-control[readonly],fieldset[disabled] .form-control {
+	cursor: default !important;
+}
+
+.form-control.datepicker {
+	cursor: pointer !important;
+}

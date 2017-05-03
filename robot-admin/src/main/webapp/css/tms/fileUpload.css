@@ -1,0 +1,165 @@
+/*.modal{*/
+/*background:none;*/
+/*border:none;*/
+/*bottom:auto;*/
+/*clear:none;*/
+/*cursor:default;*/
+/*!* didn't really know what the default for display should be*!*/
+/*!*display:inline;*!*/
+/*float:none;*/
+/*font-family:Arial, Helvetica, sans-serif;*/
+/*font-size:medium;*/
+/*font-style:normal;*/
+/*font-weight:normal;*/
+/*height:auto;*/
+/*left:auto;*/
+/*letter-spacing:normal;*/
+/*line-height:normal;*/
+/*max-height:none;*/
+/*max-width:none;*/
+/*min-height:0;*/
+/*min-width:0;*/
+/*overflow:visible;*/
+/*position:static;*/
+/*right:auto;*/
+/*text-align:left;*/
+/*text-decoration:none;*/
+/*text-indent:0;*/
+/*text-transform:none;*/
+/*top:auto;*/
+/*visibility:visible;*/
+/*white-space:normal;*/
+/*width:auto;*/
+/*z-index:auto;*/
+/*}*/
+.modal {
+    text-align: left;
+}
+
+.modal .modal-header {
+    padding-bottom: 20px;
+}
+
+.modal .modal-header button.close {
+    margin: 0px !important;
+    margin-top: -5px !important;
+    padding: 0px 10px 0px 0px !important;
+}
+
+.modal label {
+    max-width: none;
+}
+
+.modal form {
+    max-width: 700px;
+    /*margin: 1em;*/
+    padding-bottom: 4em;
+    /*border: thin solid;*/
+}
+
+.modal select {
+    /*margin: 0px;*/
+    /*padding: 0px;*/
+    top: auto;
+    position: relative;
+    visibility: visible;
+}
+
+.modal .control-label {
+    font-weight: 600;
+}
+
+.modal .dir-sub {
+    max-width: 10em;
+    display: inline;
+}
+
+.modal .info-text {
+    padding-left: 1em;
+    color: #2aabd2;
+    word-wrap: break-word;
+    font-size: smaller;
+}
+
+.modal .indent {
+    padding-left: 1em;
+}
+
+.modal .help-text {
+    padding-left: 0.5em;
+    color: dimgrey;
+    word-wrap: break-word;
+    font-size: smaller;
+}
+
+.modal .help-text-tip {
+    color: dimgrey;
+    word-wrap: break-word;
+    font-size: 40%;
+}
+
+#local-file-size {
+    margin-left: 2em;
+}
+
+#server-dir-feedback {
+    margin-top: 1em;
+}
+
+#server-dir-link {
+    margin-left: 1em;
+}
+
+#upload-feedback {
+    max-width: 600px;
+    margin-top: 0.5em;
+}
+
+#upload-state {
+    margin-left: 1em;
+}
+
+input.text {
+    overflow-wrap: break-word;
+}
+
+[required]:after {
+    content: "*";
+    color: red;
+}
+
+[tooltip]:after {
+    content: attr(tooltip);
+    opacity: 0;
+    position: absolute;
+    margin-top: -1em;
+    padding-left: 3px;
+    padding-right: 3px;
+    display: inline-block;
+    border-radius: 5px 5px 5px 0;
+    z-index: 9999;
+    color: white;
+    background-color: #2aabd2;
+    font-size: smaller;
+    font-weight: normal;
+}
+
+[tooltip]:hover:after {
+    opacity: 1;
+}
+
+[tooltip]:not([tooltip-persistent]):before {
+    pointer-events: none;
+}
+
+[data-level="OK"] {
+    color: limegreen;
+}
+
+[data-level="NONE"] {
+    color: inherit;
+}
+
+[data-level="ERROR"] {
+    color: red;
+}
