@@ -21,6 +21,9 @@ import com.csjbot.robot.biz.pms.dao.PmsAdvertisementDao;
 import com.csjbot.robot.biz.pms.dao.PmsProductDao;
 import com.csjbot.robot.biz.pms.model.PmsAdvertisement;
 import com.csjbot.robot.biz.pms.model.PmsProduct;
+import com.github.miemiedev.mybatis.paginator.domain.Order;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 /** 
  * @Description 
@@ -41,9 +44,17 @@ public class PmsService {
      * @created 2017年3月21日 下午2:58:49        
      */  
 	
-	public Page<Map<String, Object>> pageAndSort(Map<String, Object> params,int current, int pagesize, String sortString) {
+/*	public Page<Map<String, Object>> pageAndSort(Map<String, Object> params,int current, int pagesize, String sortString) {
 		return pmsProductDao.pageAndSort(params, current, pagesize, sortString);
-	}
+	}*/
+	
+    public PageList<PmsProduct> page(Map<String, Object> params,int current, int pagesize, String sortString) {
+        PageBounds pager = new PageBounds();
+        pager.setLimit(pagesize);
+        pager.setPage(current);
+        pager.setOrders(Order.formString(sortString));
+        return pmsProductDao.page(params, pager);
+    }
 	  
 	
 	public boolean insert(PmsProduct product) {

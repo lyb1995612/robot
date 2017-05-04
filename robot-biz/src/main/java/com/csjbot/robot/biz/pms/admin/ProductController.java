@@ -22,8 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.csjbot.robot.base.page.Page;
-import com.csjbot.robot.base.util.FileUtil;
 import com.csjbot.robot.base.util.StringUtil;
 import com.csjbot.robot.base.web.entity.ResultEntity;
 import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
@@ -33,6 +31,8 @@ import com.csjbot.robot.biz.pms.service.PmsService;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.sys.service.SysAttachService;
 import com.csjbot.robot.biz.ums.model.User;
+import com.csjbot.robot.biz.util.FileUtil;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 /**          
  * Description: 产品信息
@@ -132,7 +132,7 @@ public class ProductController {
         attach.setMemo(pmsProduct.getMemo());
         attach.setSort(0);
         if (photo != null) {
-        	photo_url = fileUtil.uploadAndModifyAttach(attach, photo, Constants.UPLOAD_PATH, Constants.Attachment.Path.PRODUCT_PIC_PATH);
+        	photo_url = fileUtil.uploadAndModifyAttach(attachService,attach, photo, Constants.UPLOAD_PATH, Constants.Attachment.Path.PRODUCT_PIC_PATH);
 	        if ("error".equals(photo_url)) {
 	        	msg = ResultEntity.KW_STATUS_FAIL;
 	        	result.put("msg", msg);
@@ -172,7 +172,7 @@ public class ProductController {
         	MultipartFile photo =  ((MultipartHttpServletRequest) request).getFile("photo");
 		    if (photo != null) {
 		    	attachService.deleteByTransInfo(attach.getTransaction_id(),attach.getTransaction_type());
-		    	photo_url = fileUtil.uploadAndModifyAttach(attach, photo, Constants.UPLOAD_PATH, Constants.Attachment.Path.PRODUCT_PIC_PATH);
+		    	photo_url = fileUtil.uploadAndModifyAttach(attachService,attach, photo, Constants.UPLOAD_PATH, Constants.Attachment.Path.PRODUCT_PIC_PATH);
 			    if ("error".equals(photo_url)) {
 			    	msg = ResultEntity.KW_STATUS_FAIL;
 			    	result.put("msg", msg);
@@ -232,12 +232,12 @@ public class ProductController {
             if (orderName != null && !"".equals(orderName) && dir != null && !"".equals(dir)) {
                 sortString = orderName + "." + dir;
             }
-            Page<Map<String, Object>> pageMap = pmsService.pageAndSort(params, (start / length) + 1, length, sortString);
+            PageList<PmsProduct> list = pmsService.page(params, (start / length) + 1, length, sortString);
             result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
-            if (pageMap.getRows() != null && pageMap.getRows().size() > 0) {
-                result.addObject("data", pageMap.getRows());
-                result.addObject("recordsFiltered", pageMap.getTotal());
-                result.addObject("recordsTotal", pageMap.getTotal());
+            if (list != null && list.size() > 0) {
+                result.addObject("data", list);
+                result.addObject("recordsFiltered", list.size());
+                result.addObject("recordsTotal", list.size());
             } else {
                 result.addObject("data", null);
                 result.addObject("recordsFiltered", 0);

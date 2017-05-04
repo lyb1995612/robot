@@ -1,4 +1,4 @@
-package com.csjbot.robot.base.util;
+package com.csjbot.robot.biz.util;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -16,19 +16,20 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.csjbot.robot.base.exception.ServiceException;
+import com.csjbot.robot.base.util.PropertiesUtils;
+import com.csjbot.robot.biz.sys.model.SysAttachment;
+import com.csjbot.robot.biz.sys.service.SysAttachService;
+
 
 /**
  * 
  * @author dcj
  * 
  */
-public class FileUtil {
+public class FileUtil{
 	
 	static final Logger logger = Logger.getLogger(FileUtil.class);
-	// 鏂囦欢鍏佽鏍煎紡
-	// private String[] allowFiles = { ".swf", ".wmv", ".flv", ".avi", ".rm",
-	// ".rmvb", ".mpeg", ".mpg", ".ogg", ".mov", ".wmv", ".mp4",".gif", ".png",
-	// ".jpg", ".jpeg",".exl",".pdf",".word",".txt"};
 	private String[] allowFiles = convertStrToArray(PropertiesUtils.getValue("image.suffix"));
 	private String url = "";
 	private String state = "";
@@ -38,7 +39,88 @@ public class FileUtil {
         return FileUtils.readFileToByteArray(file);
     }
 	
+	public String uploadAndModifyAttach(SysAttachService attachService, SysAttachment attach,String type, MultipartFile file, String dir, String foldername) {
+		url = "";
+		String fileName = file.getOriginalFilename();
+		if (attach.getTransaction_id()==null) {
+			return "error";
+		}
+		attach.setTransaction_type(type);
+		attach.setOriginal_name(fileName);
+		attach.setSuffix(this.getFileExt(fileName));
+		attach.setSize((int)file.getSize());
+		attach.setFile_type(file.getContentType());
+		fileName = getName(fileName);
+		attach.setAlias_name(fileName);
+		attach.setName(this.getFilePre(fileName));
+		
+		String folderUrl = dir + foldername;
+		File path = new File(folderUrl);
+		if (!path.exists()) {
+			try {
+				path.mkdirs();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		url = folderUrl + fileName;
+		File outFile = new File(url);
+		attach.setDirectory(folderUrl);
+		attach.setLocation(url);
+		try {
+			file.transferTo(outFile);
+			attachService.insert(attach);
+			return this.url;
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
+		return "error";
+	}
 	
+	public String uploadAndModifyAttach(SysAttachService attachService, SysAttachment attach, MultipartFile file, String dir, String foldername) {
+		url = "";
+		String fileName = file.getOriginalFilename();
+		if (!checkFileType(fileName)||attach.getTransaction_id()==null || attach.getTransaction_type()==null) {
+			return "error";
+		}
+		attach.setOriginal_name(fileName);
+		attach.setSuffix(this.getFileExt(fileName));
+		attach.setSize((int)file.getSize());
+		attach.setFile_type(file.getContentType());
+		fileName = getName(fileName);
+		attach.setAlias_name(fileName);
+		attach.setName(this.getFilePre(fileName));
+		
+		String folderUrl = dir + foldername;
+		File path = new File(folderUrl);
+		if (!path.exists()) {
+			try {
+				path.mkdirs();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		url = folderUrl + fileName;
+		File outFile = new File(url);
+		attach.setDirectory(folderUrl);
+		attach.setLocation(url);
+		try {
+			file.transferTo(outFile);
+			attachService.insert(attach);
+			return this.url;
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
+		return "error";
+	}
 
 	
 	public String upload(MultipartFile file, String dir, String foldername) {
@@ -72,9 +154,9 @@ public class FileUtil {
 		return fileName.substring(fileName.lastIndexOf("."));
 	}
 	
-/*	private String getFilePre(String fileName) {
+	private String getFilePre(String fileName) {
 		return fileName.substring(0,fileName.lastIndexOf("."));
-	}*/
+	}
 
 	/**
 	 * 鏂囦欢绫诲瀷鍒ゆ柇

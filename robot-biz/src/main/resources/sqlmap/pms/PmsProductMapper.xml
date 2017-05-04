@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.csjbot.admin.data.pms.dao.PmsProductDao" >
-  <resultMap id="BaseResultMap" type="com.csjbot.admin.data.pms.model.PmsProduct" >
+<mapper namespace="com.csjbot.robot.biz.pms.dao.PmsProductDao" >
+  <resultMap id="BaseResultMap" type="com.csjbot.robot.biz.pms.model.PmsProduct" >
     <id column="id" property="id" jdbcType="CHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
@@ -33,7 +33,7 @@
     delete from pms_product
     where id = #{id,jdbcType=CHAR}
   </delete>
-  <insert id="insert" parameterType="com.csjbot.admin.data.pms.model.PmsProduct" >
+  <insert id="insert" parameterType="com.csjbot.robot.biz.pms.model.PmsProduct" >
     insert into pms_product (id, name, price, 
       memo, valid, updater_fk, 
       creator_fk, date_update, date_create
@@ -43,7 +43,7 @@
       #{creator_fk,jdbcType=CHAR},now(), now()
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.csjbot.admin.data.pms.model.PmsProduct" >
+  <insert id="insertSelective" parameterType="com.csjbot.robot.biz.pms.model.PmsProduct" >
     insert into pms_product
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -104,7 +104,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.csjbot.admin.data.pms.model.PmsProduct" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.csjbot.robot.biz.pms.model.PmsProduct" >
     update pms_product
     <set >
       <if test="name != null" >
@@ -132,7 +132,7 @@
     </set>
     where id = #{id,jdbcType=CHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.csjbot.admin.data.pms.model.PmsProduct" >
+  <update id="updateByPrimaryKey" parameterType="com.csjbot.robot.biz.pms.model.PmsProduct" >
     update pms_product
     set name = #{name,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
