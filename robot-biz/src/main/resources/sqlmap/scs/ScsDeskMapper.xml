@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.csjbot.robot.biz.scs.dao.ScsDeskDao" >
+    <resultMap id="BaseResultMap" type="com.csjbot.robot.biz.scs.model.ScsDesk" >
+        <id column="id" property="id" jdbcType="CHAR" />
+        <result column="number" property="number" jdbcType="VARCHAR" />
+        <result column="alias" property="alias" jdbcType="VARCHAR" />
+        <result column="memo" property="memo" jdbcType="VARCHAR" />
+        <result column="valid" property="valid" jdbcType="TINYINT" />
+        <result column="deskx" property="deskx" jdbcType="DOUBLE" />
+        <result column="desky" property="desky" jdbcType="DOUBLE" />
+        <result column="deskz" property="deskz" jdbcType="DOUBLE" />
+        <result column="deskw" property="deskw" jdbcType="DOUBLE" />
+        <result column="deskv" property="deskv" jdbcType="DOUBLE" />
+        <result column="deskq" property="deskq" jdbcType="DOUBLE" />
+        <result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
+        <result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
+        <result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
+        <result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
+        <result column="desk_type" property="desk_type" jdbcType="TINYINT" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+      id, number, alias, memo, valid, desk_type, deskx, desky, deskz, deskw, deskv, deskq, updater_fk, creator_fk, date_update, date_create
+    </sql>
+    
+      <select id="page" parameterType="map" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />
+		from scs_desk_info where valid = 1
+       <if test="number != null and number !=''">
+          and number LIKE CONCAT('%', #{number},'%')
+       </if>                 
+      </select>
+      
+      <delete id="delete" parameterType="map" >
+            delete from scs_desk_info
+            where id = #{id,jdbcType=CHAR}
+       </delete>
+      
+      <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+       select 
+         <include refid="Base_Column_List" />
+       from scs_desk_info
+        where id = #{id,jdbcType=CHAR}
+       </select>
+       
+       <insert id="insert" parameterType="com.csjbot.robot.biz.scs.model.ScsDesk" >
+         insert into scs_desk_info (id, number, alias, memo, valid, desk_type, deskx, desky, deskz, deskw,
+                                  deskv, deskq, updater_fk, creator_fk, date_update, date_create
+                                  )
+          values (#{id,jdbcType=CHAR}, #{number,jdbcType=VARCHAR}, #{alias,jdbcType=DECIMAL}, #{memo,jdbcType=VARCHAR}, 1,
+                  #{desk_type,jdbcType=TINYINT},#{deskx,jdbcType=DOUBLE},#{desky,jdbcType=DOUBLE},#{deskz,jdbcType=DOUBLE},#{deskw,jdbcType=DOUBLE},
+                  #{deskv,jdbcType=DOUBLE},#{deskq,jdbcType=DOUBLE},#{updater_fk,jdbcType=CHAR},#{creator_fk,jdbcType=CHAR},now(), now()
+                  )
+        </insert>
+</mapper>
+

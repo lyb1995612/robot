@@ -1,91 +1,90 @@
-var table = "";
-var initable = "";
-$(function() {
-	
-	// ----------------条件搜索-----------------------------------------------------------
-	$("#searchButton").click(function() {
-		table.state.clear(); 
-		table.destroy();
-		table = $("#tp").DataTable(initOptions());
-	});
-	$(document).keydown(function(e){
-		if (e && e.keyCode == 13) {
-			$("#searchButton").click();
-			return false;
-		}
-	});
-
+$().ready(function() {
 	// ----------------重置搜索条件--------------------------------------------------------
 	$('#resetButton').click(function() {
-		$('#customer').val('');
+		$("#searchform")[0].reset();
+		
 	});
-	
-	function initOptions(){
-		var queryData = {customer:$("#customer").val()};
-		var options = {
-				processing: true,
-		        serverSide: true,
-		    	ajax: {
-		    		url:_path + "/cms/search",
-		    		method: "POST",
-		    		data: queryData,
-		    		error: function(xhr, msg){
-		    			alert("数据加载失败");
-		    		}
-		    	},
-				columns : [{
-					title : "商户名",
-					data : "customer",
-					width : "15%"
-				}, {
-					title : "值",
-					data : "value",
-					width : "15%"
-				}, {
-					title : "键值",
-					data : "code",
-					width : "15%"
-				}, {
-					title : "分组",
-					data : "code_group",
-					width : "15%"
-				}, {
-					title : "备注",
-					data : "remark",
-					width : "15%"
-				},{
-					title : "操作",
-					width : "15%",
-					style : "operation-column"
-				}],
-				columnDefs: [
-				{
-					targets: [1],
-					render: function(data, type, row){
-						return "<div style='word-break:break-all;overflow-y:scroll;overflow:auto;max-height:10rem;'>"+data+"</div>";
-					}
-				},
-	            {
-	               targets: [ 5 ],
-	               render: operation,
-	               orderable: false
-	            }],
-		        remoteSort : true,
-				pagination : true,
-				paginationParam : {
-					pageSize : 20,
-					pagerLength : 5
-				},
-		        emptyMsg : "查无结果"
-		 };
-		 return options;
-	}
-	initable = initOptions();
-	table = $("#tp").DataTable(initOptions());
-	
-});
+	// ----------------条件搜索-----------------------------------------------------------
+	$("input[id='searchButton']").click(function() {
+		var param = $(".searchform").serialize2Json();
+		$("#tp").datatable('load', param);
+	});
+	// ----------------列表展示-----------------------------------------------------------
+	$("#tp").datatable({
+		data : {
+			url : _path + "/cms/search",
+			method : "POST",
+			params : { 
+				
+            }
+		},
+		/*columnDefs: [ {
+			  targets: [2],
+			     render: function(data, type, row){
+			     return "<div style='word-break:break-all;overflow-y:scroll;overflow:auto;max-height:10rem;'>"+data+"</div>";
+		  }
+		  }],*/
+		columns : [ {
+			title : "ID",
+			hidden : true,
+			dataAttribute : "id"
+		}, {
+			title : "商户名",
+			dataAttribute : "customer",
+			width : "15%"
+		}, {
+			title : "值",
+			data : "value",
+			width : "15%",
+		//	render: example
+		}, {
+			title : "键值",
+			dataAttribute : "code",
+			width : "15%"
+		}, {
+			title : "分组",
+			dataAttribute : "code_group",
+			width : "15%"
+		}, {
+			title : "备注",
+			dataAttribute : "remark",
+			width : "15%"
+		}, {
+			title : "操作",
+			width : "15%",
+			style : "operation-column",
+			renderer : operation
+		}],
+		remoteSort : true,
+		pagination : true,
+		paginationParam : {
+			pageSize : 20,
+			pagerLength : 5
+		},
+		emptyMsg : "查无结果"
+	});
+});	
 
-function operation( data, type, row ) {
+function operation(data, el) {
+
+        var $editor = $("<a class=\"detail opt\" href=\"javascript:void(0);\"><span>详情&nbsp;&nbsp;</span></a>");
+        $(el).append($editor);
+        $(el).find(".detail").unbind("click").click(function() {
+            window.location = _path + "/cms/" + data.code_group + "/" +data.code + "/toCustomerDetail";
+        });
+        // -------------------------------------------------------------------------------------------------------------------------------------------------------
+        $editor = $("<a class=\"edit opt\" href=\"javascript:void(0);\"><span>编辑&nbsp;&nbsp;</span></a>");
+        $(el).append($editor);
+        $(el).find(".edit").unbind("click").click(function() {
+        		 window.location = _path + "/cms/" + data.code_group + "/" +data.code + "/toCustomerUpdate";
+        });
+        $editor = $("<a class=\"delete opt\" href=\"javascript:void(0);\"><span>删除</span></a>");
+        $(el).append($editor);
+        $(el).find(".delete").unbind("click").click(function() {
+        	    window.location = _path + "/cms/" + data.code_group + "/" +data.code + "/customerDelete"
+        });
+}
+/*function operation( data, type, row ) {
     var editor =   "<a class='opt' id='detail_"+row.code_group + row.code +"' href=\"javascript:void(0);\" ><span>详情</span></a>&nbsp;&nbsp;"
     	         + "<a class='opt' id='edit_"+row.code_group + row.code+"' href=\"javascript:void(0);\" ><span>编辑</span></a>&nbsp;&nbsp;"
                  + "<a class='opt' id='delete_"+row.code_group + row.code+"' href=\"javascript:void(0);\" ><span>删除</span></a>&nbsp;&nbsp;"
@@ -119,9 +118,4 @@ function operation( data, type, row ) {
 				});	    	
 	     });   
     return editor;
-}
-
-
-	
-	
-	
+}*/

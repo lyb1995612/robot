@@ -88,7 +88,7 @@ public class VersionController {
         }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(dirJson, headers, OK);
+        return new ResponseEntity<String>(dirJson, headers, OK);
     }
 
     private static String manualSerialize(List<String> dirs) {
@@ -167,6 +167,6 @@ public class VersionController {
     private ResponseEntity<String> textResponse(HttpStatus status, String msg) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<>(msg, headers, status);
+        return new ResponseEntity<String>(msg, headers, status);
     }
 }

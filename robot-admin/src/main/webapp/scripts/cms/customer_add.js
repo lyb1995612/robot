@@ -60,7 +60,7 @@ $(function(){
     		});
     		$("#customer_form").ajaxSubmit({
                 type: "POST",
-                url: _path + "/cms/add",
+                url: _path + "/cms/save",
                 dataType: "json",
                 success: function(data){
                 	csjbotui.ui.msg.waiting.remove();
