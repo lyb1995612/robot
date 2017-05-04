@@ -21,8 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.csjbot.robot.biz.tms.model.Result;
-import com.csjbot.robot.biz.tms.model.Result.PreDefined;
+import com.csjbot.robot.biz.tms.model.result.FileResult;
+import com.csjbot.robot.biz.tms.model.result.FileResult.PreDefined;
 
 @Service
 public class FSStoreService {
@@ -134,26 +134,26 @@ public class FSStoreService {
 		return fileExists(getFilePath(dirStr, fileName));
 	}
 
-	public Result createDir(String dirStr) {
-		Result res;
+	public FileResult createDir(String dirStr) {
+		FileResult res;
 		Path targetDir = Paths.get(baseDir + dirStr);
 		if (exists(targetDir)) {
-			res = Files.isDirectory(targetDir) ? Result.success() : Result.from(PreDefined.EXISTING_FILE);
+			res = Files.isDirectory(targetDir) ? FileResult.success() : FileResult.from(PreDefined.EXISTING_FILE);
 		} else {
 			try {
 				Path outDir = Files.createDirectories(targetDir);
-				res = dirExists(outDir) ? Result.success() : Result.from(PreDefined.SERVER_FAIL);
+				res = dirExists(outDir) ? FileResult.success() : FileResult.from(PreDefined.SERVER_FAIL);
 			} catch (IOException e) {
 				LOGGER.error("createDir " + dirStr, e);
-				res = Result.from(PreDefined.SERVER_EXCEPTION);
+				res = FileResult.from(PreDefined.SERVER_EXCEPTION);
 			}
 		}
 		return res;
 	}
 
 	@SuppressWarnings("unused")
-	public Result store(String dirStr, MultipartFile file) {
-		Result res;
+	public FileResult store(String dirStr, MultipartFile file) {
+		FileResult res;
 		String targetDir = composePathStr(dirStr);
 		String targetFile = composePathStr(dirStr, file.getOriginalFilename());
 		File target = new File(targetFile);
@@ -162,25 +162,26 @@ public class FSStoreService {
 			Files.copy(file.getInputStream(), path);
 			genChecksum(path);
 			checkedUnzip(targetFile);
-			res = Result.success();
+			res = FileResult.success();
 		} catch (IOException e) {
 			LOGGER.error("store " + target.getAbsolutePath(), e);
-			res = Result.from(PreDefined.SERVER_EXCEPTION);
+			res = FileResult.from(PreDefined.SERVER_EXCEPTION);
 		}
 		return res;
 	}
 
-	// private static final String PERM_DIR_DEFAULT = "rwxrwxr-x";
-	// private static final String PERM_FILE_DEFAULT = "rw-rw-r--";
+	/*
+	private static final String PERM_DIR_DEFAULT = "rwxrwxr-x";
+	private static final String PERM_FILE_DEFAULT = "rw-rw-r--";
 
-	// private void assignPermissions(Path path, String permStr) {
-	// try {
-	// Files.setPosixFilePermissions(path,
-	// PosixFilePermissions.fromString(permStr));
-	// } catch (IOException e) {
-	// LOGGER.error("assign permission", path.toString() + " " + permStr);
-	// }
-	// }
+	private void assignPermissions(Path path, String permStr) {
+		try {
+			Files.setPosixFilePermissions(path, PosixFilePermissions.fromString(permStr));
+		} catch (IOException e) {
+			LOGGER.error("assign permission", path.toString() + " " + permStr);
+		}
+	}
+	*/
 
 	// todo
 	public String genChecksum(Path path) {

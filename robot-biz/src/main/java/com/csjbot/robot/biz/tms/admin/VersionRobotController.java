@@ -1,8 +1,6 @@
 package com.csjbot.robot.biz.tms.admin;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.csjbot.robot.base.page.Page;
 import com.csjbot.robot.base.util.MD5Util;
 import com.csjbot.robot.base.util.StringUtil;
 import com.csjbot.robot.base.web.entity.ResultEntity;
@@ -34,9 +32,13 @@ import com.csjbot.robot.biz.sys.model.SysDataDictionary;
 import com.csjbot.robot.biz.sys.model.SysVersionRobot;
 import com.csjbot.robot.biz.sys.service.DictionaryService;
 import com.csjbot.robot.biz.sys.service.SysAttachService;
+import com.csjbot.robot.biz.tms.model.PkgFile;
+import com.csjbot.robot.biz.tms.model.param.PkgFileParam;
 import com.csjbot.robot.biz.tms.realm.ErrorRealm;
+import com.csjbot.robot.biz.tms.service.PkgFileService;
 import com.csjbot.robot.biz.tms.service.VrcService;
 import com.csjbot.robot.biz.ums.model.User;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 @Controller
 @RequestMapping(value = "/vrc")
@@ -44,6 +46,9 @@ public class VersionRobotController {
 
 	private Logger logger = Logger.getLogger(VersionRobotController.class);
 
+	@Autowired
+	private PkgFileService pkgFileService;
+	
 	@Autowired
 	private VrcService vrcService;
 
@@ -242,8 +247,23 @@ public class VersionRobotController {
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public ResponseEntity<ResultEntity> page(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<ResultEntity> page(@RequestBody PkgFileParam param,HttpServletRequest request, HttpServletResponse response) {
 		ResultEntity result = null;
+		try {
+			PageList<PkgFile> list = new PageList<PkgFile>();
+			list=pkgFileService.page(param);
+			if (list != null) {
+	        	result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "success");
+	         	result.addObject("list", list);
+	        	result.addObject("totalSize", list.size());
+	        } else {
+	        	result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "search fail!");
+	            }
+		} catch (Exception e) {
+			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "Internal Server Error!");
+            e.printStackTrace();
+		}
+		/*
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();
 			int length = Integer.valueOf(request.getParameter("length"));
@@ -279,6 +299,7 @@ public class VersionRobotController {
 			e.printStackTrace();
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "Internal Server Error!");
 		}
+		*/
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		response.setCharacterEncoding("UTF-8");

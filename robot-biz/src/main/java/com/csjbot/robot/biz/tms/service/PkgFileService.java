@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import com.csjbot.robot.biz.tms.dao.PkgFileDao;
 import com.csjbot.robot.biz.tms.model.FileEntry;
 import com.csjbot.robot.biz.tms.model.PkgFile;
+import com.csjbot.robot.biz.tms.model.param.PkgFileParam;
+import com.github.miemiedev.mybatis.paginator.domain.Order;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 @Service
 public class PkgFileService {
@@ -50,5 +54,13 @@ public class PkgFileService {
 		}
 		return dao.getLike(ptn, col);
 	}
+	
+	public PageList<PkgFile> page(PkgFileParam param) {
+        PageBounds pager = new PageBounds();
+        pager.setLimit(param.getPageSize());
+        pager.setPage(param.getPageNow() + 1);
+        pager.setOrders(Order.formString(param.getSortString()));    	
+        return dao.page(param,pager);
+    }
 
 }
