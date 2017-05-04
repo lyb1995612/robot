@@ -8,7 +8,7 @@
     <import resource="spring-context.xml" />
     <!--&lt;!&ndash; 扫描 Mapper接口与文件 &ndash;&gt;-->
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.csjbot.robot.biz.frs.**.dao"/>
+        <property name="basePackage" value="com.csjbot.robot.biz.**.dao"/>
         <property name="markerInterface" value="com.csjbot.robot.base.dao.BaseDAO"></property>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
         <property name="properties">
