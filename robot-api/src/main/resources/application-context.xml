@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://mybatis.org/schema/mybatis-spring
+    http://mybatis.org/schema/mybatis-spring.xsd"
+>
+
+
+    <!-- 自动加载数据库属性配置文件 -->
+    <context:property-placeholder location="classpath*:application.properties" order="1"
+                                  ignore-unresolvable="true" ignore-resource-not-found="true"/>
+
+    <context:property-placeholder location="classpath*:config.properties" order="3"
+                                  ignore-unresolvable="true" ignore-resource-not-found="true"/>
+</beans>
