@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjbot.robot.biz.tms.dao.PkgFileDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.csjbot.robot.biz.tms.model.PkgFile">
+        <result column="id" property="id"/>
+        <result column="file_name" property="name"/>
+        <result column="file_path" property="path"/>
+        <result column="upload_time" property="uploadTime"/>
+    </resultMap>
+    <resultMap id="FileEntryMap" type="com.csjbot.robot.biz.tms.model.FileEntry">
+        <result column="file" property="path"/>
+        <result column="uptime" property="uptime"/>
+    </resultMap>
+    <!--auto generated Code-->
+    <sql id="all_column">
+        `id`,
+        `file_name`,
+        `file_path`,
+        `upload_time`
+    </sql>
+
+    <!-- user add -->
+    <select id="get" resultMap="AllColumnMap" parameterType="map">
+	   SELECT
+	    `id`,
+        `file_name`,
+        `file_path`,
+        `upload_time`
+	   FROM tms_package_file
+	   WHERE id=#{id}
+	</select>
+
+    <select id="getAll" resultMap="AllColumnMap">
+	   SELECT
+	    `id`,
+        `file_name`,
+        `file_path`,
+        `upload_time`
+	   FROM tms_package_file
+	   ORDER BY id
+	</select>
+
+    <insert id="insert" parameterType="com.csjbot.robot.biz.tms.model.PkgFile">
+        INSERT INTO tms_package_file (
+        `file_name`,
+        `file_path`,
+        `upload_time`
+        ) VALUES (
+        #{name},
+        #{path},
+        #{uploadTime}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.csjbot.robot.biz.tms.model.PkgFile">
+        UPDATE tms_package_file
+        <set>
+            <if test="name != null">`file_name` = #{name},</if>
+            <if test="path != null">`file_path` = #{path},</if>
+            <if test="uploadTime != null">`upload_time` = #{uploadTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="map">
+        DELETE FROM tms_package_file
+        WHERE
+        id=#{id}
+    </delete>
+
+    <select id="getDistinct" resultType="string" parameterType="map">
+        SELECT DISTINCT
+        <choose>
+            <when test="fieldName == 'file'">
+                file_name
+            </when>
+            <when test="fieldName == 'path'">
+                file_path
+            </when>
+        </choose>
+        FROM tms_package_file
+        ORDER BY 1
+    </select>
+
+    <select id="getLike" resultMap="FileEntryMap" parameterType="map">
+        SELECT
+        <![CDATA[ CONCAT(IF(path <> '/', path, ''), '/', name) path, uptime ]]>
+        FROM
+        (SELECT file_path path, file_name name, upload_time uptime
+        FROM tms_package_file
+        WHERE file_name LIKE CONCAT('%',#{ptn},'%')) AS t
+        ORDER BY ${col} DESC;
+    </select>
+</mapper>
