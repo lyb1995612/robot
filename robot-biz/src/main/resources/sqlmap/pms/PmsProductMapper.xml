@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjbot.robot.biz.pms.dao.PmsProductDao" >
+  <resultMap id="BaseResultMap" type="com.csjbot.robot.biz.pms.model.PmsProduct" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="valid" property="valid" jdbcType="TINYINT" />
+    <result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
+    <result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
+    <result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
+    <result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, price, memo, valid, updater_fk, creator_fk, date_update, date_create
+  </sql>
+  <select id="page" parameterType="map" resultMap="BaseResultMap">
+		select 
+		id, name, price, memo, valid, updater_fk, creator_fk, date_update, date_create
+		from pms_product where valid = 1
+       <if test="name != null and name !=''">
+          and ( upper(`name`) LIKE CONCAT('%', #{name},'%'))
+       </if>                 
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from pms_product
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from pms_product
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.csjbot.robot.biz.pms.model.PmsProduct" >
+    insert into pms_product (id, name, price, 
+      memo, valid, updater_fk, 
+      creator_fk, date_update, date_create
+      )
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{memo,jdbcType=VARCHAR}, 1, #{updater_fk,jdbcType=CHAR}, 
+      #{creator_fk,jdbcType=CHAR},now(), now()
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.csjbot.robot.biz.pms.model.PmsProduct" >
+    insert into pms_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="valid != null" >
+        valid,
+      </if>
+      <if test="updater_fk != null" >
+        updater_fk,
+      </if>
+      <if test="creator_fk != null" >
+        creator_fk,
+      </if>
+      <if test="date_update != null" >
+        date_update,
+      </if>
+      <if test="date_create != null" >
+        date_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null" >
+        #{valid,jdbcType=TINYINT},
+      </if>
+      <if test="updater_fk != null" >
+        #{updater_fk,jdbcType=CHAR},
+      </if>
+      <if test="creator_fk != null" >
+        #{creator_fk,jdbcType=CHAR},
+      </if>
+      <if test="date_update != null" >
+        #{date_update,jdbcType=TIMESTAMP},
+      </if>
+      <if test="date_create != null" >
+        #{date_create,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csjbot.robot.biz.pms.model.PmsProduct" >
+    update pms_product
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null" >
+        valid = #{valid,jdbcType=TINYINT},
+      </if>
+      <if test="updater_fk != null" >
+        updater_fk = #{updater_fk,jdbcType=CHAR},
+      </if>
+      <if test="creator_fk != null" >
+        creator_fk = #{creator_fk,jdbcType=CHAR},
+      </if>
+        date_update = now(),
+      <if test="date_create != null" >
+        date_create = #{date_create,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csjbot.robot.biz.pms.model.PmsProduct" >
+    update pms_product
+    set name = #{name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      memo = #{memo,jdbcType=VARCHAR},
+      valid = #{valid,jdbcType=TINYINT},
+      updater_fk = #{updater_fk,jdbcType=CHAR},
+      creator_fk = #{creator_fk,jdbcType=CHAR},
+      date_update = now(),
+      date_create = #{date_create,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>
