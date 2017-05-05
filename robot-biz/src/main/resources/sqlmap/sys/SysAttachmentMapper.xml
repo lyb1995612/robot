@@ -34,7 +34,7 @@
     from sys_attachment
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="getAttachByTransInfo" resultMap="BaseResultMap" parameterType="map">
+  <select id="getAttachByTransInfoName" resultMap="BaseResultMap" parameterType="map">
       select 
 	    <include refid="Base_Column_List" />
 	    from sys_attachment
@@ -45,8 +45,21 @@
 			<if test="transaction_type != null and transaction_type !=''">
 				and transaction_type = #{transaction_type}
 			</if>
-			<if test="name != null and name !=''">
+		    <if test="name != null and name !=''">
 				and name = #{name}
+			</if> 
+		</where>
+  </select>
+  <select id="getAttachByTransInfo" resultMap="BaseResultMap" parameterType="map">
+      select 
+	    <include refid="Base_Column_List" />
+	    from sys_attachment
+	    <where>
+			<if test="transaction_id != null and transaction_id !=''">
+				transaction_id = #{transaction_id}
+			</if>
+			<if test="transaction_type != null and transaction_type !=''">
+				and transaction_type = #{transaction_type}
 			</if>
 		</where>
   </select>

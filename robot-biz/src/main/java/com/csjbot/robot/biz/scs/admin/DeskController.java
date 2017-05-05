@@ -148,7 +148,6 @@ public class DeskController {
                 sortString = orderName + "." + dir;
             }
             PageList<ScsDesk> list = scsService.page(params, (start / length) + 1, length, sortString);
-  //          Page<Map<String, Object>> pageMap = scsService.pageAndSort(params, (start / length) + 1, length, sortString);
             result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
             if (list != null && list.size() > 0) {
                 result.addObject("data", list);

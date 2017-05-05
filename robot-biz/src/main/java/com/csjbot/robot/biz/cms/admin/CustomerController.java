@@ -98,6 +98,80 @@ public class CustomerController {
 	}
 
 	/**
+	 * 新增商户
+	 * @param params
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public ResponseEntity<String> customerAdd(Customer customer,HttpServletRequest request,HttpServletResponse response){
+        JSONObject result = new JSONObject();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        response.setCharacterEncoding("UTF-8");
+        User loginUser = (User) request.getSession().getAttribute(Constants.CURRENT_USER);
+        String id = StringUtil.createUUID();
+        SysAttachment attach = new SysAttachment();
+        attach.setTransaction_id(id);
+        attach.setTransaction_type(Constants.Attachment.Type.CUSTOMER_BASIC_INFO);
+        attach.setOwner_fk(loginUser.getId());
+        attach.setCreator_fk(loginUser.getId());
+        attach.setUpdater_fk(loginUser.getId());
+        attach.setSort(0);
+        String msg = "";
+        if(customerService.insert(customer) > 0){
+        	msg = ResultEntity.KW_STATUS_SUCCESS;
+        }
+        result.put("msg", msg);
+        return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
+	}
+	 
+	/**
+     * @discription 删除商户
+     * @author XMT       
+     * @created 2017年4月15日 下午14:22
+	 */
+	@RequestMapping(value = "{code_group}/{code}/customerDelete")
+	public ResponseEntity<String> CustomerDelete(@PathVariable String code_group,@PathVariable String code,HttpServletResponse response){
+		JSONObject result = new JSONObject();
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+	    response.setCharacterEncoding("UTF-8");
+	    String msg = ResultEntity.KW_STATUS_SUCCESS;
+	    try {
+	    	customerService.delete(code, code_group);
+		} catch (Exception e) {
+			msg=e.getMessage();
+		}
+	    result.put("msg", msg);
+	    return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
+	}
+	
+	/**
+     * @discription 修改商户
+     * @author XMT      
+     * @created 2017年4月15日 下午14:22
+	 */
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public ResponseEntity<String> customerUpdate(Customer customer,HttpServletRequest request,HttpServletResponse response){
+	    JSONObject result = new JSONObject();
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+	    response.setCharacterEncoding("UTF-8");
+	    User loginUser = (User) request.getSession().getAttribute(Constants.CURRENT_USER);
+	    String msg = "";
+	    SysAttachment attach = new SysAttachment();
+	    attach.setTransaction_type(Constants.Attachment.Type.CUSTOMER_BASIC_INFO);
+	    attach.setUpdater_fk(loginUser.getId());
+	    if(customerService.update(customer) > 0){
+	    	msg = ResultEntity.KW_STATUS_SUCCESS;
+	    }
+	    result.put("msg", msg);
+	    return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
+	}
+	
+	/**
 	 * 获得所有商户的数据
 	 * @param param
 	 * @param request
@@ -144,79 +218,4 @@ public class CustomerController {
         response.setCharacterEncoding("UTF-8");
         return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
      }
-	
-	
-	/**
-     * @discription 删除商户
-     * @author XMT       
-     * @created 2017年4月15日 下午14:22
-	 */
-	@RequestMapping(value = "{code_group}/{code}/customerDelete")
-	public ResponseEntity<String> CustomerDelete(@PathVariable String code_group,@PathVariable String code,HttpServletResponse response){
-		JSONObject result = new JSONObject();
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
-	    response.setCharacterEncoding("UTF-8");
-	    String msg = ResultEntity.KW_STATUS_SUCCESS;
-	    try {
-	    	customerService.delete(code, code_group);
-		} catch (Exception e) {
-			msg=e.getMessage();
-		}
-	    result.put("msg", msg);
-	    return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
-	}
-	
-	/**
-	 * 新增商户
-	 * @param params
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ResponseEntity<String> customerAdd(Customer customer,HttpServletRequest request,HttpServletResponse response){
-        JSONObject result = new JSONObject();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        response.setCharacterEncoding("UTF-8");
-        User loginUser = (User) request.getSession().getAttribute(Constants.CURRENT_USER);
-        String id = StringUtil.createUUID();
-        SysAttachment attach = new SysAttachment();
-        attach.setTransaction_id(id);
-        attach.setTransaction_type(Constants.Attachment.Type.CUSTOMER_BASIC_INFO);
-        attach.setOwner_fk(loginUser.getId());
-        attach.setCreator_fk(loginUser.getId());
-        attach.setUpdater_fk(loginUser.getId());
-        attach.setSort(0);
-        String msg = "";
-        if(customerService.insert(customer) > 0){
-        	msg = ResultEntity.KW_STATUS_SUCCESS;
-        }
-        result.put("msg", msg);
-        return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
-	}
-	 
-	/**
-     * @discription 修改商户
-     * @author XMT      
-     * @created 2017年4月15日 下午14:22
-	 */
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ResponseEntity<String> customerUpdate(Customer customer,HttpServletRequest request,HttpServletResponse response){
-	    JSONObject result = new JSONObject();
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
-	    response.setCharacterEncoding("UTF-8");
-	    User loginUser = (User) request.getSession().getAttribute(Constants.CURRENT_USER);
-	    String msg = "";
-	    SysAttachment attach = new SysAttachment();
-	    attach.setTransaction_type(Constants.Attachment.Type.CUSTOMER_BASIC_INFO);
-	    attach.setUpdater_fk(loginUser.getId());
-	    if(customerService.update(customer) > 0){
-	    	msg = ResultEntity.KW_STATUS_SUCCESS;
-	    }
-	    result.put("msg", msg);
-	    return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
-	}
 }

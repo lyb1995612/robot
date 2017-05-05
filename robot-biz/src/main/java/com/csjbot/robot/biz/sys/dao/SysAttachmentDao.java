@@ -1,5 +1,7 @@
 package com.csjbot.robot.biz.sys.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.csjbot.robot.biz.sys.model.SysAttachment;
 
 public interface SysAttachmentDao {
@@ -18,9 +20,9 @@ public interface SysAttachmentDao {
 
     int updateByPrimaryKey(SysAttachment record);
 
-	SysAttachment getAttachByTransInfo(String transaction_id,String transaction_type);
+	SysAttachment getAttachByTransInfo(@Param("transaction_id")String transaction_id,@Param("transaction_type")String transaction_type);
 	
-	SysAttachment getAttachByTransInfo(String transaction_id,String transaction_type,String fileName);
+	SysAttachment getAttachByTransInfoName(@Param("transaction_id")String transaction_id,@Param("transaction_type")String transaction_type,@Param("fileName")String fileName);
 
-	void deleteByTransInfo(String transation_id, String transation_type);
+	void deleteByTransInfo(@Param("transaction_id")String transation_id, @Param("transaction_type")String transation_type);
 }

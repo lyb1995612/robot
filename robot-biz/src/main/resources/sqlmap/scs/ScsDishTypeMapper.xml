@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.csjbot.robot.biz.scs.dao.ScsDishTypeDAO">
+	<resultMap id="BaseResultMap" type="com.csjbot.robot.biz.scs.model.ScsDishType">
+		<id column="id" property="id" />
+		<result column="type_name" property="type_name" jdbcType="VARCHAR" />
+		<result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
+		<result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
+		<result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
+		<result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, type_name, updater_fk, creator_fk, date_update, date_create
+	</sql>
+
+	<select id="page" parameterType="map" resultMap="BaseResultMap">
+		select * from scs_dish_type
+		<if test="type_name != null and type_name !=''">
+			where type_name LIKE CONCAT('%', #{type_name},'%')
+		</if>
+	</select>
+
+	<delete id="delete" parameterType="map">
+		delete from scs_dish_type
+		where id = #{id}
+	</delete>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from scs_dish_type
+		where id = #{id}
+	</select>
+	<select id="selectAll" resultType="com.csjbot.robot.biz.scs.model.ScsDishType">
+		select * from scs_dish_type
+	</select>
+
+	<insert id="insert" parameterType="com.csjbot.robot.biz.scs.model.ScsDishType">
+		insert into scs_dish_type ( type_name, updater_fk,creator_fk, date_update, date_create)
+		values (#{type_name,jdbcType=VARCHAR},#{updater_fk,jdbcType=CHAR},#{creator_fk,jdbcType=CHAR},now(),
+		now())
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.csjbot.robot.biz.scs.model.ScsDishType">
+		update scs_dish_type
+		<set>
+			<if test="type_name != null">
+				type_name = #{type_name,jdbcType=VARCHAR},
+			</if>
+			<if test="updater_fk != null">
+				updater_fk = #{updater_fk,jdbcType=CHAR},
+			</if>
+			<if test="creator_fk != null">
+				creator_fk = #{creator_fk,jdbcType=CHAR},
+			</if>
+                date_update = now(),
+			<if test="date_create != null">
+				date_create = #{date_create,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjbot.robot.biz.scs.dao.ScsAccessoryDAO" >
+  <resultMap id="BaseResultMap" type="com.csjbot.robot.biz.scs.model.ScsAccessory" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="valid" property="valid" jdbcType="TINYINT" />
+    <result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
+    <result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
+    <result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
+    <result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, memo, valid, updater_fk, creator_fk, date_update, date_create
+  </sql>
+  <select id="page" parameterType="map" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from scs_accessory where valid = 1
+       <if test="name != null and name !=''">
+          and name LIKE CONCAT('%',#{name},'%')
+       </if>                 
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from scs_accessory
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from scs_accessory
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.csjbot.robot.biz.scs.model.ScsAccessory" >
+    insert into scs_accessory (id, name, memo, valid,
+      updater_fk, creator_fk, 
+      date_update, date_create)
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 1,
+      #{updater_fk,jdbcType=CHAR}, #{creator_fk,jdbcType=CHAR}, 
+      now(), now())
+  </insert>
+  
+</mapper>
