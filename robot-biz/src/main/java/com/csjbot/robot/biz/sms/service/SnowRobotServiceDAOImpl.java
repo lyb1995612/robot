@@ -64,7 +64,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
     private Sys_attachmentDAO sys_attachmentDAO;
 
 	// 机器人出库
-	@Override
 	public JSONObject addRobot(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "uid" };
@@ -106,7 +105,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 主人注册
-	@Override
 	public JSONObject addUserFromRobot(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "account", "password", "uid", "name", "auth_code" };
@@ -155,7 +153,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 用户注册（手机端）
-	@Override
 	public JSONObject addUserFromMobile(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "account", "password", "name", "auth_code", "headName", "headData" };
@@ -191,10 +188,9 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 获取验证码
-	@Override
 	public JSONObject addAuthCode(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		String[] key = { "account" };
 		if (CharacterUtil.judgeJsonFormat(key, data)) {
 			Sms_auth_code sms_auth_code = sms_auth_codeDAO.findCodeByAccount(data.get("account").toString());
@@ -242,10 +238,9 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 用户登录
-	@Override
 	public JSONObject userLogin(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		Map<String, Object> result = new HashMap<>();
+		Map<String, Object> result = new HashMap<String, Object>();
 		String[] key = { "account", "password" };
 		if (CharacterUtil.judgeJsonFormat(key, data)) {
 			Sms_user sms_user = sms_userDAO.findUserByAccount(data.getString("account"));
@@ -284,7 +279,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 用户登出
-	@Override
 	public JSONObject userLogout(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "account" };
@@ -309,7 +303,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 		return JsonUtil.toJson(jsonUtil);
 	}
 
-	@Override
 	public JSONObject updateRobot(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "uid", "name" };
@@ -330,7 +323,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 校验机器人状态
-	@Override
 	public JSONObject judgeRobotStatus(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "uid" };
@@ -350,10 +342,9 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 用户登录后权限验证（是否是机器人主人）
-	@Override
 	public JSONObject judgeUserLogin(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		Map<String, Object> result = new HashMap<>();
+		Map<String, Object> result = new HashMap<String, Object>();
 		String[] key = { "account" };
 		if (CharacterUtil.judgeJsonFormat(key, data)) {
 			Sms_robot sms_robot = sms_robotDAO.findRobotByAccount(data.getString("account"));
@@ -376,7 +367,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 修改用户名称
-	@Override
 	public JSONObject changeUserName(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "account", "name" };
@@ -397,7 +387,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 修改用户头像
-	@Override
 	public JSONObject changeUserHead(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "account", "headName", "headData" };
@@ -419,7 +408,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 用户忘记密码
-	@Override
 	public JSONObject ForgetUserPassword(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "account", "auth_code", "newPassword" };
@@ -448,7 +436,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 修改用户密码
-	@Override
 	public JSONObject changeUserPassword(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "account", "password", "newPassword" };
@@ -472,7 +459,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 修改手机号
-	@Override
 	public JSONObject changeUserMobile(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "mobile", "password", "newMobile", "auth_code" };
@@ -515,7 +501,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 校验手机号和验证码是否一致（备用）
-	@Override
 	public JSONObject judgeMobileCode(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "account", "auth_code" };
@@ -535,18 +520,16 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 		return JsonUtil.toJson(jsonUtil);
 	}
 
-	@Override
 	public JSONObject judgeStatus(JSONObject data) {
 
 		return null;
 	}
 
 	// 前台模糊查询用户或机器人信息
-	@Override
 	public JSONObject showRobotInfo(String str) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		List<Object> result = new ArrayList<>();
-		Map<String, Object> member = new HashMap<>();
+		List<Object> result = new ArrayList<Object>();
+		Map<String, Object> member = new HashMap<String, Object>();
 		str = str.replace("\"", "");
 		List<Sms_user> userList = sms_userDAO.findUserByStr(str);
 		List<Sms_robot> robotList = sms_robotDAO.findRobotByStr(str);
@@ -588,7 +571,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 前台删除机器人或用户信息
-	@Override
 	public JSONObject deleteRobotInfo(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "id", "type" };
@@ -633,7 +615,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 添加组
-	@Override
 	public JSONObject addGroup(JSONObject data) {
 		boolean flag = true;
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
@@ -665,7 +646,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 删除组
-	@Override
 	public JSONObject deleteGroup(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "group_name", "master" };
@@ -690,7 +670,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 添加组成员
-	@Override
 	public JSONObject addGroupMember(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "group_name", "add_account", "add_password", "master" };
@@ -732,11 +711,10 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 查询组信息
-	@Override
 	public JSONObject showGroupInfo(JSONObject data) {
-		Map<String, Object> result = new HashMap<>();
-		Map<String, Object> person = new HashMap<>();
-		List<Object> member = new ArrayList<>();
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> person = new HashMap<String, Object>();
+		List<Object> member = new ArrayList<Object>();
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "group_name", "master" };
 		if (CharacterUtil.judgeJsonFormat(key, data)) {
@@ -747,7 +725,7 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 					for (Sms_ug_relations sms_ug_relations : ugList) {
 						Sms_user sms_user = sms_userDAO.findUserByAccount(sms_ug_relations.getAccount().toString());
 						if (sms_user != null) {
-							person = new HashMap<>();
+							person = new HashMap<String, Object>();
 							person.put("name", sms_user.getName().toString());
 							person.put("account", sms_user.getAccount().toString());
 							person.put("headName", sms_user.getHead_name().toString());
@@ -757,7 +735,7 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 					}
 				}
 				Sms_user sms_user = sms_userDAO.findUserByAccount(data.getString("master"));
-				person = new HashMap<>();
+				person = new HashMap<String, Object>();
 				person.put("name", sms_user.getName().toString());
 				person.put("account", sms_user.getAccount().toString());
 				person.put("headName", sms_user.getHead_name().toString());
@@ -778,7 +756,6 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 删除组关系
-	@Override
 	public JSONObject deleteGroupRelation(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "group_name", "master", "account" };
@@ -817,13 +794,12 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 返回用户数据
-	@Override
 	public JSONObject serviceUserJson(String type, String id) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		Map<String, Object> result = new HashMap<>();
-		Map<String, Object> content = new HashMap<>();
-		List<Object> contacts = new ArrayList<>();
-		Map<String, Object> member = new HashMap<>();
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> content = new HashMap<String, Object>();
+		List<Object> contacts = new ArrayList<Object>();
+		Map<String, Object> member = new HashMap<String, Object>();
 		Sms_user sms_user = sms_userDAO.findUserByAccount(id);
 		if (sms_user != null) {
 			Sms_robot sms_robot = sms_robotDAO.findRobotByAccount(id);
@@ -855,13 +831,12 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 返回机器人数据
-	@Override
 	public JSONObject serviceRobotJson(String type, String id) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		Map<String, Object> result = new HashMap<>();
-		Map<String, Object> content = new HashMap<>();
-		List<Object> contacts = new ArrayList<>();
-		Map<String, Object> member = new HashMap<>();
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> content = new HashMap<String, Object>();
+		List<Object> contacts = new ArrayList<Object>();
+		Map<String, Object> member = new HashMap<String, Object>();
 		Sms_robot sms_robot = sms_robotDAO.findRobotByUid(id);
 		if (sms_robot != null) {
 			Sms_user sms_user = sms_userDAO.findUserByAccount(sms_robot.getMaster_account());
@@ -898,10 +873,9 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 管理员登录
-	@Override
 	public JSONObject adminLogin(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		Map<String, Object> result = new HashMap<>();
+		Map<String, Object> result = new HashMap<String, Object>();
 		String[] key = { "account", "password" };
 		if (CharacterUtil.judgeJsonFormat(key, data)) {
 			Sms_admin sms_admin = sms_adminDAO.findAdminByAccount(data.getString("account"));
@@ -928,17 +902,16 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 管理员绑定机器人查询
-	@Override
 	public JSONObject adminJudgeBindRobot(String type, String id) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 
 		Sms_admin sms_admin = sms_adminDAO.findAdminByAccount(id);
 		Sms_secret secret = secretDAO.findSecretByAccount(id);
 		if (sms_admin != null) {
-			Map<String, Object> result = new HashMap<>();
-			Map<String, Object> content = new HashMap<>();
-			List<Object> contacts = new ArrayList<>();
-			Map<String, Object> member = new HashMap<>();
+			Map<String, Object> result = new HashMap<String, Object>();
+			Map<String, Object> content = new HashMap<String, Object>();
+			List<Object> contacts = new ArrayList<Object>();
+			Map<String, Object> member = new HashMap<String, Object>();
 
 			content.put("id", id);
 			content.put("type", "admin");
@@ -969,10 +942,9 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 	}
 
 	// 获得管理员账号
-	@Override
 	public JSONObject findAdminInfo(JSONObject data) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		Map<String, Object> result = new HashMap<>();
+		Map<String, Object> result = new HashMap<String, Object>();
 		String[] key = { "uid" };
 		if (CharacterUtil.judgeJsonFormat(key, data)) {
 			Sms_admin sms_admin = sms_adminDAO.findAdminByUid(data.getString("uid"));
@@ -997,8 +969,8 @@ public class SnowRobotServiceDAOImpl implements SnowRobotServiceDAO {
 		boolean upgrade = false;
 		String category =  request.getParameter("category");
 		String channel = request.getParameter("channel");
-		Map<String, Object> result = new HashMap<>();
-		Map<String, Object> content = new HashMap<>();
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> content = new HashMap<String, Object>();
 		Sys_data sys_data1 = sys_dataDAO.findCodeById(FileZipUtil.CategoryCode);
 		Sys_data sys_data2 = sys_dataDAO.findCodeById(FileZipUtil.ChannelCode);
  		Sys_data_dictionary params1= sys_data_dictionaryDAO.findDataDictionaryById(sys_data1.getId(),category);

@@ -24,20 +24,17 @@ public class HttpsTest {
             HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
             
             X509TrustManager xtm = new X509TrustManager() {
-                @Override
                 public X509Certificate[] getAcceptedIssuers() {
                     // TODO Auto-generated method stub
                     return null;
                 }
                 
-                @Override
                 public void checkServerTrusted(X509Certificate[] arg0, String arg1)
                         throws CertificateException {
                     // TODO Auto-generated method stub
                     
                 }
                 
-                @Override
                 public void checkClientTrusted(X509Certificate[] arg0, String arg1)
                         throws CertificateException {
                     // TODO Auto-generated method stub
@@ -52,7 +49,6 @@ public class HttpsTest {
             
             con.setSSLSocketFactory(ctx.getSocketFactory());
             con.setHostnameVerifier(new HostnameVerifier() {
-                @Override
                 public boolean verify(String arg0, SSLSession arg1) {
                     return true;
                 }

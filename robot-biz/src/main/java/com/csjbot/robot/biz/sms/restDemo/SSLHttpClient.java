@@ -35,7 +35,6 @@ public class SSLHttpClient {
 		   /**
 		    * 验证客户端证书
 		    */
-		   @Override
 		   public void checkClientTrusted(X509Certificate[] chain,String authType)
 			 throws CertificateException {
 			 //这里跳过客户端证书	验证
@@ -46,7 +45,6 @@ public class SSLHttpClient {
 		    * @param chain 证书链
 		    * @param authType 使用的密钥交换算法，当使用来自服务器的密钥时authType为RSA
 		    */
-		   @Override
 		   public void checkServerTrusted(X509Certificate[] chain,String authType)
 			 throws CertificateException {
 			   if (chain == null || chain.length == 0)   
@@ -70,7 +68,6 @@ public class SSLHttpClient {
 		   /**
 		    * 返回CA发行的证书
 		    */
-		   @Override
 		   public X509Certificate[] getAcceptedIssuers() {
 			   return new X509Certificate[0];
 		   }
