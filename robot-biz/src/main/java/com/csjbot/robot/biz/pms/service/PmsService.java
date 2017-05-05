@@ -112,7 +112,7 @@ public class PmsService {
 	public boolean updateAdvertisement(PmsAdvertisement pmsAdvertisement) {
 		return pmsAdvertisementDao.updateByPrimaryKeySelective(pmsAdvertisement)>0;
 	}
-	
+
 
 
 }

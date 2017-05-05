@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.csjbot.robot.biz.sms.dao.dao.Ums_userDAO">
+<mapper namespace="com.csjbot.robot.biz.sms.dao.Ums_userDAO">
     <select id="findUserByName" resultType="com.csjbot.robot.biz.sms.model.Ums_user">
           select * from ums_user where username=#{username}
     </select>
