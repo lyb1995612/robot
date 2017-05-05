@@ -1,5 +1,6 @@
 package com.csjbot.robot.biz.scs.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
@@ -27,5 +28,6 @@ public interface ScsDishDAO {
 	
 	int updateByPrimaryKeySelective(ScsDish scsDish);
 
+	List<ScsDish> selectAll();
     public PageList<ScsDish> page(Map<String, Object> params, PageBounds bounds);
 }

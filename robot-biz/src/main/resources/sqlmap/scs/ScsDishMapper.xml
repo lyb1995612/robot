@@ -92,5 +92,9 @@
 		</set>
 		where id = #{id,jdbcType=CHAR}
 	</update>
+	<!--api接口添加-->
+	<select id="selectAll" resultMap="BaseResultMap">
+		select * from scs_dish_info where valid = 1
+	</select>
 </mapper>
 
