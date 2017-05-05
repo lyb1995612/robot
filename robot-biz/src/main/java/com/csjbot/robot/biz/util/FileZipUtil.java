@@ -47,7 +47,7 @@ public class FileZipUtil {
 
 	// 配置文件读取权限
 	public static void assignPermission(File file) {
-		Set<PosixFilePermission> perms = new HashSet<>();
+		Set<PosixFilePermission> perms = new HashSet<PosixFilePermission>();
 		perms.add(PosixFilePermission.OWNER_READ);
 		perms.add(PosixFilePermission.OWNER_WRITE);
 		perms.add(PosixFilePermission.GROUP_READ);
@@ -71,7 +71,7 @@ public class FileZipUtil {
 			File file = new File(string);
 			srcfiles.add(file);
 		}
-		Map<String, String> map = new HashMap<>();
+		Map<String, String> map = new HashMap<String, String>();
 		String zipName = RandomUtil.generateString(4);
 		String zipUrl = "/opt/pkg/zip/" + zipName + ".zip";
 		delAllFile("/opt/pkg/zip"); // 删除所有文件
@@ -115,7 +115,7 @@ public class FileZipUtil {
 	 * @param fileStr:文件加密后的字符串
 	 */
 	public static Map<String, Object> saveFileFromFaceReg(String path, String fileStr) {
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		String fileName = RandomUtil.generateString(4) + RandomUtil.getTimestamp() + ".txt";
 		File fileText = new File(path + fileName);
 		// 向文件写入对象写入信息

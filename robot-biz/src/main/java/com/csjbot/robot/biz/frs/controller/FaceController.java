@@ -64,7 +64,7 @@ public class FaceController {
 			throws IOException, JSONException {
 		
 		JSONArray images = data.getJSONArray("images");
-		List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < images.size(); i++) {
 			list.add(images.get(i).toString());
 		}
@@ -85,7 +85,7 @@ public class FaceController {
 			throws IOException, JSONException {
 		
 		JSONArray images = data.getJSONArray("images");
-		List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < images.size(); i++) {
 			list.add(images.get(i).toString());
 		}

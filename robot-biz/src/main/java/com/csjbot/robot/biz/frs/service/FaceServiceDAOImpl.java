@@ -51,17 +51,15 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	/**
 	 * 先请求优图服务，解析返回码，添加成功后在进行数据库操作
 	 */
-	// 添加个体
-	@Override
 	public JSONObject addPerson(Frs_person frs_person, String image) {
-		Map<String, Object> dat = new HashMap<>();
+		Map<String, Object> dat = new HashMap<String, Object>();
 		JSONObject json = new JSONObject();
 		Youtu youtu = getYoutu();
 		// 判断用户名是否重复（不能重名，因为有接口根据名字来查询用户信息）
 		Frs_person frs_person2 = frs_personDAO.findPersonByName(frs_person.getName().toString());
 		if (frs_person2 == null) {
 			// 准备优图个体数据
-			List<String> group_ids = new ArrayList<>();
+			List<String> group_ids = new ArrayList<String>();
 			group_ids.add(frs_person.getGroup_id().toString());
 			try {
 				json = youtu.NewPerson(image, frs_person.getPerson_id(), group_ids, frs_person.getName());
@@ -106,9 +104,8 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	}
 
 	// 删除个体
-	@Override
 	public JSONObject deletePerson(String name) {
-		Map<String, Object> dat = new HashMap<>();
+		Map<String, Object> dat = new HashMap<String, Object>();
 		JSONObject json = new JSONObject();
 		Frs_person frs_person = frs_personDAO.findPersonByName(name);
 		if (frs_person != null) {
@@ -150,10 +147,9 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	}
 
 	// 根据人名查询个体(直接从数据库中查询)
-	@Override
 	public JSONObject findPersonByName(String name) {
-		Map<String, Object> dat = new HashMap<>();
-		Map<String, Object> result = new HashMap<>();
+		Map<String, Object> dat = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<String, Object>();
 		Frs_person frs_person = frs_personDAO.findPersonByName(name);
 		if (frs_person != null) {
 			result.put("name", frs_person.getName().toString());
@@ -172,9 +168,8 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	}
 
 	// 修改姓名
-	@Override
 	public JSONObject updatePersonName(String person_name, String new_name) {
-		Map<String, Object> dat = new HashMap<>();
+		Map<String, Object> dat = new HashMap<String, Object>();
 		Frs_person frs_person = frs_personDAO.findPersonByName(person_name);
 		if (frs_person != null) {
 			frs_person.setName(new_name);
@@ -195,11 +190,10 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	}
 
 	// 查询一个组的所有人信息
-	@Override
 	public JSONObject findAllPerson(String group_id) {
-		Map<String, Object> dat = new HashMap<>();
-		Map<String, Object> result = new HashMap<>();
-		List<Object> per = new ArrayList<>();
+		Map<String, Object> dat = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<Object> per = new ArrayList<Object>();
 		List<Frs_person> frs_persons = frs_personDAO.findPersonByGroupId(group_id);
 		if (frs_persons != null) {
 			for (Frs_person frs_person : frs_persons) {
@@ -219,9 +213,8 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	}
 
 	// 添加人脸
-	@Override
 	public JSONObject addFace(String person_name, List<String> image) {
-		Map<String, Object> dat = new HashMap<>();
+		Map<String, Object> dat = new HashMap<String, Object>();
 		JSONObject json = new JSONObject();
 		Frs_person frs_person = frs_personDAO.findPersonByName(person_name);
 		if (frs_person != null) {
@@ -278,9 +271,8 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	}
 
 	// 删除人脸
-	@Override
 	public JSONObject deleteFace(String person_name, List<String> face_id) {
-		Map<String, Object> dat = new HashMap<>();
+		Map<String, Object> dat = new HashMap<String, Object>();
 		JSONObject json = new JSONObject();
 		Frs_person frs_person = frs_personDAO.findPersonByName(person_name);
 		if (frs_person != null) {
@@ -315,11 +307,10 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	}
 
 	// 根据人名查询所有人脸
-	@Override
 	public JSONObject findFaceAll(String person_name) {
-		Map<String, Object> dat = new HashMap<>();
-		Map<String, Object> result = new HashMap<>();
-		List<Object> fac = new ArrayList<>();
+		Map<String, Object> dat = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<Object> fac = new ArrayList<Object>();
 		Frs_person frs_person = frs_personDAO.findPersonByName(person_name);
 		if (frs_person != null) {
 			List<Frs_face> list = frs_faceDAO.findFaceByPerId(frs_person.getPerson_id());
@@ -344,10 +335,9 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	}
 
 	// 根据人脸标识查询人脸信息
-	@Override
 	public JSONObject findFaceByFaceId(String face_id) {
-		Map<String, Object> dat = new HashMap<>();
-		Map<String, Object> result = new HashMap<>();
+		Map<String, Object> dat = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<String, Object>();
 		Frs_face frs_face = frs_faceDAO.findFaceByFaceId(face_id);
 		result.put("face_id", frs_face.getFace_id().toString());
 		result.put("person_id", frs_face.getPerson_id().toString());
@@ -361,7 +351,6 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	}
 
 	// 查询所有组信息
-	@Override
 	public JSONObject findAllGroup() {
 		JSONObject json = new JSONObject();
 		Youtu youtu = getYoutu();
@@ -385,10 +374,9 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	 * 
 	 */
 	// 人脸识别
-	@Override
 	public JSONObject faceDect(String image, String group_id, int mode) {
-		Map<String, Object> dat = new HashMap<>();
-		Map<String, Object> result = new HashMap<>();
+		Map<String, Object> dat = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<String, Object>();
 		Map<String, Object> detMap = faceDet(image, mode);
 		Map<String, Object> idenMap = faceIden(image, group_id);
 		dat.put("status", "200");
@@ -411,9 +399,8 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	}
 
 	//人脸检测
-	@Override
 	public Map<String, Object> faceDet(String image, int mode) {
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		Youtu youtu = getYoutu();
 		try {
 			JSONObject json = youtu.DetectFace(image, mode);
@@ -437,9 +424,8 @@ public class FaceServiceDAOImpl implements FaceServiceDAO {
 	}
 
 	//人脸检索(返回用户姓名)
-	@Override
 	public Map<String, Object> faceIden(String image, String group_id) {
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		JSONObject json = new JSONObject();
 		Youtu youtu = getYoutu();
 		try {
