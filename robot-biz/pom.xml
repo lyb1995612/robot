@@ -19,6 +19,13 @@
 			<artifactId>robot-base</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+        <dependency>
+            <groupId>com.alipay</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/lib/alipay-sdk-java20170307171631.jar</systemPath>
+        </dependency>		
 	</dependencies>
 
 </project>
