@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csjbot.robot.biz.cms.dao.CustomerDao">
+    <resultMap id="customerResultMap" type ="com.csjbot.robot.biz.cms.model.Customer">
+       <result property="customer" column="customer" jdbcType="VARCHAR"/>
+       <result property="value" column="value" jdbcType="VARCHAR"/>
+       <result property="code" column="code" jdbcType="VARCHAR"/>
+       <result property="code_group" column="code_group" jdbcType="VARCHAR"/>
+       <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="pageResultMap" type="java.util.HashMap" extends="customerResultMap">
+    <result property="userSize" column="user_size" />
+    <result property="creator" column="creator" />
+    </resultMap>
+    <resultMap id="findResultMap" type="java.util.HashMap" extends="customerResultMap"></resultMap>
+    
+    <sql id="Base_Column_List" >
+    customer, value, code, code_group, remark
+   </sql>
+   <select id="page" parameterType="map" resultMap="customerResultMap">
+	select 
+	  customer, value, code, code_group, remark
+	from cms_secret
+	 where 1=1
+	 <if test="customer != null and customer !=''">
+         and customer LIKE CONCAT('%', #{customer},'%')
+     </if>
+   </select> 
+  
+  <select id="selectByPrimaryKey" resultMap="customerResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from cms_secret
+    where code=#{code} and
+          code_group=#{code_group}
+  </select>
+  
+  <insert id="insert" parameterType="com.csjbot.robot.biz.cms.model.Customer">
+    INSERT INTO cms_secret (
+      customer,
+      value,
+      code,
+      code_group,
+      remark
+    ) VALUES (
+      #{customer},
+      #{value},
+      #{code},
+      #{code_group},
+      #{remark}
+    )
+  </insert>
+  
+  <update id="update" parameterType="com.csjbot.robot.biz.cms.model.Customer">
+    UPDATE cms_secret
+    SET customer=#{customer},
+      value=#{value},
+      remark=#{remark}
+    WHERE
+      code=#{code} and
+      code_group=#{code_group}
+  </update>
+  
+  <delete id="delete" parameterType="map">
+    delete from
+      cms_secret
+    where
+      code=#{code} and
+      code_group=#{code_group}
+  </delete>
+  
+  <select id="get" parameterType="map" resultMap="customerResultMap">
+    SELECT * FROM cms_secret
+    WHERE 
+      code=#{code} and
+      code_group=#{code_group}
+  </select>
+  
+  <select id="findOne" parameterType="map" resultMap="findResultMap">
+    select * from cms_secret
+    where 
+      code=#{code} and
+      code_group=#{code_group}
+  </select>
+
+  <select id="find" parameterType="map" resultMap="findResultMap">
+    SELECT * FROM cms_secret
+    <where>
+      <if test="customer != null">
+        customer=#{customer}
+      </if>
+      <if test="value != null">
+        and value=#{value}
+      </if>
+      <if test="code != null">
+        and code=#{code}
+      </if>
+      <if test="code_group != null">
+        and code_group=#{code_group}
+      </if>
+      <if test="remark != null">
+        and remark=#{remark}
+      </if>
+    </where>
+  </select>
+</mapper>

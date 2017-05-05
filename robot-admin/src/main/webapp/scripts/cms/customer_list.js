@@ -121,7 +121,3 @@ function operation( data, type, row ) {
     return editor;
 }
 
-
-	
-	
-	

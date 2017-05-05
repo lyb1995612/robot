@@ -2,8 +2,9 @@ package com.csjbot.robot.biz.sys.dao;
 
 import java.util.Map;
 
-import com.csjbot.robot.base.page.Page;
 import com.csjbot.robot.biz.sys.model.SysVersionRobot;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface SysVersionRobotDao {
 	
@@ -21,5 +22,5 @@ public interface SysVersionRobotDao {
 
     int updateByPrimaryKey(SysVersionRobot record);
     
-    public <E, K, V> Page<E> pageAndSort(Map<String, Object> params,int current, int pagesize, String sortString);
+    public PageList<SysVersionRobot> page(Map<String, Object> params, PageBounds pager);
 }

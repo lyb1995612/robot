@@ -64,7 +64,7 @@ public class FileController {
     @RequestMapping(value = "/{id}/{type}/{name}", method = RequestMethod.GET)
     public void gets(@PathVariable String id, @PathVariable String type, @PathVariable String name,HttpServletRequest request, HttpServletResponse response) throws Exception, IOException {
     	String  filename = "";
-    	SysAttachment sysAttachment = sysAttachService.getAttachByTransInfo(id, type, name);
+    	SysAttachment sysAttachment = sysAttachService.getAttachByTransInfoName(id, type, name);
         if (sysAttachment == null) return;
         // -------------------------------------------------------------------------------------------------------------------------------------------
         filename = sysAttachment.getOriginal_name();

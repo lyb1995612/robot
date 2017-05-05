@@ -1,6 +1,8 @@
 package com.csjbot.robot.biz.tms.admin;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,10 +33,7 @@ import com.csjbot.robot.biz.sys.model.SysDataDictionary;
 import com.csjbot.robot.biz.sys.model.SysVersionRobot;
 import com.csjbot.robot.biz.sys.service.DictionaryService;
 import com.csjbot.robot.biz.sys.service.SysAttachService;
-import com.csjbot.robot.biz.tms.model.PkgFile;
-import com.csjbot.robot.biz.tms.model.param.PkgFileParam;
 import com.csjbot.robot.biz.tms.realm.ErrorRealm;
-import com.csjbot.robot.biz.tms.service.PkgFileService;
 import com.csjbot.robot.biz.tms.service.VrcService;
 import com.csjbot.robot.biz.ums.model.User;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -46,9 +44,6 @@ public class VersionRobotController {
 
 	private Logger logger = Logger.getLogger(VersionRobotController.class);
 
-	@Autowired
-	private PkgFileService pkgFileService;
-	
 	@Autowired
 	private VrcService vrcService;
 
@@ -247,63 +242,44 @@ public class VersionRobotController {
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public ResponseEntity<ResultEntity> page(@RequestBody PkgFileParam param,HttpServletRequest request, HttpServletResponse response) {
-		ResultEntity result = null;
-		try {
-			PageList<PkgFile> list = new PageList<PkgFile>();
-			list=pkgFileService.page(param);
-			if (list != null) {
-	        	result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "success");
-	         	result.addObject("list", list);
-	        	result.addObject("totalSize", list.size());
-	        } else {
-	        	result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "search fail!");
-	            }
-		} catch (Exception e) {
-			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "Internal Server Error!");
+    public ResponseEntity<ResultEntity> page(HttpServletRequest request, HttpServletResponse response) {
+        ResultEntity result = null;
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            int length = Integer.valueOf(request.getParameter("length"));
+            int start = Integer.valueOf(request.getParameter("start"));
+            String orderColIndex = request.getParameter("order[0][column]");
+            String dir = request.getParameter("order[0][dir]");
+            String orderName = request.getParameter("columns[" + orderColIndex + "][data]");
+
+            String version_name = request.getParameter("version_name");
+            String category = request.getParameter("category");
+            String channel = request.getParameter("channel");
+            params.put("version_name", version_name);
+            params.put("category", category);
+            params.put("channel", channel);
+            String sortString = null;
+            if (orderName != null && !"".equals(orderName) && dir != null && !"".equals(dir)) {
+                sortString = orderName + "." + dir;
+            }
+            PageList<SysVersionRobot> list = vrcService.versPage(params, (start / length) + 1, length, sortString);
+            result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
+            if (list != null && list.size() > 0) {
+                result.addObject("data", list);
+                result.addObject("recordsFiltered", list.size());
+                result.addObject("recordsTotal", list.size());
+            } else {
+                result.addObject("data", null);
+                result.addObject("recordsFiltered", 0);
+                result.addObject("recordsTotal", 0);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-		}
-		/*
-		try {
-			Map<String, Object> params = new HashMap<String, Object>();
-			int length = Integer.valueOf(request.getParameter("length"));
-			int start = Integer.valueOf(request.getParameter("start"));
-			String orderColIndex = request.getParameter("order[0][column]");
-			String dir = request.getParameter("order[0][dir]");
-			String orderName = request.getParameter("columns[" + orderColIndex + "][data]");
-
-			String version_name = request.getParameter("version_name");
-			String category = request.getParameter("category");
-			String channel = request.getParameter("channel");
-			params.put("version_name", version_name);
-			params.put("category", category);
-			params.put("channel", channel);
-			String sortString = null;
-			if (orderName != null && !"".equals(orderName) && dir != null && !"".equals(dir)) {
-				sortString = orderName + "." + dir;
-			}
-			Page<Map<String, Object>> pageMap = vrcService.pageAndSort(params, (start / length) + 1, length,
-					sortString);
-			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
-			if (pageMap.getRows() != null && pageMap.getRows().size() > 0) {
-				result.addObject("data", pageMap.getRows());
-				result.addObject("recordsFiltered", pageMap.getTotal());
-				result.addObject("recordsTotal", pageMap.getTotal());
-			} else {
-				result.addObject("data", null);
-				result.addObject("recordsFiltered", 0);
-				result.addObject("recordsTotal", 0);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "Internal Server Error!");
-		}
-		*/
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		response.setCharacterEncoding("UTF-8");
-		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
-	}
-
+            result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "Internal Server Error!");
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        response.setCharacterEncoding("UTF-8");
+        return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
+    }
 }

@@ -19,6 +19,8 @@
     <script src="${path }/resources/datatables/js/dataTables.bootstrap.min.js"></script>
     <script src="${path }/resources/datatables/js/default.js"></script>
     <script src="${path }/scripts/scs/desk_list.js" ></script>
+    <script src="${path }/scripts/plugins/datatable/jquery.csjbotui.datatable.js"></script>
+    
 </head>  
 <body class="navbar-fixed">
     
@@ -48,9 +50,9 @@
 		                      <table style="width: 100%;">
 	                            <tr>
 	                                <td style="width: 15%;text-align: left;">桌号管理</td>
-	                                <td style="width: 10%;text-align: right;">
+	                                <%-- <td style="width: 10%;text-align: right;">
 	                                       <a type="button" class="btn btn-primary" href="${path}/scs/toDeskAdd">新增桌号</a>
-	                                </td>
+	                                </td> --%>
 	                            </tr>
 		                      </table>		                 
 		                 </div>
@@ -63,7 +65,7 @@
 		                                        <div class="form-group">
 		                                            <div class="input-group">
 		                                                <div class="input-group-addon">桌号</div>
-		                                                <input  class="form-control" type="input" id="number" name="number" maxlength="100" />  
+		                                                <input  class="form-control" type="text" id="number" name="number" maxlength="100" />  
 		                                            </div>
 		                                        </div>
 		                                    </div>   

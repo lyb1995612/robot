@@ -20,14 +20,13 @@ public class SysAttachService{
 		return sysAttachDao.insert(attach);
 	}
 
-	
 	public SysAttachment getAttachByTransInfo(String transaction_id,String transaction_type) {
 		return sysAttachDao.getAttachByTransInfo(transaction_id,transaction_type);
 	}
 	
 	
-	public SysAttachment getAttachByTransInfo(String transaction_id,String transaction_type,String fileName) {
-		return sysAttachDao.getAttachByTransInfo(transaction_id,transaction_type,fileName);
+	public SysAttachment getAttachByTransInfoName(String transaction_id,String transaction_type,String fileName) {
+		return sysAttachDao.getAttachByTransInfoName(transaction_id,transaction_type,fileName);
 	}
 	  
 	

@@ -18,7 +18,9 @@
     <script src="${path }/resources/datatables/js/jquery.dataTables.min.js"></script>
     <script src="${path }/resources/datatables/js/dataTables.bootstrap.min.js"></script>
     <script src="${path }/resources/datatables/js/default.js"></script>
-    <script src="${path }/scripts/cms/customer_list.js" ></script>
+    <script src="${path }/scripts/cms/customer_list.js"></script>
+    <script src="${path }/scripts/plugins/datatable/jquery.csjbotui.datatable.js"></script>
+    
 </head>  
 <body class="navbar-fixed">
     
@@ -63,7 +65,7 @@
 		                                        <div class="form-group">
 		                                            <div class="input-group">
 		                                                <div class="input-group-addon">商户名</div>
-		                                                <input  class="form-control" type="input" id="customer" name="customer" maxlength="25" />  
+		                                                <input  class="form-control" type="text" id="customer" name="customer" maxlength="25" />  
 		                                            </div>
 		                                        </div>
 		                                    </div>   
