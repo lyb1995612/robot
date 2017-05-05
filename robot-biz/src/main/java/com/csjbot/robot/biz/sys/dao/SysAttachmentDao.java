@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.Param;
 
 import com.csjbot.robot.biz.sys.model.SysAttachment;
 
+import java.util.List;
+
 public interface SysAttachmentDao {
 	
 	public final static String PREFIX = SysAttachmentDao.class.getName();
@@ -25,4 +27,6 @@ public interface SysAttachmentDao {
 	SysAttachment getAttachByTransInfoName(@Param("transaction_id")String transaction_id,@Param("transaction_type")String transaction_type,@Param("fileName")String fileName);
 
 	void deleteByTransInfo(@Param("transaction_id")String transation_id, @Param("transaction_type")String transation_type);
+
+	List<SysAttachment> getAttachByType(String type);
 }

@@ -30,7 +30,7 @@
 		from scs_desk_info where valid = 1
        <if test="number != null and number !=''">
           and number LIKE CONCAT('%', #{number},'%')
-       </if>                 
+       </if>
       </select>
       
       <delete id="delete" parameterType="map" >
@@ -54,5 +54,13 @@
                   #{deskv,jdbcType=DOUBLE},#{deskq,jdbcType=DOUBLE},#{updater_fk,jdbcType=CHAR},#{creator_fk,jdbcType=CHAR},now(), now()
                   )
         </insert>
+    <select id="selectByNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from scs_desk_info where number = #{number,jdbcType=VARCHAR}
+
+    </select>
+    <select id="selectAll"  resultMap="BaseResultMap">
+        select * from scs_desk_info
+    </select>
 </mapper>
 
