@@ -44,7 +44,7 @@ $(function(){
     		});
     		$("#customer_form").ajaxSubmit({
                 type: "POST",
-                url: _path + "/cms/edit",
+                url: _path + "/cms/update",
                 dataType: "json",
                 success: function(data){
                 	csjbotui.ui.msg.waiting.remove();

@@ -1,10 +1,13 @@
 package com.csjbot.robot.biz.scs.service;
 
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.csjbot.robot.base.exception.ServiceException;
+import com.csjbot.robot.biz.cms.model.Customer;
 import com.csjbot.robot.biz.scs.dao.ScsDeskDao;
 import com.csjbot.robot.biz.scs.model.ScsDesk;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
@@ -35,12 +38,13 @@ public class ScsService {
 		return scsDeskDao.selectByPrimaryKey(id);
 	}
 
-	public PageList<ScsDesk> page(ScsDesk param) throws ServiceException {
+	
+	public PageList<ScsDesk> page(Map<String, Object> params,int current, int pagesize, String sortString) {
         PageBounds pager = new PageBounds();
-        pager.setLimit(param.getPageSize());
-        pager.setPage(param.getPageNow() + 1);
-        pager.setOrders(Order.formString(param.getSortString()));   
-        return scsDeskDao.page(param, pager);
+        pager.setLimit(pagesize);
+        pager.setPage(current);
+        pager.setOrders(Order.formString(sortString));
+        return scsDeskDao.page(params, pager);
     }
 	/**
 	 * 

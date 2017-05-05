@@ -50,12 +50,12 @@ public class CustomerService {
 		return customerDao.delete(code, code_group);
 	}
 	
-	public PageList<Customer> page(Customer param)throws ServiceException {
+	public PageList<Customer> page(Map<String, Object> params,int current, int pagesize, String sortString) {
         PageBounds pager = new PageBounds();
-        pager.setLimit(param.getPageSize());
-        pager.setPage(param.getPageNow() + 1);
-        pager.setOrders(Order.formString(param.getSortString()));   
-        return customerDao.page(param,pager);
+        pager.setLimit(pagesize);
+        pager.setPage(current);
+        pager.setOrders(Order.formString(sortString));
+        return customerDao.page(params, pager);
     }
 
 }

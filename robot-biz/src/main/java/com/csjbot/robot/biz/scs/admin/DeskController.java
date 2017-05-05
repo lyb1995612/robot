@@ -1,6 +1,9 @@
 package com.csjbot.robot.biz.scs.admin;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,18 +15,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import com.csjbot.robot.base.exception.ServiceException;
 import com.csjbot.robot.base.util.StringUtil;
 import com.csjbot.robot.base.web.entity.ResultEntity;
 import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
-import com.csjbot.robot.biz.cms.model.Customer;
 import com.csjbot.robot.biz.scs.model.ScsDesk;
 import com.csjbot.robot.biz.scs.service.ScsService;
 import com.csjbot.robot.biz.ums.model.User;
@@ -85,26 +84,23 @@ public class DeskController {
 	 * @created 2017年4月17日
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<String> save(ScsDesk scsDesk, HttpServletRequest request, UriComponentsBuilder builder){
+	public ResponseEntity<String> deskAdd(ScsDesk scsDesk, HttpServletRequest request,HttpServletResponse response){
 		JSONObject result = new JSONObject();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		response.setCharacterEncoding("UTF-8");
 		User loginUser = (User) request.getSession().getAttribute(Constants.CURRENT_USER);
 		String id = StringUtil.createUUID();
 		scsDesk.setId(id);
 		scsDesk.setCreator_fk(loginUser.getId());
 		scsDesk.setUpdater_fk(loginUser.getId());
 		String msg = "";
-		int flag = scsService.insert(scsDesk);
-        if(flag>0){
-        	msg = ResultEntity.KW_STATUS_SUCCESS;
-        }else{
-        	msg = ResultEntity.KW_STATUS_FAIL;
-        }
-        result.put("msg", msg);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(builder.path("/csc/add").buildAndExpand().toUri());
-        return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
-    }
-	
+		if(scsService.insert(scsDesk) > 0){
+			msg = ResultEntity.KW_STATUS_SUCCESS;
+		}
+		result.put("msg", msg);
+		return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
+	}
 	/**
      * @discription 删除桌号
      * @author XMT     
@@ -132,25 +128,45 @@ public class DeskController {
 	    * @param response
 	    * @return
 	    */
-	    @RequestMapping(value = "/search", method = RequestMethod.POST)
-	    public ResponseEntity<ResultEntity> page(@PathVariable ScsDesk param,HttpServletRequest request, UriComponentsBuilder builder) {
-	    	ResultEntity result = null;
-	        try {
-	        	PageList<ScsDesk> list = new PageList<ScsDesk>();
-	            list = scsService.page(param);
-	            if (list != null) {
-	                result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "success");
-	                result.addObject("list", list);
-	                result.addObject("totalSize", list.size());
-	            } else {
-	                result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "search fail!");
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "Internal Server Error!");
-	        }
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(builder.path("/scs/search").buildAndExpand().toUri());
-	        return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
-	    }
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+    public ResponseEntity<ResultEntity> page(HttpServletRequest request, HttpServletResponse response) {
+    	ResultEntity result = null;
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            int length = Integer.valueOf(request.getParameter("length"));
+            int start = Integer.valueOf(request.getParameter("start"));
+            String orderColIndex = request.getParameter("order[0][column]");
+            String dir = request.getParameter("order[0][dir]");
+            String orderName = request.getParameter("columns[" + orderColIndex + "][data]");
+
+            String number = request.getParameter("number");
+            if (StringUtil.notEmpty(number)) {
+                params.put("number", number);
+            }
+            String sortString = null;
+            if (orderName != null && !"".equals(orderName) && dir != null && !"".equals(dir)) {
+                sortString = orderName + "." + dir;
+            }
+            PageList<ScsDesk> list = scsService.page(params, (start / length) + 1, length, sortString);
+  //          Page<Map<String, Object>> pageMap = scsService.pageAndSort(params, (start / length) + 1, length, sortString);
+            result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
+            if (list != null && list.size() > 0) {
+                result.addObject("data", list);
+                result.addObject("recordsFiltered", list.size() );
+                result.addObject("recordsTotal", list.size());
+            } else {
+                result.addObject("data", null);
+                result.addObject("recordsFiltered", 0);
+                result.addObject("recordsTotal", 0);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "Internal Server Error!");
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        response.setCharacterEncoding("UTF-8");
+        return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
+    } 
 }

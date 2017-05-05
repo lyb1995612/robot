@@ -1,6 +1,8 @@
 package com.csjbot.robot.biz.scs.dao;
 
 
+import java.util.Map;
+
 import com.csjbot.robot.biz.scs.model.ScsDesk;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -21,5 +23,5 @@ public interface ScsDeskDao {
 	
 	ScsDesk selectByPrimaryKey(String  id);
 	
-	public PageList<ScsDesk> page(ScsDesk param, PageBounds bounds);
+	public PageList<ScsDesk> page(Map<String, Object> params, PageBounds bounds);
 }
