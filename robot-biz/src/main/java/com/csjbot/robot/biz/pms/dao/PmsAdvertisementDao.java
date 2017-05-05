@@ -2,8 +2,9 @@ package com.csjbot.robot.biz.pms.dao;
 
 import java.util.Map;
 
-import com.csjbot.robot.base.page.Page;
 import com.csjbot.robot.biz.pms.model.PmsAdvertisement;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface PmsAdvertisementDao {
 	
@@ -21,5 +22,7 @@ public interface PmsAdvertisementDao {
 
     int updateByPrimaryKey(PmsAdvertisement record);
 	  
-    public <E, K, V> Page<E> pageAndSort(Map<String, Object> params,int current, int pagesize, String sortString);
+ // public <E, K, V> Page<E> pageAndSort(Map<String, Object> params,int current, int pagesize, String sortString);
+    
+    public PageList<PmsAdvertisement> page(Map<String, Object> params, PageBounds pager);
 }

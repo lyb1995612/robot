@@ -16,7 +16,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.csjbot.robot.base.page.Page;
 import com.csjbot.robot.biz.pms.dao.PmsAdvertisementDao;
 import com.csjbot.robot.biz.pms.dao.PmsProductDao;
 import com.csjbot.robot.biz.pms.model.PmsAdvertisement;
@@ -83,10 +82,16 @@ public class PmsService {
      */  
     
 	
-	public Page<Map<String, Object>> AdvPageAndSort(Map<String, Object> params,	int current, int pagesize, String sortString) {
-		return pmsAdvertisementDao.pageAndSort(params, current, pagesize, sortString);
-	}
-
+//	public Page<Map<String, Object>> AdvPageAndSort(Map<String, Object> params,	int current, int pagesize, String sortString) {
+//		return pmsAdvertisementDao.pageAndSort(params, current, pagesize, sortString);
+//	}
+    public PageList<PmsAdvertisement> advPage(Map<String, Object> params,int current, int pagesize, String sortString) {
+        PageBounds pager = new PageBounds();
+        pager.setLimit(pagesize);
+        pager.setPage(current);
+        pager.setOrders(Order.formString(sortString));
+        return pmsAdvertisementDao.page(params, pager);
+    }
 	  
 	
 	public boolean insertAdvertisement(PmsAdvertisement pmsAdvertisement) {
