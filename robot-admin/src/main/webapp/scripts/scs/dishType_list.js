@@ -67,7 +67,7 @@ $(function() {
 	               render: operation,
 	               orderable: false
 	           }],
-		        order: [[ 3, 'desc' ]],
+		        order: [[ 2, 'desc' ]],
 		        remoteSort : true,
 				pagination : true,
 				paginationParam : {
