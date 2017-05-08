@@ -1,6 +1,7 @@
 package com.csjbot.robot.biz.scs.dao;
 
 
+import java.util.List;
 import java.util.Map;
 
 import com.csjbot.robot.biz.scs.model.ScsDesk;
@@ -22,6 +23,10 @@ public interface ScsDeskDao {
 	public int delete(String id);
 	
 	ScsDesk selectByPrimaryKey(String  id);
-	
+
+	List<ScsDesk> selectByNumber(String number);
+
+	List<ScsDesk> selectAll();
+
 	public PageList<ScsDesk> page(Map<String, Object> params, PageBounds bounds);
 }
