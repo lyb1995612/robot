@@ -235,39 +235,44 @@ public class ScsService {
 		jsonUtil.setResult(ace);
 		return JsonUtil.toJson(jsonUtil);
 	}
+	
 	//添加桌位
-
 	public JSONObject addDeskInfo(JSONObject json) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "userName","deskNumber","deskAlias","deskMemo","desk_x","desk_y","desk_z","desk_w","desk_v","desk_q","deskValid","deskSerialNumber" };
 		if (CharacterUtil.judgeJsonFormat(key, json)) {
-			// Scs_desk_info sdi = desk_infoDAO.selectDeskByNubmer(json.getString("deskNumber"));
+			List<ScsDesk> sbn = scsDeskDao.selectByNumber(json.getString("deskNumber"));
 			Map<String ,Object> map = new HashMap<>();
 			map.put("username",json.getString("userName"));
 			map.put("status",1);
 			User ums_user = userDao.getByUsername(map);
 			if (ums_user != null){
-				ScsDesk sdi = new ScsDesk();
-				sdi.setId(RandomUtil.generateString(32));
-				sdi.setNumber(json.getString("deskNumber"));
-				sdi.setAlias(json.getString("deskAlias"));
-				sdi.setCreator_fk(ums_user.getId().toString());
-				sdi.setDate_create(RandomUtil.getTimeStampFor());
-				sdi.setDate_update(RandomUtil.getTimeStampFor());
-				sdi.setDeskq(json.getDouble("desk_q"));
-				sdi.setDeskv(json.getDouble("desk_v"));
-				sdi.setDeskw(json.getDouble("desk_w"));
-				sdi.setDeskx(json.getDouble("desk_x"));
-				sdi.setDesky(json.getDouble("desk_y"));
-				sdi.setDeskz(json.getDouble("desk_z"));
-				sdi.setMemo(json.getString("deskMemo"));
-				sdi.setValid(json.getByte("deskValid"));
-				sdi.setDesk_type(json.getByte("deskSerialNumber"));
-				sdi.setUpdater_fk(ums_user.getId().toString());
-				int n = scsDeskDao.insert(sdi);
-				if (n != 1){
+				if(sbn.size() == 0){
+					ScsDesk sdi = new ScsDesk();
+					sdi.setId(RandomUtil.generateString(32));
+					sdi.setNumber(json.getString("deskNumber"));
+					sdi.setAlias(json.getString("deskAlias"));
+					sdi.setCreator_fk(ums_user.getId().toString());
+					sdi.setDate_create(RandomUtil.getTimeStampFor());
+					sdi.setDate_update(RandomUtil.getTimeStampFor());
+					sdi.setDeskq(json.getDouble("desk_q"));
+					sdi.setDeskv(json.getDouble("desk_v"));
+					sdi.setDeskw(json.getDouble("desk_w"));
+					sdi.setDeskx(json.getDouble("desk_x"));
+					sdi.setDesky(json.getDouble("desk_y"));
+					sdi.setDeskz(json.getDouble("desk_z"));
+					sdi.setMemo(json.getString("deskMemo"));
+					sdi.setValid(json.getByte("deskValid"));
+					sdi.setDesk_type(json.getByte("deskSerialNumber"));
+					sdi.setUpdater_fk(ums_user.getId().toString());
+					int n = scsDeskDao.insert(sdi);
+					if (n != 1){
+						jsonUtil = getJsonUtilEntity(false);
+						jsonUtil.setMessage("Error from Database operations!");
+					}
+				}else{
 					jsonUtil = getJsonUtilEntity(false);
-					jsonUtil.setMessage("Error from Database operations!");
+					jsonUtil.setMessage("The deskNumber already exists!");
 				}
 			}else {
 				jsonUtil = getJsonUtilEntity(false);
