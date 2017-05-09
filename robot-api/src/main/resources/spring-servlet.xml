@@ -29,21 +29,16 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <!--<context:component-scan base-package="com.csjbot.robot.biz.frs">
+    <context:component-scan base-package="com.csjbot.robot.api">
         <context:include-filter type="regex" expression=".*\.(controller|service)\..*"/>
-        &lt;!&ndash;<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>&ndash;&gt;
-    </context:component-scan>-->
-    <context:component-scan base-package="com.csjbot.robot.biz.**.controller" />
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+    </context:component-scan>
+
     <!--=========================================-->
     <!-- 引入相关xml -->
     <!--通用-->
     <import resource="spring-common.xml"/>
-    <!--人脸识别-->
-    <import resource="spring-face.xml"/>
-    <!--机器人管理-->
-    <import resource="spring-robot.xml"/>
-    <!--产品管理-->
-    <import resource="spring-product.xml"/>
     <!--支付-->
+    <import resource="spring-pay.xml"/>
 
 </beans>
