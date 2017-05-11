@@ -16,8 +16,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.csjbot.robot.base.exception.ServiceException;
-import com.csjbot.robot.base.util.PropertiesUtils;
+import com.csjbot.robot.biz.base.exception.ServiceException;
+import com.csjbot.robot.biz.base.util.PropertiesUtils;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.sys.service.SysAttachService;
 

@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.csjbot.robot.base.util.StringUtil;
-import com.csjbot.robot.base.web.entity.ResultEntity;
-import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
+import com.csjbot.robot.biz.base.util.StringUtil;
+import com.csjbot.robot.biz.base.entity.ResultEntity;
+import com.csjbot.robot.biz.base.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.scs.model.ScsAccessory;
 import com.csjbot.robot.biz.scs.service.ScsService;
@@ -51,7 +51,7 @@ public class AccessoryController {
 	/**
 	 * @discriptionèœå“åˆ—è¡¨
 	 * @author XMT
-	 * @created 2017å¹?4æœ?17æ—?
+	 * @created 2017ï¿½?4ï¿½?17ï¿½?
 	 */
 	@RequestMapping("/list")
 	public ModelAndView protal(){
@@ -63,7 +63,7 @@ public class AccessoryController {
 	/**
 	 * @discription è·³è½¬èœå“æ–°å¢é¡µé¢
 	 * @author XMT       
-	 * @created 2017å¹?4æœ?17æ—?
+	 * @created 2017ï¿½?4ï¿½?17ï¿½?
 	 */
 	@RequestMapping(value = "/toAcceAdd")
 	public ModelAndView toDeskAdd() {
@@ -74,7 +74,7 @@ public class AccessoryController {
 	/**
 	 * @discription è·³è½¬åˆ°èœå“è¯¦æƒ…é¡µ
 	 * @author XMT       
-	 * @created 2017å¹?4æœ?17æ—?
+	 * @created 2017ï¿½?4ï¿½?17ï¿½?
 	 */
 	@RequestMapping(value = "{id}/toAcceDetail")
 	public ModelAndView toDeskDetail(@PathVariable String id) {
@@ -137,7 +137,7 @@ public class AccessoryController {
 	/**
 	 * @discription æ–°å¢èœå“
 	 * @author XMT
-	 * @created 2017å¹?4æœ?17æ—?
+	 * @created 2017ï¿½?4ï¿½?17ï¿½?
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> deskAdd(ScsAccessory scsAccessory,  @RequestParam(required = false) MultipartFile acce_file,HttpServletRequest request,HttpServletResponse response) {
@@ -183,7 +183,7 @@ public class AccessoryController {
 	/**
 	 * @discription åˆ é™¤èœå“
 	 * @author XMT
-	 * @created 2017å¹?4æœ?17æ—?
+	 * @created 2017ï¿½?4ï¿½?17ï¿½?
 	 */
 	@RequestMapping(value = "{id}/acceDelete")
 	public ResponseEntity<String> deskDelete(@PathVariable String id, HttpServletResponse response) {

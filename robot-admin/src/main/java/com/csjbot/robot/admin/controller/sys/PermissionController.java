@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.csjbot.robot.base.exception.ServiceException;
-import com.csjbot.robot.base.web.entity.ResultEntity;
-import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
+import com.csjbot.robot.biz.base.exception.ServiceException;
+import com.csjbot.robot.biz.base.entity.ResultEntity;
+import com.csjbot.robot.biz.base.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.sys.model.Permission;
 import com.csjbot.robot.biz.sys.model.param.PermissionParam;

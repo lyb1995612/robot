@@ -12,7 +12,7 @@ package com.csjbot.robot.biz.ums.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.csjbot.robot.base.model.AtomModel;
+import com.csjbot.robot.biz.base.model.AtomModel;
 
 /**
  * @Description

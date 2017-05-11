@@ -36,9 +36,11 @@
 
     <!--=========================================-->
     <!-- 引入相关xml -->
-    <!--通用-->
-    <import resource="spring-common.xml"/>
     <!--支付-->
     <import resource="spring-pay.xml"/>
+
+    <!--引入依赖jar包(biz)里的spring配置-->
+    <import resource="spring-resource.xml"/>
+    <import resource="spring-context.xml"/>
 
 </beans>

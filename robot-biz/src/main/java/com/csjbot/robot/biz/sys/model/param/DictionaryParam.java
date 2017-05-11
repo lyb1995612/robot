@@ -1,6 +1,6 @@
 package com.csjbot.robot.biz.sys.model.param;
 
-import com.csjbot.robot.base.web.entity.PaginationParam;
+import com.csjbot.robot.biz.base.entity.PaginationParam;
 
 public class DictionaryParam extends PaginationParam{
 

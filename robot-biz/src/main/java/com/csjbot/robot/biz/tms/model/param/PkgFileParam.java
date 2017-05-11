@@ -2,7 +2,7 @@ package com.csjbot.robot.biz.tms.model.param;
 
 import java.util.Date;
 
-import com.csjbot.robot.base.web.entity.PaginationParam;
+import com.csjbot.robot.biz.base.entity.PaginationParam;
 
 public class PkgFileParam extends PaginationParam{
 

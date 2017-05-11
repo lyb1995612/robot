@@ -14,7 +14,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.csjbot.robot.base.exception.DisableAccountException;
+import com.csjbot.robot.biz.base.exception.DisableAccountException;
 import com.csjbot.robot.biz.ums.model.User;
 import com.csjbot.robot.biz.ums.service.UserService;
 

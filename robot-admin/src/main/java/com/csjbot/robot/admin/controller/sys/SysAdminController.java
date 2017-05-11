@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.csjbot.robot.base.exception.ServiceException;
-import com.csjbot.robot.base.web.entity.ResultEntity;
-import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
+import com.csjbot.robot.biz.base.exception.ServiceException;
+import com.csjbot.robot.biz.base.entity.ResultEntity;
+import com.csjbot.robot.biz.base.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.ums.model.User;
 import com.csjbot.robot.biz.ums.model.param.UserAdminSearchParam;
@@ -39,7 +39,7 @@ public class SysAdminController {
 	private UserService userService;
 
 	/**
-	 * 管理员列表页�?
+	 * 管理员列表页�?
 	 * @return
 	 */
 	@RequestMapping(value="/list")
@@ -49,7 +49,7 @@ public class SysAdminController {
 	}
 	
 	/**
-	 * 新增系统管理员页�?
+	 * 新增系统管理员页�?
 	 * @return
 	 */
 	@RequestMapping(value="/toSysAdminAdd")
@@ -59,7 +59,7 @@ public class SysAdminController {
 	}
 	
 	/**
-	 * 新增系统管理�?
+	 * 新增系统管理�?
 	 * @param user
 	 * @param builder
 	 * @param request
@@ -76,9 +76,9 @@ public class SysAdminController {
             }
             boolean status = userService.save(user);
             if (status) {
-                result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "新增系统管理员成�?");
+                result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "新增系统管理员成�?");
             } else {
-                result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "新增系统管理员失�?");
+                result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "新增系统管理员失�?");
             }
 
         } catch (ServiceException e) {
@@ -105,7 +105,7 @@ public class SysAdminController {
 	}
 	
 	/**
-	 * 更新系统管理�?
+	 * 更新系统管理�?
 	 * @param user
 	 * @param builder
 	 * @param request
@@ -122,12 +122,12 @@ public class SysAdminController {
           if(!userService.checkPhoneExist(user.getPhone(), user.getId())){
             boolean status = userService.updateFinancialPlanner(user);
             if (status) {
-                result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "编辑系统管理员成�?");
+                result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "编辑系统管理员成�?");
             } else {
-                result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "编辑系统管理员失�?");
+                result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "编辑系统管理员失�?");
             }
           }else{
-        	  result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "手机号码已存�?");
+        	  result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "手机号码已存�?");
           }
 
         } catch (Exception e) {

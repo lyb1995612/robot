@@ -1,5 +1,7 @@
 package com.csjbot.robot.biz.pay.util;
 
+import com.csjbot.robot.biz.util.RandomGen;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class OrderIdGen {

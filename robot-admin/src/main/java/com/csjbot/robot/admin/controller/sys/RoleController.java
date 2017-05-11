@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.csjbot.robot.base.util.RequestUtil;
-import com.csjbot.robot.base.util.StringUtil;
-import com.csjbot.robot.base.web.entity.ResultEntity;
-import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
+import com.csjbot.robot.biz.base.util.RequestUtil;
+import com.csjbot.robot.biz.base.util.StringUtil;
+import com.csjbot.robot.biz.base.entity.ResultEntity;
+import com.csjbot.robot.biz.base.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.sys.model.Role;
 import com.csjbot.robot.biz.sys.model.RolePermissionRef;
@@ -49,7 +49,7 @@ public class RoleController {
     private RolePermissionRefService permissionRefService;
     
     /**
-     * 列出�?有的角色
+     * 列出�?有的角色
      * @return
      */
     @RequestMapping(value = "/list")
@@ -59,7 +59,7 @@ public class RoleController {
     }
     
     /**
-     * 获取�?有的角色的数�?
+     * 获取�?有的角色的数�?
      * @param param
      * @param request
      * @param builder
@@ -213,7 +213,7 @@ public class RoleController {
     }
     
     /**
-     * 按条件搜索用�?
+     * 按条件搜索用�?
      * @param id
      * @param param
      * @param request

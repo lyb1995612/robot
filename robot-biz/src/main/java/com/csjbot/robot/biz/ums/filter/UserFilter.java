@@ -11,7 +11,7 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.PathMatchingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.csjbot.robot.base.util.ValidateUtils;
+import com.csjbot.robot.biz.base.util.ValidateUtils;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.ums.model.User;
 import com.csjbot.robot.biz.ums.service.UserService;

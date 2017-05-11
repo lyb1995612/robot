@@ -1,7 +1,7 @@
 package com.csjbot.robot.biz.pms.dao;
 
 
-import com.csjbot.robot.base.dao.BaseDAO;
+import com.csjbot.robot.biz.base.BaseDAO;
 import com.csjbot.robot.biz.pms.model.Pms_pay_alipay_url;
 
 /**

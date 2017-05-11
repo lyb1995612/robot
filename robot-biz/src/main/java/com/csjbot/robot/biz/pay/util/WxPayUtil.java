@@ -1,5 +1,6 @@
 package com.csjbot.robot.biz.pay.util;
 
+import com.csjbot.robot.biz.util.RandomGen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

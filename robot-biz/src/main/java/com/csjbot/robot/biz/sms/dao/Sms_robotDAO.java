@@ -4,7 +4,7 @@
 package com.csjbot.robot.biz.sms.dao;
 
 
-import com.csjbot.robot.base.dao.BaseDAO;
+import com.csjbot.robot.biz.base.BaseDAO;
 import com.csjbot.robot.biz.sms.model.Sms_robot;
 
 import java.util.List;

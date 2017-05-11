@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.csjbot.robot.base.exception.ServiceException;
-import com.csjbot.robot.base.web.entity.ResultEntity;
+import com.csjbot.robot.biz.base.exception.ServiceException;
+import com.csjbot.robot.biz.base.entity.ResultEntity;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.sys.model.SysMenu;
 import com.csjbot.robot.biz.sys.service.SysMenuService;
@@ -345,7 +345,7 @@ public class SysMenuController {
     }
     
     /**
-     * 返回true 代表有权限， false代表无权�?
+     * 返回true 代表有权限， false代表无权�?
      * @param subject
      * @param permission_fk
      * @return

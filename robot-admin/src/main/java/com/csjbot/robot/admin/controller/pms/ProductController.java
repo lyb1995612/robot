@@ -22,9 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.csjbot.robot.base.util.StringUtil;
-import com.csjbot.robot.base.web.entity.ResultEntity;
-import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
+import com.csjbot.robot.biz.base.util.StringUtil;
+import com.csjbot.robot.biz.base.entity.ResultEntity;
+import com.csjbot.robot.biz.base.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.pms.model.PmsProduct;
 import com.csjbot.robot.biz.pms.service.PmsService;
@@ -37,7 +37,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 /**          
  * Description: 产品信息
  * @author CJay       
- * @created 2017�?3�?21�? 上午10:21:27    
+ * @created 2017�?3�?21�? 上午10:21:27    
  */
 @Controller
 @RequestMapping("/pms")
@@ -52,9 +52,9 @@ public class ProductController {
 	private SysAttachService attachService;
 	
 	/**
-	     * @discription 产品列表�?
+	     * @discription 产品列表�?
 	     * @author CJay       
-	     * @created 2017�?3�?23�? 上午11:03:59
+	     * @created 2017�?3�?23�? 上午11:03:59
 	 */
 	@RequestMapping(value = "/list")
     public ModelAndView portal() {
@@ -63,9 +63,9 @@ public class ProductController {
     }
 	
 	/**
-	     * @discription 跳转到新增页�?
+	     * @discription 跳转到新增页�?
 	     * @author CJay       
-	     * @created 2017�?3�?23�? 上午11:03:42
+	     * @created 2017�?3�?23�? 上午11:03:42
 	 */
 	@RequestMapping(value = "/toProductAdd")
     public ModelAndView toProductAdd() {
@@ -74,9 +74,9 @@ public class ProductController {
     }	
 	
 	/**
-     * @discription 跳转到修改页�?
+     * @discription 跳转到修改页�?
      * @author CJay       
-     * @created 2017�?3�?23�? 上午11:03:42
+     * @created 2017�?3�?23�? 上午11:03:42
 	 */
 	@RequestMapping(value = "{id}/toProductUpdate")
 	public ModelAndView toProducUpdate(@PathVariable String id) {
@@ -89,9 +89,9 @@ public class ProductController {
 	}
 	
 	/**
-	     * @discription 详情�?
+	     * @discription 详情�?
 	     * @author CJay       
-	     * @created 2017�?3�?23�? 下午3:27:48
+	     * @created 2017�?3�?23�? 下午3:27:48
 	 */
 	@RequestMapping(value = "{id}/toProductDetail")
 	public ModelAndView toProductDetail(@PathVariable String id) {
@@ -107,7 +107,7 @@ public class ProductController {
 	/**
 	     * @discription 新增产品
 	     * @author CJay       
-	     * @created 2017�?3�?23�? 上午11:03:26
+	     * @created 2017�?3�?23�? 上午11:03:26
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> productAdd(PmsProduct pmsProduct, @RequestParam(required = false) MultipartFile photo,HttpServletRequest request,HttpServletResponse response){
@@ -150,7 +150,7 @@ public class ProductController {
 	/**
      * @discription 修改产品
      * @author CJay       
-     * @created 2017�?3�?23�? 上午11:03:26
+     * @created 2017�?3�?23�? 上午11:03:26
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<String> productUpdate(PmsProduct pmsProduct,HttpServletRequest request,HttpServletResponse response){
@@ -191,7 +191,7 @@ public class ProductController {
 	/**
      * @discription 删除产品
      * @author CJay       
-     * @created 2017�?3�?24�? 上午8:52:41
+     * @created 2017�?3�?24�? 上午8:52:41
 	 */
 	@RequestMapping(value = "{id}/productDelete")
 	public ResponseEntity<String> ProductDelete(@PathVariable String id,HttpServletResponse response){
@@ -204,7 +204,7 @@ public class ProductController {
 	    try {
 //	    	attachService.deleteByTransInfo(pmsProduct.getId(),Constants.Attachment.Type.PRODUCT_BASIC_INFO);
 //		    pmsService.deleteByPrimaryKey(id);
-	    	pmsProduct.setValid(0); //由于有产品订单关联，订单�?要保留改为软删除
+	    	pmsProduct.setValid(0); //由于有产品订单关联，订单�?要保留改为软删除
 	    	pmsService.update(pmsProduct);
 		} catch (Exception e) {
 			msg=e.getMessage();

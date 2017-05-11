@@ -3,7 +3,7 @@ package com.csjbot.robot.biz.sys.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.csjbot.robot.base.util.StringUtil;
+import com.csjbot.robot.biz.base.util.StringUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**

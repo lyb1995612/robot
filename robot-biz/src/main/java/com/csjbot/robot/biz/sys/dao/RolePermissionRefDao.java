@@ -3,7 +3,7 @@ package com.csjbot.robot.biz.sys.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.csjbot.robot.base.page.Page;
+import com.csjbot.robot.biz.base.page.Page;
 import com.csjbot.robot.biz.sys.model.RolePermissionRef;
 
 

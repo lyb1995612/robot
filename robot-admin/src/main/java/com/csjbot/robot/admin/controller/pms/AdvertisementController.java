@@ -22,9 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.csjbot.robot.base.util.StringUtil;
-import com.csjbot.robot.base.web.entity.ResultEntity;
-import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
+import com.csjbot.robot.biz.base.util.StringUtil;
+import com.csjbot.robot.biz.base.entity.ResultEntity;
+import com.csjbot.robot.biz.base.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.pms.model.PmsAdvertisement;
 import com.csjbot.robot.biz.pms.service.PmsService;
@@ -40,7 +40,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 /**          
  * Description 广告管理
  * @author CJay       
- * @created 2017�?3�?27�? 下午3:28:54    
+ * @created 2017�?3�?27�? 下午3:28:54    
  */
 @Controller
 @RequestMapping("adv")
@@ -57,7 +57,7 @@ public class AdvertisementController {
 	/**
 	     * @discription 广告列表
 	     * @author CJay       
-	     * @created 2017�?3�?28�? 上午10:27:33
+	     * @created 2017�?3�?28�? 上午10:27:33
 	 */
 	@RequestMapping(value = "/list")
     public ModelAndView portal() {
@@ -68,7 +68,7 @@ public class AdvertisementController {
 	/**
 	     * @discription 广告修改
 	     * @author CJay       
-	     * @created 2017�?3�?29�? 上午10:50:58
+	     * @created 2017�?3�?29�? 上午10:50:58
 	 */
 	@RequestMapping(value = "{id}/toAdvertisementUpdate")
 	public ModelAndView toAdvertisementUpdate(@PathVariable String id,PmsAdvertisement pmsAdvertisement,HttpServletRequest request,HttpSession session) {
@@ -104,7 +104,7 @@ public class AdvertisementController {
 	/***
 	     * @discription 广告详情
 	     * @author CJay       
-	     * @created 2017�?3�?29�? 上午9:29:12
+	     * @created 2017�?3�?29�? 上午9:29:12
 	 */
 	@RequestMapping(value = "{id}/toAdvertisementDetail")
 	public ModelAndView toAdvertisementDetail(@PathVariable String id) {
@@ -117,7 +117,7 @@ public class AdvertisementController {
 	/**
 	     * @discription 跳转到广告新增页
 	     * @author CJay       
-	     * @created 2017�?3�?28�? 上午10:46:43
+	     * @created 2017�?3�?28�? 上午10:46:43
 	 */
 	@RequestMapping(value = "/toAdvertisementAdd")
     public ModelAndView toAdvertisementAdd() {
@@ -128,7 +128,7 @@ public class AdvertisementController {
 	/**
 	     * @discription 新增广告
 	     * @author CJay       
-	     * @created 2017�?3�?28�? 上午11:48:59
+	     * @created 2017�?3�?28�? 上午11:48:59
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> advertiseAdd(PmsAdvertisement pmsAdvertisement,HttpServletRequest request,HttpServletResponse response){
@@ -196,11 +196,11 @@ public class AdvertisementController {
 /**
      * @discription 修改广告
      * @author CJay       
-     * @created 2017�?3�?29�? 下午4:52:52
+     * @created 2017�?3�?29�? 下午4:52:52
  */
 @RequestMapping(value = "/update", method = RequestMethod.POST)
 public ResponseEntity<String> advertiseUpdate(PmsAdvertisement pmsAdvertisement,HttpServletRequest request,HttpServletResponse response){
-    System.out.println("update。�?��?��?��?��??");
+    System.out.println("update。�?��?��?��?��??");
 	JSONObject result = new JSONObject();
 	//String typeStr=request.getParameter("type");
     //int type=Integer.parseInt(typeStr);
@@ -261,7 +261,7 @@ public ResponseEntity<String> advertiseUpdate(PmsAdvertisement pmsAdvertisement,
 	/**
 	     * @discription 广告删除 
 	     * @author CJay       
-	     * @created 2017�?3�?28�? 下午7:43:22
+	     * @created 2017�?3�?28�? 下午7:43:22
 	 */
 	@RequestMapping(value = "{id}/advertisementDelete")
 	public ResponseEntity<String> AdvertisementDelete(@PathVariable String id,HttpServletResponse response){

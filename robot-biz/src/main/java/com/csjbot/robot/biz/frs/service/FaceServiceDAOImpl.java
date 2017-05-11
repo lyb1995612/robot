@@ -29,7 +29,7 @@ import com.alibaba.fastjson.JSONObject;
  * @author 作者：Zhangyangyang
  * @version 创建时间：2017年3月27日 上午9:57:50 类说明
  */
-@Service
+@Service("faceServiceDao")
 public class FaceServiceDAOImpl implements FaceServiceDAO {
 
 	private static final String APP_ID = "1252828273";

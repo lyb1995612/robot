@@ -2,7 +2,6 @@ package com.csjbot.robot.biz.pay.util;
 
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 

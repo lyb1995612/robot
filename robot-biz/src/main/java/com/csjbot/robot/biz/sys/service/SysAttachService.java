@@ -3,7 +3,7 @@ package com.csjbot.robot.biz.sys.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.csjbot.robot.base.exception.ServiceException;
+import com.csjbot.robot.biz.base.exception.ServiceException;
 import com.csjbot.robot.biz.sys.dao.SysAttachmentDao;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.util.FileUtil;

@@ -4,7 +4,7 @@
 package com.csjbot.robot.biz.frs.dao;
 
 
-import com.csjbot.robot.base.dao.BaseDAO;
+import com.csjbot.robot.biz.base.BaseDAO;
 import com.csjbot.robot.biz.frs.model.Frs_group;
 
 /**

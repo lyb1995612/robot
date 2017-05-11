@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.csjbot.robot.base.util.StringUtil;
-import com.csjbot.robot.base.web.entity.ResultEntity;
-import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
+import com.csjbot.robot.biz.base.util.StringUtil;
+import com.csjbot.robot.biz.base.entity.ResultEntity;
+import com.csjbot.robot.biz.base.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.scs.model.ScsDesk;
 import com.csjbot.robot.biz.scs.service.ScsService;
@@ -32,7 +32,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 /**
  * Description: 桌号信息
  * @author XMT
- * @created 2017�?4�?17�?
+ * @created 2017�?4�?17�?
  */
 
 @Controller
@@ -43,9 +43,9 @@ public class DeskController {
 	private ScsService scsService;
 	
 	/**
-	 * @discription桌号列表�?
+	 * @discription桌号列表�?
 	 * @author XMT
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping("/list")
 	public ModelAndView protal(){
@@ -55,9 +55,9 @@ public class DeskController {
 
 
 	/**
-	 * @discription 跳转到桌号新增页�?
+	 * @discription 跳转到桌号新增页�?
 	 * @author XMT       
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "/toDeskAdd")
 	public ModelAndView toDeskAdd() {
@@ -68,7 +68,7 @@ public class DeskController {
 	/**
 	 * @discription 跳转到桌号详情页
 	 * @author XMT       
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "{id}/toDeskDetail")
 	public ModelAndView toDeskDetail(@PathVariable String id) {
@@ -81,7 +81,7 @@ public class DeskController {
 	/**
 	 * @discription 新增桌号
 	 * @author XMT       
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> deskAdd(ScsDesk scsDesk, HttpServletRequest request,HttpServletResponse response){
@@ -104,7 +104,7 @@ public class DeskController {
 	/**
      * @discription 删除桌号
      * @author XMT     
-     * @created 2017�?4�?17�?
+     * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "{id}/deskDelete")
 	public ResponseEntity<String> deskDelete(@PathVariable String id,HttpServletResponse response){

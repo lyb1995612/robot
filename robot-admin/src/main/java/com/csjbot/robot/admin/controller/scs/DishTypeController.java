@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.csjbot.robot.base.util.StringUtil;
-import com.csjbot.robot.base.web.entity.ResultEntity;
-import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
+import com.csjbot.robot.biz.base.util.StringUtil;
+import com.csjbot.robot.biz.base.entity.ResultEntity;
+import com.csjbot.robot.biz.base.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.scs.model.ScsDishType;
 import com.csjbot.robot.biz.scs.service.ScsService;
@@ -43,7 +43,7 @@ public class DishTypeController {
 	/**
 	 * @discription菜品列表
 	 * @author XMT
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping("/list")
 	public ModelAndView protal(){
@@ -55,7 +55,7 @@ public class DishTypeController {
 	/**
 	 * @discription 跳转菜品新增页面
 	 * @author XMT       
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "/toDishTypeAdd")
 	public ModelAndView toDeskAdd() {
@@ -66,7 +66,7 @@ public class DishTypeController {
 	/**
 	 * @discription 跳转到菜品详情页
 	 * @author XMT       
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "{id}/toDishTypeDetail")
 	public ModelAndView toDeskDetail(@PathVariable Integer id) {
@@ -78,9 +78,9 @@ public class DishTypeController {
 		return mv;
 	}
 	/**
-     * @discription 跳转到修改页�?
+     * @discription 跳转到修改页�?
      * @author CJay       
-     * @created 2017�?3�?23�? 上午11:03:42
+     * @created 2017�?3�?23�? 上午11:03:42
 	 */
 	@RequestMapping(value = "{id}/toDishTypeUpdate")
 	public ModelAndView toProducUpdate(@PathVariable Integer id) {
@@ -94,7 +94,7 @@ public class DishTypeController {
 	/**
 	 * @discription 新增菜品类型
 	 * @author XMT
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> deskAdd(ScsDishType scsDishType, HttpServletRequest request, HttpServletResponse response) {
@@ -116,7 +116,7 @@ public class DishTypeController {
 	/**
 	 * @discription 删除菜品类型
 	 * @author XMT
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "{id}/dishTypeDelete")
 	public ResponseEntity<String> deskDelete(@PathVariable Integer id, HttpServletResponse response) {
@@ -137,7 +137,7 @@ public class DishTypeController {
 	/**
      * @discription 修改产品
      * @author CJay       
-     * @created 2017�?3�?23�? 上午11:03:26
+     * @created 2017�?3�?23�? 上午11:03:26
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<String> productUpdate(ScsDishType scsDishType,HttpServletRequest request,HttpServletResponse response){

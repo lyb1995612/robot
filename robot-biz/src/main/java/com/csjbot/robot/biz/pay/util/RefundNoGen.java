@@ -1,5 +1,7 @@
 package com.csjbot.robot.biz.pay.util;
 
+import com.csjbot.robot.biz.util.RandomGen;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RefundNoGen {
@@ -12,7 +14,7 @@ public class RefundNoGen {
     }
 
     public static String next() {
-        return genTime() + DEL + genCnt()+RandomGen.randStr(1, RandomGen.NUMBER);
+        return genTime() + DEL + genCnt()+ RandomGen.randStr(1, RandomGen.NUMBER);
     }
 
     private static String genTime() {

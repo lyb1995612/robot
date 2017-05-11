@@ -1,8 +1,8 @@
 /**
- * 短信注册
+ * 
  */
 /**
- * @author Cjay
+ * @author Administrator
  *
  */
 package com.csjbot.robot.biz.sms;

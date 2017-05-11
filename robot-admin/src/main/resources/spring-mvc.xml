@@ -30,7 +30,7 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
-    <bean id="responseJsonMapper" class="com.csjbot.robot.base.util.ResponseJsonMapper"></bean>
+    <bean id="responseJsonMapper" class="com.csjbot.robot.biz.base.util.ResponseJsonMapper"></bean>
     <mvc:annotation-driven>
 		<mvc:message-converters register-defaults="true" >
 		    <bean class="org.springframework.http.converter.StringHttpMessageConverter"> 

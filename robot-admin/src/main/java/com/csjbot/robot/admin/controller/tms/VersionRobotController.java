@@ -23,10 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.csjbot.robot.base.util.MD5Util;
-import com.csjbot.robot.base.util.StringUtil;
-import com.csjbot.robot.base.web.entity.ResultEntity;
-import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
+import com.csjbot.robot.biz.base.util.MD5Util;
+import com.csjbot.robot.biz.base.util.StringUtil;
+import com.csjbot.robot.biz.base.entity.ResultEntity;
+import com.csjbot.robot.biz.base.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.sys.model.SysDataDictionary;
@@ -58,7 +58,7 @@ public class VersionRobotController {
 	/**
 	 * @discription 版本列表
 	 * @author CJay
-	 * @created 2017�?4�?20�? 下午2:44:52
+	 * @created 2017�?4�?20�? 下午2:44:52
 	 */
 	@RequestMapping(value = "/list")
 	public ModelAndView portal() {
@@ -71,9 +71,9 @@ public class VersionRobotController {
 	}
 
 	/**
-	 * @discription 修改�?
+	 * @discription 修改�?
 	 * @author CJay
-	 * @created 2017�?4�?21�? 上午10:19:59
+	 * @created 2017�?4�?21�? 上午10:19:59
 	 */
 	@RequestMapping(value = "{id}/toVersionUpdate")
 	public ModelAndView toProducUpdate(@PathVariable String id, HttpServletRequest request) {
@@ -84,9 +84,9 @@ public class VersionRobotController {
 	}
 
 	/**
-	 * @discription 详情�?
+	 * @discription 详情�?
 	 * @author CJay
-	 * @created 2017�?4�?21�? 上午10:20:27
+	 * @created 2017�?4�?21�? 上午10:20:27
 	 */
 	@RequestMapping(value = "{id}/toVersionDetail")
 	public ModelAndView toProductDetail(@PathVariable String id, HttpServletRequest request) {
@@ -115,7 +115,7 @@ public class VersionRobotController {
 	/**
 	 * @discription 跳转新增页面
 	 * @author CJay
-	 * @created 2017�?4�?20�? 下午2:45:07
+	 * @created 2017�?4�?20�? 下午2:45:07
 	 */
 	@RequestMapping(value = "/toVersionAdd")
 	public ModelAndView toProductAdd() {
@@ -130,7 +130,7 @@ public class VersionRobotController {
 	/**
 	 * @discription 新增版本
 	 * @author CJay
-	 * @created 2017�?3�?23�? 上午11:03:26
+	 * @created 2017�?3�?23�? 上午11:03:26
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> productAdd(SysVersionRobot sysVersionRobot,
@@ -179,7 +179,7 @@ public class VersionRobotController {
 	/**
 	 * @discription 修改版本
 	 * @author CJay
-	 * @created 2017�?4�?21�? 下午4:52:52
+	 * @created 2017�?4�?21�? 下午4:52:52
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<String> versionUpdate(SysVersionRobot sysVersionRobot, HttpServletRequest request,
@@ -222,7 +222,7 @@ public class VersionRobotController {
 	/**
 	 * @discription 版本删除
 	 * @author CJay
-	 * @created 2017�?4�?21�? 下午2:15:55
+	 * @created 2017�?4�?21�? 下午2:15:55
 	 */
 	@RequestMapping(value = "{id}/versionDelete")
 	public ResponseEntity<String> versionDelete(@PathVariable String id, HttpServletResponse response) {

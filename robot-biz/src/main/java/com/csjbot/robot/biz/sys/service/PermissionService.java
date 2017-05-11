@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.csjbot.robot.base.exception.ServiceException;
-import com.csjbot.robot.base.util.StringUtil;
+import com.csjbot.robot.biz.base.exception.ServiceException;
+import com.csjbot.robot.biz.base.util.StringUtil;
 import com.csjbot.robot.biz.sys.dao.PermissionDao;
 import com.csjbot.robot.biz.sys.model.Permission;
 import com.csjbot.robot.biz.sys.model.param.PermissionParam;

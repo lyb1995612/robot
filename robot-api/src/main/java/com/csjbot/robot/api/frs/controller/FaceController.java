@@ -22,6 +22,7 @@ import com.csjbot.robot.biz.util.RandomUtil;
 import com.csjbot.robot.biz.util.ResponseUtil;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ import com.alibaba.fastjson.JSONObject;
 @Controller
 public class FaceController {
 	@Autowired
+	@Qualifier("faceServiceDao")
 	private FaceServiceDAO faceServiceDAO;
 
 	// 添加用户

@@ -1,6 +1,6 @@
 package com.csjbot.robot.biz;
 
-import com.csjbot.robot.base.util.PropertiesUtils;
+import com.csjbot.robot.biz.base.util.PropertiesUtils;
 
 public class Constants {
 	
