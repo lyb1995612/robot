@@ -102,7 +102,7 @@ public class VersionController {
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public ResponseEntity<String> upload(@RequestParam("dir") String dirStr, @RequestParam("file") MultipartFile file) {
 		if (file.isEmpty()) {
-			return textResponse(BAD_REQUEST, "空文�?");
+			return textResponse(BAD_REQUEST, "空文件?");
 		}
 		if (!storeService.checkDirStrSyntax(dirStr)) {
 			return textResponse(BAD_REQUEST, "文件夹不符合格式");
@@ -130,14 +130,14 @@ public class VersionController {
 	public ResponseEntity<String> findByPattern(@RequestParam("nameptn") String namePtn,
 			@RequestParam(value = "orderby", required = false) Integer orderBy) {
 		if (namePtn == null || !namePtn.matches(NAME_PTN_REGEX))
-			return textResponse(BAD_REQUEST, "查询字串不符合格式，" + "仅支持数字�?�英文字母�?�英文句号�?�下划线和连字符, 至少3字符");
+			return textResponse(BAD_REQUEST, "查询字串不符合格式，" + "仅支持数字、英文字母、英文句号、下划线和连字符, 至少3字符");
 		if (orderBy == null)
 			orderBy = 1;
 		List<FileEntry> files = fileDBService.findByName(namePtn, orderBy);
 		String json = toJson(files);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		return json == null ? textResponse(INTERNAL_SERVER_ERROR, "JSON序列化出�?")
+		return json == null ? textResponse(INTERNAL_SERVER_ERROR, "JSON序列化出错?")
 				: new ResponseEntity<>(json, headers, OK);
 	}
 

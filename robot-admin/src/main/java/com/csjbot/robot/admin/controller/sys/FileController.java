@@ -27,9 +27,8 @@ public class FileController {
 	@Autowired SysAttachService sysAttachService;
 	
 	/**
-	     * @discription 图片流输�?
+	     * @discription 图片流输出
 	     * @author CJay       
-	     * @created 2017�?3�?29�? 下午4:12:27
 	 */
     @RequestMapping(value = "{id}/{type}/pic")  
     public void createFolw(@PathVariable String id,@PathVariable String type, HttpServletRequest request, HttpServletResponse response) {  
@@ -59,7 +58,6 @@ public class FileController {
 	/**
 	     * @discription 附件下载接口
 	     * @author CJay       
-	     * @created 2017�?3�?29�? 下午4:11:54
 	 */
     @RequestMapping(value = "/{id}/{type}/{name}", method = RequestMethod.GET)
     public void gets(@PathVariable String id, @PathVariable String type, @PathVariable String name,HttpServletRequest request, HttpServletResponse response) throws Exception, IOException {
@@ -70,7 +68,7 @@ public class FileController {
         filename = sysAttachment.getOriginal_name();
         response.setCharacterEncoding("UTF-8");
         response.setContentType(sysAttachment.getFile_type() + ";charset=UTF-8");
-        response.setHeader("Content-Disposition", "attachment; filename=" + sysAttachService.filenameChange(java.net.URLEncoder.encode(filename, "UTF-8")));//在filename后加上（*=utf-8'zh_cn' ）用于兼容火狐浏览器的下�? 文件名称问题
+        response.setHeader("Content-Disposition", "attachment; filename=" + sysAttachService.filenameChange(java.net.URLEncoder.encode(filename, "UTF-8")));//在filename后加上（*=utf-8'zh_cn' ）用于兼容火狐浏览器的下中文文件名称问题
         // -------------------------------------------------------------------------------------------------------------------------------------------
         File file = FileUtils.getFile(sysAttachment.getLocation());
         // -------------------------------------------------------------------------------------------------------------------------------------------
