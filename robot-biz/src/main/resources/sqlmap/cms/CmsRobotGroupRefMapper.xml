@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csjbot.robot.biz.cms.dao.CmsRobotGroupRefDao">
+    <resultMap id="BaseResultMap" type ="com.csjbot.robot.biz.cms.model.CmsRobotGroupRef">
+       <result property="id" column="id" jdbcType="CHAR"/>
+       <result column="group_fk" property="group_fk" jdbcType="VARCHAR" />
+       <result column="sn" property="sn" jdbcType="VARCHAR" />
+       <result column="memo" property="memo" jdbcType="VARCHAR" />
+       <result column="valid" property="isValid" jdbcType="BOOLEAN" />
+       <result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
+       <result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
+       <result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
+       <result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
+       <result column="checked" property="checked" jdbcType="BOOLEAN" />
+    </resultMap>
+  
+  <select id="get" parameterType="map" resultMap="BaseResultMap">
+	SELECT *
+    FROM  cms_robot_group_ref 
+    WHERE id = #{id,jdbcType=CHAR}
+  </select>
+  
+  <insert id="insert" parameterType="com.csjbot.robot.biz.cms.model.CmsRobotGroupRef">
+    insert into cms_robot_group_ref (
+      id,
+      group_fk,
+      sn,
+      memo,
+      valid,
+      updater_fk,
+      creator_fk,
+      date_create,
+      date_update
+    )values (
+      #{id},
+      #{group_fk},
+      #{sn},
+      #{memo},
+      #{isValid},
+      #{updater_fk},
+      #{creator_fk},
+      #{date_create},
+      #{date_update}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.csjbot.robot.biz.cms.model.CmsRobotGroupRef">
+    UPDATE cms_robot_group_ref
+    SET group_fk=#{group_fk},
+      sn=#{sn},
+      memo=#{memo},
+      valid=#{isValid},
+      updater_fk=#{updater_fk},
+      date_update=now()
+    WHERE id=#{id}
+  </update>
+  
+  <select id="countRobotGroupSize" parameterType="map" resultType="int">
+	SELECT COUNT(a.group_fk)
+    FROM  cms_robot_group_ref a, cms_robot b
+    WHERE a.valid = 1
+    AND b.valid = 1
+    AND a.sn= b.sn
+    AND a.group_fk = #{robotGroupId}
+  </select>
+    
+</mapper>

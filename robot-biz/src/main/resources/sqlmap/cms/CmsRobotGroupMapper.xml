@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csjbot.robot.biz.cms.dao.CmsRobotGroupDao">
+    <resultMap id="BaseResultMap" type ="com.csjbot.robot.biz.cms.model.CmsRobotGroup">
+       <result property="id" column="id" jdbcType="CHAR"/>
+       <result column="group_name" property="group_name" jdbcType="VARCHAR" />
+       <result column="type" property="type" jdbcType="INTEGER"/>
+       <result column="type_name" property="type_name" jdbcType="VARCHAR"/>
+       <result column="relevance_num" property="relevance_num" jdbcType="INTEGER"/>
+       <result column="valid" property="valid" jdbcType="TINYINT" />
+       <result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
+       <result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
+       <result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
+       <result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <resultMap id="robotPermission" type="java.util.HashMap">
+    <result property="checked" column="checked" javaType="boolean" jdbcType="TINYINT" />
+    <result property="robot_id" column="robot_id" />
+    <result property="sn" column="sn" />
+    <result property="memo" column="memo" />
+    </resultMap>
+  <sql id="Base_Column_List" >
+    id, group_name, type, valid, updater_fk, creator_fk, date_update, date_create
+  </sql>
+    
+  <select id="page" parameterType="map" resultMap="BaseResultMap">
+	   SELECT (SELECT COUNT(b.group_fk) 
+               FROM cms_robot_group_ref b
+               WHERE b.group_fk = a.id
+               GROUP BY b.group_fk)relevance_num,
+       a.id, a.group_name, a.type,(SELECT `name` FROM sys_data_dictionary WHERE id = a.TYPE)type_name, 
+       a.valid, a.updater_fk, a.creator_fk, a.date_update, a.date_create
+       FROM cms_robot_group a
+       WHERE a.valid = 1
+		<if test="group_name != null and group_name !=''">
+          and a.group_name LIKE CONCAT('%', #{group_name},'%')
+       </if>  
+  </select>
+ <!--  SELECT group_fk, (SELECT group_name FROM cms_robot_group WHERE id = 123) group_name,COUNT(id) 
+  FROM cms_robot_group_ref GROUP BY group_fk; -->
+  
+  <select id="countType" resultMap="BaseResultMap" parameterType="map" >
+    select count(type)
+    from cms_robot_group
+    where type = #{type,jdbcType=INTEGER}
+    and #{group_name,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from cms_robot_group
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  
+  <select id="selectByGroupName" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from cms_robot_group
+    where group_name = #{group_name,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="insert" parameterType="com.csjbot.robot.biz.cms.model.CmsRobotGroup" >
+    insert into cms_robot_group (id, group_name, type, valid, updater_fk, creator_fk, date_update, date_create)
+    values (#{id,jdbcType=CHAR}, #{group_name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 1,
+      #{updater_fk,jdbcType=CHAR}, #{creator_fk,jdbcType=CHAR}, 
+      now(), now())
+  </insert>  
+  
+  <select id="listRobot" parameterType="map" resultMap="robotPermission">
+    SELECT *
+    FROM (
+        SELECT a.id, IFNULL(a.valid = 1, 0) AS checked,u.id AS robot_id,u.valid AS STATUS,
+        u.sn AS sn,u.type AS TYPE,
+        (SELECT `name` FROM sys_data_dictionary WHERE id = TYPE)type_name
+      FROM (
+        SELECT *
+        FROM cms_robot
+        WHERE valid = 1
+      ) u 
+        LEFT JOIN cms_robot_group_ref a
+      ON u.sn = a.sn
+        AND a.group_fk = #{robotGroupId}
+    ) tbl
+    ORDER BY tbl.checked DESC;
+  </select>
+  
+</mapper>
