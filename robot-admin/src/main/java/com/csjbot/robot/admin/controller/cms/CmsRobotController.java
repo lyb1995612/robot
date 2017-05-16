@@ -185,9 +185,14 @@ public class CmsRobotController {
         attach.setTransaction_id(cmsRobot.getId());
         attach.setTransaction_type(Constants.Attachment.Type.VERSION_ROBOT_FILE);
         attach.setUpdater_fk(loginUser.getId());
-	    if(cmsRobotService.updateByPrimaryKey(cmsRobot) > 0){
-	    	msg = ResultEntity.KW_STATUS_SUCCESS;
-	    }
+        CmsRobot params = cmsRobotService.selectByTypeAndSn(cmsRobot.getType(), cmsRobot.getSn());
+        if(params == null){
+        	if(cmsRobotService.updateByPrimaryKey(cmsRobot) > 0){
+    	    	msg = ResultEntity.KW_STATUS_SUCCESS;
+    	    }
+		}else{
+			    msg = ResultEntity.KW_STATUS_FAIL;
+		}
 	    result.put("msg", msg);
 	    return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
 	}

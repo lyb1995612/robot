@@ -72,10 +72,23 @@
 											</div>
 										</div>
 							        </div>
-							<div class="text-center">
-								<button type="button" class="btn btn-primary" id="submit">提交</button>
-							</div>
-							</form>
+									<!-- <div class="row">
+										<div class="col-md-12">
+											<div class="col-md-6">
+												<div class="form-group">
+													<div class="input-group date form_datetime " data-date-format="yyyy-mm-dd hh:ii:ss" data-link-field="dtp_input1">
+														<span class="input-group-addon"><span class="glyphicon glyphicon-th hidden"></span><span>注册时间</span></span>
+														<input class="form-control" size="16" type="text" value="" id="registerTime" name="registerTime" placeholder="请选择时间" readonly>
+													</div>
+													<input type="hidden" id="dtp_input1" value="" /><br />
+												</div>
+											</div>
+										</div>
+									</div> -->
+									<div class="text-center">
+										<button type="button" class="btn btn-primary" id="submit">提交</button>
+									</div>
+								</form>
 							</div>
 						</div>
 					</div>
