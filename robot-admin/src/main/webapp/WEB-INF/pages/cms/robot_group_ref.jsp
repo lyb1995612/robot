@@ -27,13 +27,13 @@
 	    overflow: scroll;
 	  }
 	</style>
-	<script>
+	 <script>
 	    $(document).ready(function(){
 	      
-	      $('input').iCheck({
+	        $('input').iCheck({
 	        checkboxClass: 'icheckbox_flat-blue',
 	        increaseArea: '20%' // optional
-	      }); 
+	      });  
 	      
 	      $("#select-all").on('ifChanged', function(event){
 	          var checked = $("#select-all").is(":checked");
@@ -44,16 +44,16 @@
 	                  $(box).iCheck('uncheck');
 	              }
 	          });
-	      });
+	      }); 
 	      
 	    });
 	    
-	    $(function(){
+	     $(function(){
             $("#sys_permission").addClass("active");
             $("#sys").addClass("open");
             $("#sys").addClass("active");
-        });
-	</script>
+        }); 
+	</script> 
 </head>
   
 <body class="navbar-fixed">
@@ -94,7 +94,7 @@
 			                <table id="tp" class="table table-striped table-hover table-bordered table-responsive">
 			                    <thead>
 			                        <tr>
-			                        <th style="width: 40px;"><input type="checkbox" id="select-all" value="true"/></th>
+			                        <th style="width: 40px;"><input type="checkbox" id="select-all" value="true" onclick="DoCheck()"/></th>
 			                        <th style="width: 35%;">S/N号</th><th>机器人类型</th>
 			                        </tr>
 			                    </thead>
@@ -108,9 +108,10 @@
 			                      <c:forEach var="robot" items="${robot }" varStatus="status">
 			                      <tr>
 			                        <td>
-			                          <input type="checkbox" name="RolePermissionRef-${status.index }-checked" value="true" <c:if test="${robot.checked eq true}">checked</c:if> />
-			                          <input type="hidden"  name="RolePermissionRef-${status.index }-permission_fk" value="${robot.robot_id }" />
-			                          <input type="hidden"  name="RolePermissionRef-${status.index }-id" value="${robot.id}" />
+			                          <input type="checkbox" name="CmsRobotGroupRef-${status.index }-checked" value="true" <c:if test="${robot.checked eq true}">checked</c:if> />
+			                          <input type="hidden"  name="CmsRobotGroupRef-${status.index }-group_fk" value="${robot.robot_id }" />
+			                          <input type="hidden"  name="CmsRobotGroupRef-${status.index }-id" value="${robot.id}" />
+			                          <input type="hidden"  name="CmsRobotGroupRef-${status.index }-sn" value="${robot.sn}" />
 			                        </td>
 			                        <td>${robot.sn }</td>
 			                        <td>${robot.type_name }</td>

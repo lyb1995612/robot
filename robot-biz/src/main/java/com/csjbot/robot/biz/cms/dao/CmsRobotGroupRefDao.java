@@ -16,5 +16,7 @@ public interface CmsRobotGroupRefDao {
 	public int insert(CmsRobotGroupRef ref);
 
     public int update(CmsRobotGroupRef ref);
+    
+    public CmsRobotGroupRef delete(String id);
 	
 }

@@ -38,6 +38,14 @@
     where id = #{id,jdbcType=CHAR}
   </select>
   
+  <select id="selectByTypeAndSn" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from cms_robot
+    where sn = #{sn,jdbcType=VARCHAR}
+     and  type = #{type,jdbcType=INTEGER}
+  </select>
+  
    <delete id="delete" parameterType="map" >
     delete from cms_robot
     where id = #{id,jdbcType=CHAR}

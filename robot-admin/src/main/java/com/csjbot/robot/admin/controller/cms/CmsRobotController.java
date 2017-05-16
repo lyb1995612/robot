@@ -130,9 +130,14 @@ public class CmsRobotController {
 		attach.setCreator_fk(loginUser.getId());
 		attach.setUpdater_fk(loginUser.getId());
 		attach.setSort(0);
-		if(cmsRobotService.insert(cmsRobot) > 0){
-        	msg = ResultEntity.KW_STATUS_SUCCESS;
-        }
+		CmsRobot params = cmsRobotService.selectByTypeAndSn(cmsRobot.getType(), cmsRobot.getSn());
+		if(params == null){
+			if(cmsRobotService.insert(cmsRobot) > 0){
+	        	msg = ResultEntity.KW_STATUS_SUCCESS;
+	        }
+		}else{
+			    msg = ResultEntity.KW_STATUS_FAIL;
+		}
 		result.put("msg", msg);
 		return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
 	}

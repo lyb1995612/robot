@@ -22,10 +22,14 @@ public class CmsRobotGroupRefService {
         return dao.get(id);
     }
 	
+	public CmsRobotGroupRef delete(String id){
+		return dao.delete(id);
+	}
+	
 	public void saveOrUpdate(CmsRobotGroupRef ref) {
         if (dao.update(ref) == 0) {
             if (StringUtil.isEmpty(ref.getId())) {
-                ref.setId(StringUtil.createUUID());
+               ref.setId(StringUtil.createUUID());
             }
             dao.insert(ref);
         }

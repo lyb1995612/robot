@@ -2,13 +2,14 @@ package com.csjbot.robot.biz.cms.model;
 
 import java.util.Date;
 
+import com.csjbot.robot.base.util.StringUtil;
 import com.csjbot.robot.base.web.entity.PaginationParam;
 
 public class CmsRobotGroupRef extends PaginationParam{
 	
 	private static final long serialVersionUID = 1L;
 
-	private String id;
+	private String id = StringUtil.createUUID();
 	
 	private String group_fk;
 	
@@ -22,12 +23,13 @@ public class CmsRobotGroupRef extends PaginationParam{
 	
 	private String updater_fk;
 	
-	private Date date_create;
+	private Date date_create = new Date();
 	
-	private Date date_update;
+	private Date date_update = new Date();
 	
 	private boolean checked = false;
-
+    
+	
 	public String getId() {
 		return id;
 	}

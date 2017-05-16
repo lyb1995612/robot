@@ -14,6 +14,13 @@
        <result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
        <result column="checked" property="checked" jdbcType="BOOLEAN" />
     </resultMap>
+    
+    <resultMap id="rolePermission" type="java.util.HashMap">
+    <result property="checked" column="checked" javaType="boolean" jdbcType="TINYINT" />
+    <result property="permission_id" column="permission_id" />
+    <result property="code" column="code" />
+    <result property="name" column="name" />
+    </resultMap>
   
   <select id="get" parameterType="map" resultMap="BaseResultMap">
 	SELECT *
@@ -64,5 +71,10 @@
     AND a.sn= b.sn
     AND a.group_fk = #{robotGroupId}
   </select>
+  
+  <delete id="delete" parameterType="map" >
+    delete from cms_robot_group_ref
+    where id = #{id,jdbcType=CHAR}
+  </delete>
     
 </mapper>

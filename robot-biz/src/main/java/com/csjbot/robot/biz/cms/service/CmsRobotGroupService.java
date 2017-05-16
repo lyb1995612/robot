@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.csjbot.robot.biz.cms.dao.CmsRobotGroupDao;
-import com.csjbot.robot.biz.cms.dao.CmsRobotGroupRefDao;
 import com.csjbot.robot.biz.cms.model.CmsRobotGroup;
 import com.csjbot.robot.biz.sys.dao.SysDataDictionaryDao;
 import com.csjbot.robot.biz.sys.model.SysDataDictionary;
@@ -22,8 +21,6 @@ public class CmsRobotGroupService {
 	@Autowired
 	private CmsRobotGroupDao cmsRobotGroupDao;
 	
-	@Autowired
-	private CmsRobotGroupRefDao cmsRobotGroupRefDao;
 	
 	@Autowired
 	private SysDataDictionaryDao sysDicDao;

@@ -19,7 +19,7 @@
     <result property="checked" column="checked" javaType="boolean" jdbcType="TINYINT" />
     <result property="robot_id" column="robot_id" />
     <result property="sn" column="sn" />
-    <result property="memo" column="memo" />
+    <result property="type_name" column="type_name" />
     </resultMap>
   <sql id="Base_Column_List" >
     id, group_name, type, valid, updater_fk, creator_fk, date_update, date_create
@@ -28,7 +28,8 @@
   <select id="page" parameterType="map" resultMap="BaseResultMap">
 	   SELECT (SELECT COUNT(b.group_fk) 
                FROM cms_robot_group_ref b
-               WHERE b.group_fk = a.id
+               WHERE b.valid = 1
+               and b.group_fk = a.id
                GROUP BY b.group_fk)relevance_num,
        a.id, a.group_name, a.type,(SELECT `name` FROM sys_data_dictionary WHERE id = a.TYPE)type_name, 
        a.valid, a.updater_fk, a.creator_fk, a.date_update, a.date_create
@@ -73,7 +74,7 @@
     SELECT *
     FROM (
         SELECT a.id, IFNULL(a.valid = 1, 0) AS checked,u.id AS robot_id,u.valid AS STATUS,
-        u.sn AS sn,u.type AS TYPE,
+        u.sn AS sn,u.type AS TYPE,a.memo ,a.date_create ,a.date_update,
         (SELECT `name` FROM sys_data_dictionary WHERE id = TYPE)type_name
       FROM (
         SELECT *

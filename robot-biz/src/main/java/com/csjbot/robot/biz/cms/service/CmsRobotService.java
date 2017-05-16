@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,10 @@ public class CmsRobotService {
 	
 	public int delete(String id){
 		return cmsRobotDao.delete(id);
+	}
+	
+	public CmsRobot selectByTypeAndSn(int type,String sn){
+		return cmsRobotDao.selectByTypeAndSn(type, sn);
 	}
 	
 	public PageList<CmsRobot> page(Map<String, Object> params,int current, int pagesize, String sortString) {
