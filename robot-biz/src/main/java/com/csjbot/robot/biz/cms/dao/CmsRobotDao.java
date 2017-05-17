@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.csjbot.robot.biz.cms.model.CmsRobot;
-import com.csjbot.robot.biz.pms.model.PmsProduct;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
@@ -30,5 +29,9 @@ public interface CmsRobotDao {
 	<T, K, V> List<T> getRobotGroupRef(Map<String, Object> params);
 	
 	public PageList<CmsRobot> page(Map<String, Object> params, PageBounds pager);
+	
+	public List<CmsRobot> getCmsRobots();
+	
+	public List<CmsRobot> getAdCmsRobots();
 
 }

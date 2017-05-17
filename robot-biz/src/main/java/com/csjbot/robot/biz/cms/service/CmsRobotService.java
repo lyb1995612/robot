@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,5 +61,9 @@ public class CmsRobotService {
 	public <T, K, V> List<T> getRobotGroupRef(Map<String, Object> params) {
         return cmsRobotDao.getRobotGroupRef(params);
     }
+	
+	public List<CmsRobot> getAdCmsRobots() {
+		return cmsRobotDao.getAdCmsRobots();
+	}
 	
 }

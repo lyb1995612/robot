@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjbot.robot.biz.pms.dao.PmsProductDistributeDao" >
+  <resultMap id="BaseResultMap" type="com.csjbot.robot.biz.pms.model.PmsProductDistribute" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="sn" property="sn" jdbcType="CHAR" />
+    <result column="number" property="number" jdbcType="SMALLINT" />
+    <result column="valid" property="valid" jdbcType="TINYINT" />
+    <result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
+    <result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
+    <result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
+    <result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="Result1" type="java.lang.String" >
+     <result column="product_fk" property="product_fk" jdbcType="VARCHAR" />
+  </resultMap>  
+  <sql id="Base_Column_List" >
+    id, name, price, memo, valid, updater_fk, creator_fk, date_update, date_create
+  </sql>
+  <select id="page" parameterType="map" resultMap="BaseResultMap">
+		select 
+		id, sn, count(id) as number, valid, updater_fk, creator_fk, date_update, date_create
+		from cms_robot_product_ref where valid = 1
+       <if test="sn != null and sn !=''">
+          and ( upper(`sn`) LIKE CONCAT('%', #{sn},'%'))
+       </if>
+         group by sn                 
+  </select>
+  <insert id="insert" parameterType="com.csjbot.robot.biz.pms.model.PmsProductDistribute" >
+    insert into cms_robot_product_ref (id, sn, product_fk, valid, updater_fk, 
+      creator_fk, date_update, date_create
+      )
+    values (#{id,jdbcType=CHAR}, #{sn,jdbcType=CHAR}, #{product_fk,jdbcType=VARCHAR}
+      , 1, #{updater_fk,jdbcType=CHAR}, 
+      #{creator_fk,jdbcType=CHAR},now(), now()
+      )
+  </insert>
+  <insert id="inserts" parameterType="com.csjbot.robot.biz.pms.model.PmsProductDistribute" >
+    insert into cms_robot_product_ref (id, sn, product_fk, valid, updater_fk, 
+      creator_fk, date_update, date_create)
+    values
+     <foreach collection ="list" item="pmsProductDistribute" index= "index" separator =",">
+     (#{pmsProductDistribute.id,jdbcType=CHAR},
+      #{pmsProductDistribute.sn,jdbcType=CHAR},
+      #{pmsProductDistribute.product_fk,jdbcType=VARCHAR},
+      1, #{pmsProductDistribute.updater_fk,jdbcType=CHAR}, 
+      #{pmsProductDistribute.creator_fk,jdbcType=CHAR},now(), now())
+     </foreach>
+  </insert>  
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from cms_robot_product_ref
+    where sn = #{sn,jdbcType=CHAR}
+  </delete>
+  <select id="selectProductBySn" parameterType="map" resultMap="Result1">
+		select 
+		product_fk
+		from cms_robot_product_ref where valid = 1 and sn = #{sn,jdbcType=CHAR}                 
+  </select>  
+</mapper>

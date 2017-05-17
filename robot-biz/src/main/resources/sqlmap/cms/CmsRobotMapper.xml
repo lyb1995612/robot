@@ -38,6 +38,17 @@
     where id = #{id,jdbcType=CHAR}
   </select>
   
+  <select id="getCmsRobots" parameterType="map" resultMap="BaseResultMap">
+		select 
+		  <include refid="Base_Column_List" />
+		from cms_robot where valid = 1 and sn not in(select sn from cms_robot_product_ref group by sn)         
+  </select>
+  <select id="getAdCmsRobots" parameterType="map" resultMap="BaseResultMap">
+		select 
+		  <include refid="Base_Column_List" />
+		from cms_robot where valid = 1 and sn not in(select sn from cms_robot_advertise_ref group by sn)         
+  </select>
+  
   <select id="selectByTypeAndSn" resultMap="BaseResultMap" parameterType="map" >
     select 
     <include refid="Base_Column_List" />
