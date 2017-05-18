@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,10 +32,12 @@ import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.cms.model.CmsRobot;
 import com.csjbot.robot.biz.cms.model.CmsRobotGroup;
 import com.csjbot.robot.biz.cms.model.CmsRobotGroupRef;
+import com.csjbot.robot.biz.cms.model.RobotGroupParam;
 import com.csjbot.robot.biz.cms.service.CmsRobotGroupRefService;
 import com.csjbot.robot.biz.cms.service.CmsRobotGroupService;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.sys.model.SysDataDictionary;
+import com.csjbot.robot.biz.sys.model.param.UserRoleParam;
 import com.csjbot.robot.biz.ums.model.User;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
@@ -159,7 +162,14 @@ public class CmsRobotGroupController {
         return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
     }	
 	
-	
+	/**
+	 * 跳转到机器人关联页面
+	 * @param id
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/{id}/toRobotGroupRef")
     public ModelAndView assignPermission(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         CmsRobotGroup cmsRobotGroup = null;
@@ -174,6 +184,8 @@ public class CmsRobotGroupController {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
+        List<SysDataDictionary> cplist = cmsRobotGroupService.findDictionaryByCode(Constants.DataDictionary.CPFL);
+		mv.addObject("cplist", cplist);
         mv.addObject("robotGroup", cmsRobotGroup);
         int relevance_num = cmsRobotGroupRefService.countRobotGroupSize(cmsRobotGroup.getId());
         mv.addObject("relevance_num", relevance_num);
@@ -183,8 +195,46 @@ public class CmsRobotGroupController {
         mv.addObject("robot", robot);
         return mv;
     }
-    
 	
+	/**
+	 * 按条件检索机器人清单
+	 * @param id
+	 * @param param
+	 * @param request
+	 * @param response
+	 * @param builder
+	 * @return
+	 */
+	@RequestMapping(value = "/{id}/robotGroupRef/search")
+    public ResponseEntity<ResultEntity> searchUser(@PathVariable String id, @RequestBody RobotGroupParam param, HttpServletRequest request, HttpServletResponse response, UriComponentsBuilder builder)  {
+        ResultEntity result = null;
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("robotGroupId", id);
+            params.put("sn", param.getSn());
+            params.put("type", param.getType());
+            List<Map<String, Object>> robot = cmsRobotGroupService.listRobot(params);
+            result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "Success!", robot);
+
+        } catch (Exception e) {
+            result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "Internal Server Error!");
+            e.printStackTrace();
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("/rbg/{id}/robotGroupRef/search").buildAndExpand(id).toUri());
+        return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
+    }
+	
+    
+	/**
+	 * 关联机器人
+	 * @param id
+	 * @param request
+	 * @param response
+	 * @param builder
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/{id}/robotGroupRef/save")
     public ResponseEntity<ResultEntity> saveRolePermission(@PathVariable String id, HttpServletRequest request, HttpServletResponse response, UriComponentsBuilder builder) throws IOException {
         ResultEntity result = null;

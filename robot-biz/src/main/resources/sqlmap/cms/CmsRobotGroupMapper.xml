@@ -85,6 +85,14 @@
       ON u.sn = a.sn
         AND a.group_fk = #{robotGroupId}
     ) tbl
+    <where>
+      <if test="sn != null and sn != ''">
+        AND tbl.sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
+      </if>
+      <if test="TYPE != null and TYPE != ''">
+        AND tbl.TYPE LIKE CONCAT(CONCAT('%', #{TYPE}), '%')
+      </if>
+    </where>
     ORDER BY tbl.checked DESC;
   </select>
   
