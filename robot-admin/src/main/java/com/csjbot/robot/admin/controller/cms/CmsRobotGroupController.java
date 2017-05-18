@@ -35,9 +35,11 @@ import com.csjbot.robot.biz.cms.model.CmsRobotGroupRef;
 import com.csjbot.robot.biz.cms.model.RobotGroupParam;
 import com.csjbot.robot.biz.cms.service.CmsRobotGroupRefService;
 import com.csjbot.robot.biz.cms.service.CmsRobotGroupService;
+import com.csjbot.robot.biz.sys.dao.SysDataDictionaryDao;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.sys.model.SysDataDictionary;
 import com.csjbot.robot.biz.sys.model.param.UserRoleParam;
+import com.csjbot.robot.biz.sys.service.DictionaryService;
 import com.csjbot.robot.biz.ums.model.User;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
@@ -52,6 +54,9 @@ public class CmsRobotGroupController {
 	
 	@Autowired
 	private CmsRobotGroupRefService cmsRobotGroupRefService;
+	
+	@Autowired 
+	private DictionaryService dictionaryService;
 	
 	/**
 	 * 显示机器人群组列表
@@ -212,7 +217,8 @@ public class CmsRobotGroupController {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("robotGroupId", id);
             params.put("sn", param.getSn());
-            params.put("type", param.getType());
+            SysDataDictionary sysDataDictionary = dictionaryService.findSysDataDicById(Integer.parseInt(param.getType_name()));
+            params.put("type_name", sysDataDictionary.getName());
             List<Map<String, Object>> robot = cmsRobotGroupService.listRobot(params);
             result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "Success!", robot);
 

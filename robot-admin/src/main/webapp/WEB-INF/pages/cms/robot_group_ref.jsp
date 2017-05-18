@@ -81,7 +81,7 @@
 			                                     <div class="form-group">
 			                                          <div class="input-group">
 			                                              <div class="input-group-addon">机器人类型</div>
-			                                              <select  class="form-control" id="type" name="type">
+			                                              <select  class="form-control" id="type_name" name="type_name">
 			                                             	   <option value="-1">全部</option>
 			                                                   <c:forEach items="${cplist}" var="one" >
 			                                                       <option value="${one.id }">${one.name}</option>

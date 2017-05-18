@@ -42,8 +42,8 @@ $().ready(function() {
 				var $row = $("<tr></tr>");
 				$row.append("<td><input type=\"checkbox\" id=\"CmsRobotGroupRef-" + i + "-checked\" name=\"CmsRobotGroupRef-" + i + "-checked\" value=\"true\" " + ((data.checked == true) ? "checked" : "") + " />" +
 						        "<input type=\"hidden\" id=\"CmsRobotGroupRef-" + i + "-group_fk\" name=\"CmsRobotGroupRef-" + i + "-group_fk\" value=\"" + data.robot_id + "\" />" +
-						        "<input type=\"hidden\" id=\"CmsRobotGroupRef-" + i + "-id\"  value=\"" + data.id + "\" />" +
-						        "<input type=\"hidden\" id=\"CmsRobotGroupRef-" + i + "-sn\"  value=\"" + data.sn + "\" /></td>");
+						        "<input type=\"hidden\" id=\"CmsRobotGroupRef-" + i + "-id\"  name=\"CmsRobotGroupRef-" + i + "-id\" value=\"" + data.id + "\" />" +
+						        "<input type=\"hidden\" id=\"CmsRobotGroupRef-" + i + "-sn\"  name=\"CmsRobotGroupRef-" + i + "-sn\" value=\"" + data.sn + "\" /></td>");
 				$row.append("<td>" + data.sn + "</td>");
 				$row.append("<td>" + data.type_name + "</td>");
 				// -----------------------------------------------------------------------------------------------------------------------------------------------
