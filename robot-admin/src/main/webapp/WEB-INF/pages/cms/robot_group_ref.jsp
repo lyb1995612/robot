@@ -27,7 +27,7 @@
 	    overflow: scroll;
 	  }
 	</style>
-	 <script>
+	<!--  <script>
 	    $(document).ready(function(){
 	      
 	        $('input').iCheck({
@@ -53,7 +53,20 @@
             $("#sys").addClass("open");
             $("#sys").addClass("active");
         }); 
-	</script> 
+	</script>  -->
+	<script>
+	    $(document).ready(function(){
+         		$('table th input:checkbox').on('click' , function(){
+				var that = this;
+				$(this).closest('table').find('tr > td:first-child input:checkbox')
+				.each(function(){
+					this.checked = that.checked;
+					$(this).closest('tr').toggleClass('selected');
+				});
+					
+			});
+	    });
+	</script>
 </head>
   
 <body class="navbar-fixed">
