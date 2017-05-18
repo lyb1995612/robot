@@ -7,8 +7,6 @@
 <head>
     <jsp:include page="../common/meta.jsp" />
     <jsp:include page="../common/resources.jsp" />
-    <link rel="stylesheet" type="text/css" href="${path }/resources/iCheck/skins/all.css" />
-    <script src="${path }/resources/iCheck/icheck.min.js"></script>
     <script src="${path }/scripts/sys/assign-user.js"></script>
     <script src="${path }/scripts/plugins/datatable/jquery.csjbotui.datatable.js"></script>
     <style>
@@ -34,31 +32,17 @@
     </style>
     <script>
        $(document).ready(function(){
-         $('input').iCheck({
-           checkboxClass: 'icheckbox_flat-blue',
-           increaseArea: '20%' // optional
-         });
-         
-         $("#select-all").on('ifChanged', function(event){
-              var checked = $("#select-all").is(":checked");
-              $.each($("#tp tbody tr input[type='checkbox']"), function(i, box) {
-                  if(checked){
-                      $(box).iCheck('check');
-                  }else{
-                      $(box).iCheck('uncheck');
-                  }
-              });
-         });
-
+       		$('table th input:checkbox').on('click' , function(){
+			var that = this;
+			$(this).closest('table').find('tr > td:first-child input:checkbox')
+			.each(function(){
+				this.checked = that.checked;
+				$(this).closest('tr').toggleClass('selected');
+			});
+				
+		});
        });
        
-       $(function(){
-           $("#sys_permission").addClass("active");
-           $("#sys").addClass("open");
-           $("#sys").addClass("active");
-           
-              $("#status").select();
-       });
     </script>
 </head>
   
@@ -144,7 +128,9 @@
 			              <table id="tp" class="table table-striped table-hover table-bordered table-responsive" data-url="${path }/role/${role.id }/user/search">
 			                <thead>
 			                  <tr>
-			                    <th class="check-column"><input type="checkbox" id="select-all" name="select-all" value="true"/></th>
+			                    <th style="width: 40px;">
+									<input type="checkbox" class="ace" value="true" style="position:initial"/>
+								</th>
 			                    <th>账号</th>
 			                    <th>姓名</th>
 			                    <th>手机</th>
@@ -160,7 +146,7 @@
 			                  <c:forEach var="admin" items="${admins }" varStatus="status">
 			                  <tr>
 			                    <td>
-			                      <input type="checkbox" id="UserRoleRef-${status.index }-checked" name="UserRoleRef-${status.index }-checked" value="true" <c:if test="${admin.checked eq true }">checked</c:if> />
+			                      <input class="ace" type="checkbox" id="UserRoleRef-${status.index }-checked" name="UserRoleRef-${status.index }-checked" value="true" <c:if test="${admin.checked eq true }">checked</c:if> />
 			                      <input type="hidden" id="UserRoleRef-${status.index }-id" name="UserRoleRef-${status.index }-id" value="${admin.id }" />
 			                      <input type="hidden" id="UserRoleRef-${status.index }-user_fk" name="UserRoleRef-${status.index }-user_fk" value="${admin.user_fk }" />
 			                    </td>
