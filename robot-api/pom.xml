@@ -14,8 +14,8 @@
     <name>api</name>
 
     <properties>
-        <src.war>${project.build.directory}/${project.artifactId}-${version}.war</src.war>
-        <out.war>${project.basedir}/docker/api.war</out.war>
+        <out.war>${project.artifactId}-${version}.war</out.war>
+        <docker.dir>${project.basedir}/docker</docker.dir>
     </properties>
 
     <build>
@@ -28,8 +28,9 @@
                         <phase>package</phase>
                         <configuration>
                             <target>
-                                <delete file="${out.war}"/>
-                                <copy file="${src.war}" tofile="${out.war}"/>
+                                <delete file="${docker.dir}/${out.war}"/>
+                                <copy file="${project.build.directory}/${out.war}"
+                                      tofile="${docker.dir}/${out.war}"/>
                             </target>
                         </configuration>
                         <goals>
