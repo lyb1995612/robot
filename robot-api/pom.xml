@@ -13,21 +13,47 @@
     <packaging>war</packaging>
     <name>api</name>
 
+    <properties>
+        <src.war>${project.build.directory}/${project.artifactId}-${version}.war</src.war>
+        <out.war>${project.basedir}/docker/api.war</out.war>
+    </properties>
+
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <delete file="${out.war}"/>
+                                <copy file="${src.war}" tofile="${out.war}"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <configuration>
-                    <imageName>csjbot-api</imageName>
+                    <imageName>dev.csjbot.com:13079/robot/api</imageName>
+                    <imageTags>
+                        <imageTag>latest</imageTag>
+                    </imageTags>
                     <dockerDirectory>${project.basedir}/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
+                    <!--<resources>-->
+                    <!--<resource>-->
+                    <!--<targetPath>/</targetPath>-->
+                    <!--<directory>${project.build.directory}</directory>-->
+                    <!--<include>${project.build.finalName}.jar</include>-->
+                    <!--</resource>-->
+                    <!--</resources>-->
                 </configuration>
             </plugin>
         </plugins>

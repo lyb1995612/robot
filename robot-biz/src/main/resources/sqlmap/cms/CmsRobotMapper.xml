@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csjbot.robot.biz.cms.dao.CmsRobotDao">
+    <resultMap id="BaseResultMap" type ="com.csjbot.robot.biz.cms.model.CmsRobot">
+       <result property="id" column="id" jdbcType="CHAR"/>
+       <result column="sn" property="sn" jdbcType="VARCHAR" />
+       <result column="type" property="type" jdbcType="INTEGER"/>
+       <result column="type_name" property="type_name" jdbcType="VARCHAR" />
+       <result column="valid" property="valid" jdbcType="TINYINT" />
+       <result column="register" property="register" jdbcType="TIMESTAMP" />
+       <result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
+       <result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
+       <result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
+       <result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+  <sql id="Base_Column_List" >
+    id, sn, type, valid, register, updater_fk, creator_fk, date_update, date_create
+  </sql>
+  
+  <select id="page" parameterType="map" resultMap="BaseResultMap">
+		select 
+		  id, sn, type,(select `name` from sys_data_dictionary where id = type)type_name, valid, register, updater_fk, creator_fk, date_update, date_create
+		from cms_robot where valid = 1
+		<if test="sn != null and sn !=''">
+          and sn LIKE CONCAT('%', #{sn},'%')
+       </if> 
+		<if test="type != null and type !='' and type != '-1' ">
+          and ( upper(`type`) LIKE CONCAT('%', #{type},'%'))
+       </if>  
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from cms_robot
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  
+  <select id="getCmsRobots" parameterType="map" resultMap="BaseResultMap">
+		select 
+		  <include refid="Base_Column_List" />
+		from cms_robot where valid = 1 and sn not in(select sn from cms_robot_product_ref group by sn)         
+  </select>
+  <select id="getAdCmsRobots" parameterType="map" resultMap="BaseResultMap">
+		select 
+		  <include refid="Base_Column_List" />
+		from cms_robot where valid = 1 and sn not in(select sn from cms_robot_advertise_ref group by sn)         
+  </select>
+  
+  <select id="selectByTypeAndSn" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from cms_robot
+    where sn = #{sn,jdbcType=VARCHAR}
+     and  type = #{type,jdbcType=INTEGER}
+  </select>
+  
+   <delete id="delete" parameterType="map" >
+    delete from cms_robot
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.csjbot.robot.biz.cms.model.CmsRobot" >
+    insert into cms_robot (id, sn, type, valid, register, updater_fk, creator_fk, date_update, date_create)
+    values (#{id,jdbcType=CHAR}, #{sn,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 1,now(),
+      #{updater_fk,jdbcType=CHAR}, #{creator_fk,jdbcType=CHAR}, 
+      now(), now())
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.csjbot.robot.biz.cms.model.CmsRobot" >
+    update cms_robot
+    set sn = #{sn,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      valid = #{valid,jdbcType=TINYINT},
+      updater_fk = #{updater_fk,jdbcType=CHAR},
+      creator_fk = #{creator_fk,jdbcType=CHAR},
+      date_update = now(),
+      date_create = #{date_create,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+    
+   <select id="getRobotGroupRef" parameterType="map" resultMap="BaseResultMap">
+    <!-- SELECT IFNULL(rpr.valid = 1, 0) AS checked, rpr.id,
+	p.id AS permission_id, p.code AS code, p.name AS name
+	FROM (
+	    SELECT *
+	    FROM sys_permission
+	) p
+	LEFT JOIN sys_role_permission_ref rpr
+	ON p.id = rpr.permission_fk
+	    AND rpr.role_fk = #{roleId}
+	order by p.code; -->
+  </select> 
+</mapper>

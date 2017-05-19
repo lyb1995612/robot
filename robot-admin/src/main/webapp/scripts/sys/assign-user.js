@@ -45,12 +45,11 @@ $().ready(function() {
 			// -----------------------------------------------------------------------------------------------------------------------------------------------
 			$.each(data.list, function(i, data) {
 				var $row = $("<tr></tr>");
-				$row.append("<td><input type=\"checkbox\" id=\"UserRoleRef-" + i + "-checked\" name=\"UserRoleRef-" + i + "-checked\" value=\"true\" " + ((data.checked == true) ? "checked" : "") + " /><input type=\"hidden\" id=\"UserRoleRef-" + i + "-id\" name=\"UserRoleRef-" + i + "-id\" value=\"" + data.id + "\" /><input type=\"hidden\" id=\"UserRoleRef-" + i + "-user_fk\" name=\"UserRoleRef-" + i + "-user_fk\" value=\"" + data.user_fk + "\" /></td>");
+				$row.append("<td><input class=\"ace\" type=\"checkbox\" id=\"UserRoleRef-" + i + "-checked\" name=\"UserRoleRef-" + i + "-checked\" value=\"true\" " + ((data.checked == true) ? "checked" : "") + " /><input type=\"hidden\" id=\"UserRoleRef-" + i + "-id\" name=\"UserRoleRef-" + i + "-id\" value=\"" + data.id + "\" /><input type=\"hidden\" id=\"UserRoleRef-" + i + "-user_fk\" name=\"UserRoleRef-" + i + "-user_fk\" value=\"" + data.user_fk + "\" /></td>");
 				$row.append("<td>" + data.account + "</td>");
 				$row.append("<td>" + data.username + "</td>");
 				$row.append("<td>" + data.cellphone + "</td>");
 				$row.append("<td>" + data.userStatus + "</td>");
-				$row.append("<td>" + data.userType + "</td>");
 				// -----------------------------------------------------------------------------------------------------------------------------------------------
 				$table.append($row);
 			});

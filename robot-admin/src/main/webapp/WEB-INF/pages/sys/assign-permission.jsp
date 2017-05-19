@@ -7,9 +7,6 @@
 <head>
     <jsp:include page="../common/meta.jsp" />
     <jsp:include page="../common/resources.jsp" />
-    
-    <link rel="stylesheet" type="text/css" href="${path }/resources/iCheck/skins/all.css" />
-    <script src="${path }/resources/iCheck/icheck.min.js"></script>
     <script src="${path }/scripts/sys/assign-permission.js"></script>
     <style>
 	  .panel-body .row {
@@ -29,30 +26,16 @@
 	</style>
 	<script>
 	    $(document).ready(function(){
-	      
-	      $('input').iCheck({
-	        checkboxClass: 'icheckbox_flat-blue',
-	        increaseArea: '20%' // optional
-	      });
-	      
-	      $("#select-all").on('ifChanged', function(event){
-	          var checked = $("#select-all").is(":checked");
-	          $.each($("#tp tbody tr input[type='checkbox']"), function(i, box) {
-	              if(checked){
-	                  $(box).iCheck('check');
-	              }else{
-	                  $(box).iCheck('uncheck');
-	              }
-	          });
-	      });
-	      
+         		$('table th input:checkbox').on('click' , function(){
+				var that = this;
+				$(this).closest('table').find('tr > td:first-child input:checkbox')
+				.each(function(){
+					this.checked = that.checked;
+					$(this).closest('tr').toggleClass('selected');
+				});
+					
+			});
 	    });
-	    
-	    $(function(){
-            $("#sys_permission").addClass("active");
-            $("#sys").addClass("open");
-            $("#sys").addClass("active");
-        });
 	</script>
 </head>
   
@@ -93,7 +76,9 @@
 			                <table id="tp" class="table table-striped table-hover table-bordered table-responsive">
 			                    <thead>
 			                        <tr>
-			                        <th style="width: 40px;"><input type="checkbox" id="select-all" value="true"/></th>
+			                        <th style="width: 40px;">
+										<input type="checkbox" class="ace" value="true" style="position:initial"/>
+									</th>
 			                        <th style="width: 35%;">code</th><th>name</th>
 			                        </tr>
 			                    </thead>
@@ -106,7 +91,7 @@
 			                      <c:forEach var="permission" items="${permissions }" varStatus="status">
 			                      <tr>
 			                        <td>
-			                          <input type="checkbox" name="RolePermissionRef-${status.index }-checked" value="true" <c:if test="${permission.checked eq true }">checked</c:if> />
+			                          <input class="ace" type="checkbox"  name="RolePermissionRef-${status.index }-checked" value="true" <c:if test="${permission.checked eq true }">checked</c:if> />
 			                          <input type="hidden"  name="RolePermissionRef-${status.index }-permission_fk" value="${permission.permission_id }" />
 			                          <input type="hidden"  name="RolePermissionRef-${status.index }-id" value="${permission.id}" />
 			                        </td>

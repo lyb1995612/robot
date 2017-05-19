@@ -28,6 +28,13 @@ public class Pms_product {
 	private String creator_fk;
 	private Timestamp date_update;
 	private Timestamp date_create;
+    private boolean checked = false;
+	public boolean isChecked() {
+		return checked;
+	}
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
 	public String getId() {
 		return id;
 	}

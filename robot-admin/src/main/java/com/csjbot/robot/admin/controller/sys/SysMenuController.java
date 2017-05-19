@@ -1,5 +1,6 @@
 package com.csjbot.robot.admin.controller.sys;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +57,7 @@ public class SysMenuController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/listMenus", produces = "application/json", method = RequestMethod.POST)
+    @RequestMapping(value = "/listMenus", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<String> listMenus(HttpServletResponse response, HttpServletRequest request){
         JSONObject result = new JSONObject();
         String msg = "";
@@ -145,7 +146,12 @@ public class SysMenuController {
         result.put("msg", msg);
         result.put("content", content);
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        MediaType mediaType = new MediaType("text","html",Charset.forName("utf-8"));
+        headers.setContentType(mediaType);
+        
+       /* HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);*/
+        
         response.setCharacterEncoding("UTF-8");
         return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
         
@@ -338,8 +344,14 @@ public class SysMenuController {
         }
         result.put("msg", msg);
         result.put("content", content);
+        
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        MediaType mediaType = new MediaType("text","html",Charset.forName("utf-8"));
+        headers.setContentType(mediaType);
+        
+        
+       /* HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);*/
         response.setCharacterEncoding("UTF-8");
         return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
     }

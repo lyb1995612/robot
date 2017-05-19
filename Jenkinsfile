@@ -14,5 +14,11 @@ pipeline{
                 sh './mvnw clean package'
             }
         }
+        stage('pack'){
+            steps{
+                echo 'build and push api'
+                sh './mvnw docker:build -pl robot-api -DpushImage'
+            }
+        }
     }
 }
