@@ -22,6 +22,6 @@ public interface PmsAdvertisementDao {
 
     int updateByPrimaryKey(PmsAdvertisement record);
 	  
-    public PageList<PmsAdvertisement> page(Map<String, Object> params, PageBounds pager);
+    public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
 
 }

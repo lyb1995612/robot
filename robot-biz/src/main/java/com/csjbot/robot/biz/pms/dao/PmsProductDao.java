@@ -28,7 +28,5 @@ public interface PmsProductDao {
      * @author CJay       
      * @created 2017年3月21日 下午1:48:23        
      */
-//    public <E, K, V> Page<E> pageAndSort(Map<String, Object> params,int current, int pagesize, String sortString);
-    
-    public PageList<PmsProduct> page(Map<String, Object> params, PageBounds pager);
+    public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
 }

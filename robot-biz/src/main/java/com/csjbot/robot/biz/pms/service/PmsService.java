@@ -17,6 +17,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.csjbot.robot.base.page.Page;
+import com.csjbot.robot.base.page.PageContainer;
 import com.csjbot.robot.biz.cms.dao.CmsRobotDao;
 import com.csjbot.robot.biz.cms.model.CmsRobot;
 import com.csjbot.robot.biz.pms.dao.PmsAdvertisementDao;
@@ -34,6 +36,7 @@ import com.csjbot.robot.biz.pms.model.Pms_product;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 
 /** 
  * @Description 
@@ -65,12 +68,14 @@ public class PmsService {
      * @created 2017年3月21日 下午2:58:49        
      */  
 	
-    public PageList<PmsProduct> page(Map<String, Object> params,int current, int pagesize, String sortString) {
+	public <E, K, V> Page<E> page(Map<K, V> params,int current, int pagesize, String sortString) {
         PageBounds pager = new PageBounds();
         pager.setLimit(pagesize);
         pager.setPage(current);
         pager.setOrders(Order.formString(sortString));
-        return pmsProductDao.page(params, pager);
+        PageList<E> result = pmsProductDao.page(params, pager);
+        Paginator paginator = result.getPaginator();
+        return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result, params);
     }
     
     public List<Pms_product> selectAll() {
@@ -102,17 +107,15 @@ public class PmsService {
      * @author CJay       
      * @created 2017年3月28日 上午10:37:30        
      */  
-    
-	
-//	public Page<Map<String, Object>> AdvPageAndSort(Map<String, Object> params,	int current, int pagesize, String sortString) {
-//		return pmsAdvertisementDao.pageAndSort(params, current, pagesize, sortString);
-//	}
-    public PageList<PmsAdvertisement> advPage(Map<String, Object> params,int current, int pagesize, String sortString) {
+	public <E, K, V> Page<E> advPage(Map<K, V> params,int current, int pagesize, String sortString) {
         PageBounds pager = new PageBounds();
         pager.setLimit(pagesize);
         pager.setPage(current);
         pager.setOrders(Order.formString(sortString));
-        return pmsAdvertisementDao.page(params, pager);
+        PageList<E> result = pmsAdvertisementDao.page(params, pager);
+        Paginator paginator = result.getPaginator();
+        return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result, params);
+
     }
 	
     public List<Pms_advertisement> selectAllAd() {
