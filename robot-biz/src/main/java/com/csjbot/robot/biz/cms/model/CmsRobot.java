@@ -12,7 +12,7 @@ public class CmsRobot extends PaginationParam{
 	
 	private String sn;
 	
-	private Integer type;
+	private String type;
 	
 	private String type_name;
 	
@@ -53,11 +53,13 @@ public class CmsRobot extends PaginationParam{
 	}
 
 
-	public Integer getType() {
+	
+
+	public String getType() {
 		return type;
 	}
 
-	public void setType(Integer type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -118,7 +120,7 @@ public class CmsRobot extends PaginationParam{
 		// TODO Auto-generated constructor stub
 	}
 
-	public CmsRobot(String id, String sn, Integer type, String type_name, Byte valid, Date register, String creator_fk,
+	public CmsRobot(String id, String sn, String type, String type_name, Byte valid, Date register, String creator_fk,
 			String updater_fk, Date date_create, Date date_update) {
 		super();
 		this.id = id;

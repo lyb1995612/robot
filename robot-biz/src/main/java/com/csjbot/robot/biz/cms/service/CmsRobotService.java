@@ -46,7 +46,7 @@ public class CmsRobotService {
 		return cmsRobotDao.delete(id);
 	}
 	
-	public CmsRobot selectByTypeAndSn(int type,String sn){
+	public CmsRobot selectByTypeAndSn(String type,String sn){
 		return cmsRobotDao.selectByTypeAndSn(type, sn);
 	}
 	

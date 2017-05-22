@@ -99,7 +99,9 @@
 				/xml/** = authcBasic
 				/login = authc
 				/logout = logout
+				/cmsRobotApi/addOfAz=anon
 				/** = user,sysUser
+				
 			</value>
 		</property>
 	</bean>

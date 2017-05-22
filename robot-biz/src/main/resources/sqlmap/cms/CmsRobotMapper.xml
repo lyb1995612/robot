@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type ="com.csjbot.robot.biz.cms.model.CmsRobot">
        <result property="id" column="id" jdbcType="CHAR"/>
        <result column="sn" property="sn" jdbcType="VARCHAR" />
-       <result column="type" property="type" jdbcType="INTEGER"/>
+       <result column="type" property="type" />
        <result column="type_name" property="type_name" jdbcType="VARCHAR" />
        <result column="valid" property="valid" jdbcType="TINYINT" />
        <result column="register" property="register" jdbcType="TIMESTAMP" />
@@ -54,7 +54,7 @@
     <include refid="Base_Column_List" />
     from cms_robot
     where sn = #{sn,jdbcType=VARCHAR}
-     and  type = #{type,jdbcType=INTEGER}
+     and  type = #{type}
   </select>
   
    <delete id="delete" parameterType="map" >
