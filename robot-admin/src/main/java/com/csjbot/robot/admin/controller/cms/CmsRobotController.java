@@ -123,13 +123,6 @@ public class CmsRobotController {
 		cmsRobot.setCreator_fk(loginUser.getId());
 		cmsRobot.setUpdater_fk(loginUser.getId());
 		String msg = "";
-		SysAttachment attach = new SysAttachment();
-		attach.setTransaction_id(id);
-		attach.setTransaction_type(Constants.Attachment.Type.VERSION_ROBOT_FILE);
-		attach.setOwner_fk(loginUser.getId());
-		attach.setCreator_fk(loginUser.getId());
-		attach.setUpdater_fk(loginUser.getId());
-		attach.setSort(0);
 		CmsRobot params = cmsRobotService.selectByTypeAndSn(cmsRobot.getType(), cmsRobot.getSn());
 		if(params == null){
 			if(cmsRobotService.insert(cmsRobot) > 0){
@@ -181,10 +174,6 @@ public class CmsRobotController {
 	    User loginUser = (User) request.getSession().getAttribute(Constants.CURRENT_USER);
 	    cmsRobot.setUpdater_fk(loginUser.getId());
 	    String msg = "";
-        SysAttachment attach = new SysAttachment();
-        attach.setTransaction_id(cmsRobot.getId());
-        attach.setTransaction_type(Constants.Attachment.Type.VERSION_ROBOT_FILE);
-        attach.setUpdater_fk(loginUser.getId());
         CmsRobot params = cmsRobotService.selectByTypeAndSn(cmsRobot.getType(), cmsRobot.getSn());
         if(params == null){
         	if(cmsRobotService.updateByPrimaryKey(cmsRobot) > 0){

@@ -102,13 +102,6 @@ public class CmsRobotGroupController {
 		cmsRobotGroup.setCreator_fk(loginUser.getId());
 		cmsRobotGroup.setUpdater_fk(loginUser.getId());
 		String msg = "";
-		SysAttachment attach = new SysAttachment();
-		attach.setTransaction_id(id);
-		attach.setTransaction_type(Constants.Attachment.Type.VERSION_ROBOT_FILE);
-		attach.setOwner_fk(loginUser.getId());
-		attach.setCreator_fk(loginUser.getId());
-		attach.setUpdater_fk(loginUser.getId());
-		attach.setSort(0);
 		if(cmsRobotGroupService.selectByGroupName(cmsRobotGroup.getGroup_name()) == null){
 			if(cmsRobotGroupService.insert(cmsRobotGroup) > 0){
 	        	msg = ResultEntity.KW_STATUS_SUCCESS;
