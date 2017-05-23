@@ -22,7 +22,7 @@ public interface ScsDishTypeDAO {
 
 	ScsDishType selectByPrimaryKey(Integer id);
 
-	public PageList<ScsDishType> page(Map<String, Object> params, PageBounds bounds);
+	public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
 	
 	int updateByPrimaryKeySelective(ScsDishType scsDishType);
 

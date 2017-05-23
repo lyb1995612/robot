@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.csjbot.robot.base.page.Page;
 import com.csjbot.robot.base.util.StringUtil;
 import com.csjbot.robot.base.web.entity.ResultEntity;
 import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
@@ -33,7 +34,6 @@ import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.sys.service.SysAttachService;
 import com.csjbot.robot.biz.ums.model.User;
 import com.csjbot.robot.biz.util.FileUtil;
-import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 /**
  * 
@@ -55,7 +55,7 @@ public class DishController {
 	/**
 	 * @discription菜品列表
 	 * @author XMT
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping("/list")
 	public ModelAndView protal() {
@@ -66,7 +66,7 @@ public class DishController {
 	/**
 	 * @discription 跳转菜品新增页面
 	 * @author XMT
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "/toDishAdd")
 	public ModelAndView toDeskAdd() {
@@ -76,9 +76,9 @@ public class DishController {
 		return mv;
 	}
 	/**
-     * @discription 跳转到修改页�?
+     * @discription 跳转到修改页�?
      * @author CJay       
-     * @created 2017�?3�?23�? 上午11:03:42
+     * @created 2017�?3�?23�? 上午11:03:42
 	 */
 	@RequestMapping(value = "{id}/toDishUpdate")
 	public ModelAndView toProducUpdate(@PathVariable String id) {
@@ -99,7 +99,7 @@ public class DishController {
 	/**
 	 * @discription 跳转到菜品详情页
 	 * @author XMT
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "{id}/toDishDetail")
 	public ModelAndView toDeskDetail(@PathVariable String id) {
@@ -120,7 +120,7 @@ public class DishController {
 	/**
 	 * @discription 新增菜品
 	 * @author XMT
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> deskAdd(ScsDish scsDish,  @RequestParam(required = false) MultipartFile photo,HttpServletRequest request,HttpServletResponse response) {
@@ -169,7 +169,7 @@ public class DishController {
 	/**
 	 * @discription 删除菜品
 	 * @author XMT
-	 * @created 2017�?4�?17�?
+	 * @created 2017�?4�?17�?
 	 */
 	@RequestMapping(value = "{id}/dishDelete")
 	public ResponseEntity<String> deskDelete(@PathVariable String id, HttpServletResponse response) {
@@ -216,12 +216,12 @@ public class DishController {
 			if (orderName != null && !"".equals(orderName) && dir != null && !"".equals(dir)) {
 				sortString = orderName + "." + dir;
 			}
-			PageList<ScsDish> list = scsService.pageDish(params, (start / length) + 1, length, sortString);
-			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
-			if (list != null && list.size() > 0) {
-				result.addObject("data", list);
-				result.addObject("recordsFiltered", list.size());
-				result.addObject("recordsTotal", list.size());
+			Page<Map<String, Object>> pageMap = scsService.pageDish(params, (start / length) + 1, length, sortString);
+            result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
+            if (pageMap.getRows() != null && pageMap.getRows().size() > 0) {
+                result.addObject("data", pageMap.getRows());
+                result.addObject("recordsFiltered", pageMap.getTotal());
+                result.addObject("recordsTotal", pageMap.getTotal());
 			} else {
 				result.addObject("data", null);
 				result.addObject("recordsFiltered", 0);
@@ -240,7 +240,7 @@ public class DishController {
 	/**
      * @discription 修改菜品
      * @author CJay       
-     * @created 2017�?3�?23�? 上午11:03:26
+     * @created 2017�?3�?23�? 上午11:03:26
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<String> dishUpdate(ScsDish scsDish, HttpServletRequest request,HttpServletResponse response) {

@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.csjbot.robot.base.page.Page;
+import com.csjbot.robot.base.page.PageContainer;
 import com.csjbot.robot.biz.cms.dao.CmsRobotGroupDao;
 import com.csjbot.robot.biz.cms.model.CmsRobotGroup;
 import com.csjbot.robot.biz.sys.dao.SysDataDictionaryDao;
@@ -14,6 +16,7 @@ import com.csjbot.robot.biz.sys.model.SysDataDictionary;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 
 @Service
 public class CmsRobotGroupService {
@@ -51,12 +54,14 @@ public class CmsRobotGroupService {
     	return cmsRobotGroupDao.selectByGroupName(group_name);
     }
     
-    public PageList<CmsRobotGroup> page(Map<String, Object> params,int current, int pagesize, String sortString) {
+    public <E, K, V> Page<E> page(Map<K, V> params,int current, int pagesize, String sortString) {
         PageBounds pager = new PageBounds();
         pager.setLimit(pagesize);
         pager.setPage(current);
         pager.setOrders(Order.formString(sortString));
-        return cmsRobotGroupDao.page(params, pager);
+        PageList<E> result = cmsRobotGroupDao.page(params, pager);
+        Paginator paginator = result.getPaginator();
+        return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result, params);
     }
 
 }

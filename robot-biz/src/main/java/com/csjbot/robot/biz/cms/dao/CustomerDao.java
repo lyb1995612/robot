@@ -31,5 +31,5 @@ public interface CustomerDao {
 	
 	public int delete(@Param("code")String code,@Param("code_group")String code_group);
 	
-	public PageList<Customer> page(Map<String, Object> params, PageBounds bounds);
+	public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
 }

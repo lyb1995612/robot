@@ -30,5 +30,5 @@ public interface ScsAccessoryDAO {
     
     List<ScsAccessory> selectAll();
 	 
-    public PageList<ScsAccessory> page(Map<String, Object> params, PageBounds bounds);
+    public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
 }

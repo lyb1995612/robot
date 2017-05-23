@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.csjbot.robot.base.page.Page;
 import com.csjbot.robot.base.util.StringUtil;
 import com.csjbot.robot.base.web.entity.ResultEntity;
 import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
@@ -31,7 +32,6 @@ import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.sys.service.SysAttachService;
 import com.csjbot.robot.biz.ums.model.User;
 import com.csjbot.robot.biz.util.FileUtil;
-import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 /**
  * 
@@ -41,7 +41,9 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 @Controller
 @RequestMapping("/acce")
 public class AccessoryController {
+	
 	private Logger logger = Logger.getLogger(AccessoryController.class);
+	
 	@Autowired
 	private ScsService scsService;
 	
@@ -51,7 +53,7 @@ public class AccessoryController {
 	/**
 	 * @discriptionèœå“åˆ—è¡¨
 	 * @author XMT
-	 * @created 2017å¹?4æœ?17æ—?
+	 * @created 2017ï¿½?4ï¿½?17ï¿½?
 	 */
 	@RequestMapping("/list")
 	public ModelAndView protal(){
@@ -63,7 +65,7 @@ public class AccessoryController {
 	/**
 	 * @discription è·³è½¬èœå“æ–°å¢é¡µé¢
 	 * @author XMT       
-	 * @created 2017å¹?4æœ?17æ—?
+	 * @created 2017ï¿½?4ï¿½?17ï¿½?
 	 */
 	@RequestMapping(value = "/toAcceAdd")
 	public ModelAndView toDeskAdd() {
@@ -74,7 +76,7 @@ public class AccessoryController {
 	/**
 	 * @discription è·³è½¬åˆ°èœå“è¯¦æƒ…é¡µ
 	 * @author XMT       
-	 * @created 2017å¹?4æœ?17æ—?
+	 * @created 2017ï¿½?4ï¿½?17ï¿½?
 	 */
 	@RequestMapping(value = "{id}/toAcceDetail")
 	public ModelAndView toDeskDetail(@PathVariable String id) {
@@ -113,12 +115,12 @@ public class AccessoryController {
 			if (orderName != null && !"".equals(orderName) && dir != null && !"".equals(dir)) {
 				sortString = orderName + "." + dir;
 			}
-			PageList<ScsAccessory> list = scsService.pageAccessory(params, (start / length) + 1, length, sortString);
-			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
-			if (list != null && list.size() > 0) {
-				result.addObject("data", list);
-				result.addObject("recordsFiltered", list.size());
-				result.addObject("recordsTotal", list.size());
+			Page<Map<String, Object>> pageMap = scsService.pageAccessory(params, (start / length) + 1, length, sortString);
+            result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
+            if (pageMap.getRows() != null && pageMap.getRows().size() > 0) {
+                result.addObject("data", pageMap.getRows());
+                result.addObject("recordsFiltered", pageMap.getTotal());
+                result.addObject("recordsTotal", pageMap.getTotal());
 			} else {
 				result.addObject("data", null);
 				result.addObject("recordsFiltered", 0);
@@ -137,7 +139,7 @@ public class AccessoryController {
 	/**
 	 * @discription æ–°å¢èœå“
 	 * @author XMT
-	 * @created 2017å¹?4æœ?17æ—?
+	 * @created 2017ï¿½?4ï¿½?17ï¿½?
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> deskAdd(ScsAccessory scsAccessory,  @RequestParam(required = false) MultipartFile acce_file,HttpServletRequest request,HttpServletResponse response) {
@@ -183,7 +185,7 @@ public class AccessoryController {
 	/**
 	 * @discription åˆ é™¤èœå“
 	 * @author XMT
-	 * @created 2017å¹?4æœ?17æ—?
+	 * @created 2017ï¿½?4ï¿½?17ï¿½?
 	 */
 	@RequestMapping(value = "{id}/acceDelete")
 	public ResponseEntity<String> deskDelete(@PathVariable String id, HttpServletResponse response) {

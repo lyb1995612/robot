@@ -28,5 +28,5 @@ public interface ScsDeskDao {
 
 	List<ScsDesk> selectAll();
 
-	public PageList<ScsDesk> page(Map<String, Object> params, PageBounds bounds);
+	public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
 }

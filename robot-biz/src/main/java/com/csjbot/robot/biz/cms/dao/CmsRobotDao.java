@@ -28,7 +28,7 @@ public interface CmsRobotDao {
 	
 	<T, K, V> List<T> getRobotGroupRef(Map<String, Object> params);
 	
-	public PageList<CmsRobot> page(Map<String, Object> params, PageBounds pager);
+	public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
 	
 	public List<CmsRobot> getCmsRobots();
 	

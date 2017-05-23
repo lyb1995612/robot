@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
+import com.csjbot.robot.base.page.Page;
+import com.csjbot.robot.base.page.PageContainer;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.sys.dao.SysAttachmentDao;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
@@ -29,6 +31,7 @@ import com.csjbot.robot.biz.scs.model.ScsDishType;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -72,12 +75,14 @@ public class ScsService {
 	}
 
 	
-	public PageList<ScsDesk> page(Map<String, Object> params,int current, int pagesize, String sortString) {
+	public <E, K, V> Page<E> page(Map<K, V> params,int current, int pagesize, String sortString) {
         PageBounds pager = new PageBounds();
         pager.setLimit(pagesize);
         pager.setPage(current);
         pager.setOrders(Order.formString(sortString));
-        return scsDeskDao.page(params, pager);
+        PageList<E> result = scsDeskDao.page(params, pager);
+        Paginator paginator = result.getPaginator();
+        return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result, params);
     }
 	
 	/*
@@ -101,14 +106,17 @@ public class ScsService {
      public ScsDish selectDisByPrimaryKey(String id){
     	 return scsDishDAO.selectByPrimaryKey(id);
      }
-
-     public PageList<ScsDish> pageDish(Map<String, Object> params,int current, int pagesize, String sortString) {
+     
+     public <E, K, V> Page<E> pageDish(Map<K, V> params,int current, int pagesize, String sortString) {
          PageBounds pager = new PageBounds();
          pager.setLimit(pagesize);
          pager.setPage(current);
          pager.setOrders(Order.formString(sortString));
-         return scsDishDAO.page(params, pager);
+         PageList<E> result = scsDishDAO.page(params, pager);
+         Paginator paginator = result.getPaginator();
+         return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result, params);
      }
+     
 
 	/*
 	 * ScsDishType
@@ -129,13 +137,15 @@ public class ScsService {
 	public ScsDishType selectDishTypeByPrimaryKey(Integer id){
 		return scsDishTypeDAO.selectByPrimaryKey(id);
 	}
-
-	public PageList<ScsDishType> pageDishType(Map<String, Object> params,int current, int pagesize, String sortString) {
+	
+	public <E, K, V> Page<E> pageDishType(Map<K, V> params,int current, int pagesize, String sortString) {
         PageBounds pager = new PageBounds();
         pager.setLimit(pagesize);
         pager.setPage(current);
         pager.setOrders(Order.formString(sortString));
-        return scsDishTypeDAO.page(params, pager);
+        PageList<E> result = scsDishTypeDAO.page(params, pager);
+        Paginator paginator = result.getPaginator();
+        return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result, params);
     }
 
 	/*
@@ -155,12 +165,14 @@ public class ScsService {
 		return scsAccessoryDAO.selectByPrimaryKey(id);
 	}
 
-	public PageList<ScsAccessory> pageAccessory(Map<String, Object> params,int current, int pagesize, String sortString) {
+	public <E, K, V> Page<E> pageAccessory(Map<K, V> params,int current, int pagesize, String sortString) {
         PageBounds pager = new PageBounds();
         pager.setLimit(pagesize);
         pager.setPage(current);
         pager.setOrders(Order.formString(sortString));
-        return scsAccessoryDAO.page(params, pager);
+        PageList<E> result = scsAccessoryDAO.page(params, pager);
+        Paginator paginator = result.getPaginator();
+        return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result, params);
     }
 
 	/**

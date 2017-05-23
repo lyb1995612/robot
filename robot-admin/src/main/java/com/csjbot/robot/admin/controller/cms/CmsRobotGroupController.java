@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,31 +22,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.csjbot.robot.admin.controller.pms.AdvertisementController;
+import com.csjbot.robot.base.page.Page;
 import com.csjbot.robot.base.util.RequestUtil;
 import com.csjbot.robot.base.util.StringUtil;
 import com.csjbot.robot.base.web.entity.ResultEntity;
 import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
-import com.csjbot.robot.biz.cms.model.CmsRobot;
 import com.csjbot.robot.biz.cms.model.CmsRobotGroup;
 import com.csjbot.robot.biz.cms.model.CmsRobotGroupRef;
 import com.csjbot.robot.biz.cms.model.RobotGroupParam;
 import com.csjbot.robot.biz.cms.service.CmsRobotGroupRefService;
 import com.csjbot.robot.biz.cms.service.CmsRobotGroupService;
-import com.csjbot.robot.biz.sys.dao.SysDataDictionaryDao;
-import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.sys.model.SysDataDictionary;
-import com.csjbot.robot.biz.sys.model.param.UserRoleParam;
 import com.csjbot.robot.biz.sys.service.DictionaryService;
 import com.csjbot.robot.biz.ums.model.User;
-import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 @Controller
 @RequestMapping("rbg")
 public class CmsRobotGroupController {
 	
-	private Logger logger = Logger.getLogger(AdvertisementController.class);
+//	private Logger logger = Logger.getLogger(AdvertisementController.class);
 	
 	@Autowired
 	private CmsRobotGroupService cmsRobotGroupService;
@@ -138,12 +132,20 @@ public class CmsRobotGroupController {
             if (orderName != null && !"".equals(orderName) && dir != null && !"".equals(dir)) {
                 sortString = orderName + "." + dir;
             }
-            PageList<CmsRobotGroup> list = cmsRobotGroupService.page(params, (start / length) + 1, length, sortString);
+            
+            Page<Map<String, Object>> pageMap = cmsRobotGroupService.page(params, (start / length) + 1, length, sortString);
+            result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
+            if (pageMap.getRows() != null && pageMap.getRows().size() > 0) {
+                result.addObject("data", pageMap.getRows());
+                result.addObject("recordsFiltered", pageMap.getTotal());
+                result.addObject("recordsTotal", pageMap.getTotal());
+            
+            /*PageList<CmsRobotGroup> list = cmsRobotGroupService.page(params, (start / length) + 1, length, sortString);
             result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
             if (list != null && list.size() > 0) {
                 result.addObject("data", list);
                 result.addObject("recordsFiltered", list.size());
-                result.addObject("recordsTotal", list.size());
+                result.addObject("recordsTotal", list.size());*/
             } else {
                 result.addObject("data", null);
                 result.addObject("recordsFiltered", 0);
