@@ -1,6 +1,5 @@
 package com.csjbot.robot.biz.scs.service;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,10 +22,12 @@ import org.springframework.stereotype.Service;
 import com.csjbot.robot.biz.scs.dao.ScsAccessoryDAO;
 import com.csjbot.robot.biz.scs.dao.ScsDeskDao;
 import com.csjbot.robot.biz.scs.dao.ScsDishDAO;
+import com.csjbot.robot.biz.scs.dao.ScsDishSNDao;
 import com.csjbot.robot.biz.scs.dao.ScsDishTypeDAO;
 import com.csjbot.robot.biz.scs.model.ScsAccessory;
 import com.csjbot.robot.biz.scs.model.ScsDesk;
 import com.csjbot.robot.biz.scs.model.ScsDish;
+import com.csjbot.robot.biz.scs.model.ScsDishSN;
 import com.csjbot.robot.biz.scs.model.ScsDishType;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
@@ -35,7 +36,6 @@ import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  * @Description
  * @author XMT
@@ -43,16 +43,16 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Service
 public class ScsService {
-	
+
 	@Autowired
 	private ScsDeskDao scsDeskDao;
-	
+
 	@Autowired
 	private ScsAccessoryDAO scsAccessoryDAO;
-	
+
 	@Autowired
 	private ScsDishDAO scsDishDAO;
-	
+
 	@Autowired
 	private ScsDishTypeDAO scsDishTypeDAO;
 
@@ -62,204 +62,267 @@ public class ScsService {
 	@Autowired
 	private UserDao userDao;
 
-	public int insert(ScsDesk scsDesk){
+	@Autowired
+	private ScsDishSNDao scsDishSNDao;
+
+	/*
+	 * ScsDishSN
+	 */
+	public int insertDishSN(ScsDishSN scsDishSN) {
+		return scsDishSNDao.insert(scsDishSN);
+	}
+
+	public int countType(String sn, String dish_name) {
+		return scsDishSNDao.countType(sn, dish_name);
+	}
+
+	public ScsDishSN selectByPK(String id) {
+		return scsDishSNDao.selectByPrimaryKey(id);
+	}
+
+	public ScsDishSN selectBySN(String sn) {
+		return scsDishSNDao.selectBySN(sn);
+	}
+
+	public List<Map<String, Object>> listDishSN(Map<String, Object> params) {
+		return scsDishSNDao.listDishSN(params);
+	}
+
+	public List<ScsDishSN> selectDishSNAll(){
+		return scsDishSNDao.selectAll();
+	}
+	
+	public <E, K, V> Page<E> pageDishSN(Map<K, V> params, int current, int pagesize, String sortString) {
+		PageBounds pager = new PageBounds();
+		pager.setLimit(pagesize);
+		pager.setPage(current);
+		pager.setOrders(Order.formString(sortString));
+		PageList<E> result = scsDishSNDao.page(params, pager);
+		Paginator paginator = result.getPaginator();
+		return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result,
+				params);
+	}
+
+	/*
+	 * ScsDesk
+	 */
+	public int insert(ScsDesk scsDesk) {
 		return scsDeskDao.insert(scsDesk);
 	}
 
-	public int delete(String id){
+	public int delete(String id) {
 		return scsDeskDao.delete(id);
 	}
 
-	public ScsDesk selectByPrimaryKey(String id){
+	public ScsDesk selectByPrimaryKey(String id) {
 		return scsDeskDao.selectByPrimaryKey(id);
 	}
 
-	
-	public <E, K, V> Page<E> page(Map<K, V> params,int current, int pagesize, String sortString) {
-        PageBounds pager = new PageBounds();
-        pager.setLimit(pagesize);
-        pager.setPage(current);
-        pager.setOrders(Order.formString(sortString));
-        PageList<E> result = scsDeskDao.page(params, pager);
-        Paginator paginator = result.getPaginator();
-        return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result, params);
-    }
-	
+	public <E, K, V> Page<E> page(Map<K, V> params, int current, int pagesize, String sortString) {
+		PageBounds pager = new PageBounds();
+		pager.setLimit(pagesize);
+		pager.setPage(current);
+		pager.setOrders(Order.formString(sortString));
+		PageList<E> result = scsDeskDao.page(params, pager);
+		Paginator paginator = result.getPaginator();
+		return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result,
+				params);
+	}
+
 	/*
 	 * ScsDish
 	 */
-	public int insertDish(ScsDish scsDish){
+	public int insertDish(ScsDish scsDish) {
 		return scsDishDAO.insert(scsDish);
 	}
-	public int updateDish(ScsDish sortdDish){
+
+	public int updateDish(ScsDish sortdDish) {
 		return scsDishDAO.updateByPrimaryKeySelective(sortdDish);
 	}
-	
-	 public ScsDish selectDisByName(String name){
-		 return scsDishDAO.selectByName(name);
-	 }
 
-	public int deleteDish(String id){
+	public ScsDish selectDisByName(String name) {
+		return scsDishDAO.selectByName(name);
+	}
+
+	public int deleteDish(String id) {
 		return scsDishDAO.delete(id);
 	}
 
-     public ScsDish selectDisByPrimaryKey(String id){
-    	 return scsDishDAO.selectByPrimaryKey(id);
-     }
-     
-     public <E, K, V> Page<E> pageDish(Map<K, V> params,int current, int pagesize, String sortString) {
-         PageBounds pager = new PageBounds();
-         pager.setLimit(pagesize);
-         pager.setPage(current);
-         pager.setOrders(Order.formString(sortString));
-         PageList<E> result = scsDishDAO.page(params, pager);
-         Paginator paginator = result.getPaginator();
-         return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result, params);
-     }
-     
+	public ScsDish selectDisByPrimaryKey(String id) {
+		return scsDishDAO.selectByPrimaryKey(id);
+	}
+
+	public <E, K, V> Page<E> pageDish(Map<K, V> params, int current, int pagesize, String sortString) {
+		PageBounds pager = new PageBounds();
+		pager.setLimit(pagesize);
+		pager.setPage(current);
+		pager.setOrders(Order.formString(sortString));
+		PageList<E> result = scsDishDAO.page(params, pager);
+		Paginator paginator = result.getPaginator();
+		return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result,
+				params);
+	}
 
 	/*
 	 * ScsDishType
 	 */
-	public int  insertDishType(ScsDishType scsDishType){
+	public int insertDishType(ScsDishType scsDishType) {
 		return scsDishTypeDAO.insert(scsDishType);
 	}
-	public int updateDishType(ScsDishType scsDishType){
+
+	public int updateDishType(ScsDishType scsDishType) {
 		return scsDishTypeDAO.updateByPrimaryKeySelective(scsDishType);
 	}
-	public List<ScsDishType> selectAll(){
+
+	public List<ScsDishType> selectAll() {
 		return scsDishTypeDAO.selectAll();
 	}
-	public int deleteDishType(Integer id){
+
+	public int deleteDishType(Integer id) {
 		return scsDishTypeDAO.delete(id);
 	}
 
-	public ScsDishType selectDishTypeByPrimaryKey(Integer id){
+	public ScsDishType selectDishTypeByPrimaryKey(Integer id) {
 		return scsDishTypeDAO.selectByPrimaryKey(id);
 	}
-	
-	public <E, K, V> Page<E> pageDishType(Map<K, V> params,int current, int pagesize, String sortString) {
-        PageBounds pager = new PageBounds();
-        pager.setLimit(pagesize);
-        pager.setPage(current);
-        pager.setOrders(Order.formString(sortString));
-        PageList<E> result = scsDishTypeDAO.page(params, pager);
-        Paginator paginator = result.getPaginator();
-        return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result, params);
-    }
+
+	public <E, K, V> Page<E> pageDishType(Map<K, V> params, int current, int pagesize, String sortString) {
+		PageBounds pager = new PageBounds();
+		pager.setLimit(pagesize);
+		pager.setPage(current);
+		pager.setOrders(Order.formString(sortString));
+		PageList<E> result = scsDishTypeDAO.page(params, pager);
+		Paginator paginator = result.getPaginator();
+		return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result,
+				params);
+	}
 
 	/*
 	 * ScsAccessory
 	 */
-	public int insertAccessory(ScsAccessory scsAccessory){
+	public int insertAccessory(ScsAccessory scsAccessory) {
 		return scsAccessoryDAO.insert(scsAccessory);
 	}
-	public List<ScsAccessory> selectAcceAll(){
+
+	public List<ScsAccessory> selectAcceAll() {
 		return scsAccessoryDAO.selectAll();
 	}
-	public int deleteAccessory(String id){
+
+	public int deleteAccessory(String id) {
 		return scsAccessoryDAO.deleteByPrimaryKey(id);
 	}
 
-	public ScsAccessory selectAccessoryByPrimaryKey(String id){
+	public ScsAccessory selectAccessoryByPrimaryKey(String id) {
 		return scsAccessoryDAO.selectByPrimaryKey(id);
 	}
 
-	public <E, K, V> Page<E> pageAccessory(Map<K, V> params,int current, int pagesize, String sortString) {
-        PageBounds pager = new PageBounds();
-        pager.setLimit(pagesize);
-        pager.setPage(current);
-        pager.setOrders(Order.formString(sortString));
-        PageList<E> result = scsAccessoryDAO.page(params, pager);
-        Paginator paginator = result.getPaginator();
-        return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result, params);
-    }
+	public <E, K, V> Page<E> pageAccessory(Map<K, V> params, int current, int pagesize, String sortString) {
+		PageBounds pager = new PageBounds();
+		pager.setLimit(pagesize);
+		pager.setPage(current);
+		pager.setOrders(Order.formString(sortString));
+		PageList<E> result = scsAccessoryDAO.page(params, pager);
+		Paginator paginator = result.getPaginator();
+		return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result,
+				params);
+	}
 
 	/**
 	 * api接口部分
-	 *
 	 */
-	//查询所有菜品信息
-
+	/*
+	 * 查询所有菜品信息
+	 */
 	public JSONObject findAllDishInfo(HttpServletRequest request) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		List<Object> dishes = new ArrayList<>();
-		Map<String,Object> result = new HashMap<>();
+		Map<String, Object> result = new HashMap<>();
 		List<ScsDish> list = scsDishDAO.selectAll();
 
-		for (ScsDish sdi:list) {
-			Map<String,Object> dish  = new HashMap<>();
+		for (ScsDish sdi : list) {
+			Map<String, Object> dish = new HashMap<>();
 			ScsDishType sdt = scsDishTypeDAO.selectByPrimaryKey(sdi.getDish_type());
-			SysAttachment saList = sysAttachmentDao.getAttachByTransInfo(sdi.getId().toString(),Constants.Attachment.Type.DISH_PIC.toString());//getSystByProId(sdi.getId().toString());
-			if (sdt != null){
-				dish.put("dishTypeId",sdt.getId());
-				dish.put("dishTypeName",sdt.getType_name().toString());
-			}else {
-				dish.put("dishTypeId","");
-				dish.put("dishTypeName","未知类型");
+			SysAttachment saList = sysAttachmentDao.getAttachByTransInfo(sdi.getId().toString(),
+					Constants.Attachment.Type.DISH_PIC.toString());// getSystByProId(sdi.getId().toString());
+			if (sdt != null) {
+				dish.put("dishTypeId", sdt.getId());
+				dish.put("dishTypeName", sdt.getType_name().toString());
+			} else {
+				dish.put("dishTypeId", "");
+				dish.put("dishTypeName", "未知类型");
 			}
-			if (saList != null ){
-				dish.put("dishImageName",saList.getAlias_name());
-				dish.put("dishImageUrl",request.getServerName()+":"+request.getServerPort()+"/api/scs/downFile?filePath="+saList.getLocation().toString()+"&fileName="+saList.getAlias_name().toString());
-			}else {
-				dish.put("dishImageName","");
-				dish.put("dishImageUrl","");
+			if (saList != null) {
+				dish.put("dishImageName", saList.getAlias_name());
+				dish.put("dishImageUrl",
+						request.getServerName() + ":" + request.getServerPort() + "/api/scs/downFile?filePath="
+								+ saList.getLocation().toString() + "&fileName=" + saList.getAlias_name().toString());
+			} else {
+				dish.put("dishImageName", "");
+				dish.put("dishImageUrl", "");
 			}
-			dish.put("dishId",sdi.getId().toString());
-			dish.put("dishName",sdi.getName().toString());
-			dish.put("dishPrice",sdi.getPrice());
-			dish.put("dishMemo",sdi.getMemo().toString());
+			dish.put("dishId", sdi.getId().toString());
+			dish.put("dishName", sdi.getName().toString());
+			dish.put("dishPrice", sdi.getPrice());
+			dish.put("dishMemo", sdi.getMemo().toString());
 			dishes.add(dish);
 		}
-		result.put("dishes",dishes);
+		result.put("dishes", dishes);
 		jsonUtil.setResult(result);
 		return JsonUtil.toJson(jsonUtil);
 	}
-	//查询所有菜品类型信息
-
+	
+	/*
+	 * 查询所有菜品类型信息
+	 */
 	public JSONObject findAllDishType() {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		List<Object> dishes = new ArrayList<>();
 
 		List<ScsDishType> list = scsDishTypeDAO.selectAll();
-		for (ScsDishType sdt:list) {
-			Map<String,Object> dish_type = new HashMap<>();
-			dish_type.put("dishTypeId",2000+sdt.getId());
-			dish_type.put("dishTypeName",sdt.getType_name().toString());
+		for (ScsDishType sdt : list) {
+			Map<String, Object> dish_type = new HashMap<>();
+			dish_type.put("dishTypeId", 2000 + sdt.getId());
+			dish_type.put("dishTypeName", sdt.getType_name().toString());
 			dishes.add(dish_type);
 		}
 		jsonUtil.setResult(dishes);
 		return JsonUtil.toJson(jsonUtil);
 	}
-	//查询所有附件信息
-
+	
+	/*
+	 * 查询所有附件信息
+	 */
 	public JSONObject showAccessoryS(HttpServletRequest request) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		List<Object> ace = new ArrayList<>();
 		List<SysAttachment> list = sysAttachmentDao.getAttachByType(Constants.Attachment.Type.SC_ACCESSORY);
-		for (SysAttachment sa:list) {
-			Map<String,Object> demo = new HashMap<>();
-			demo.put("fileName",sa.getAlias_name().toString());
-			demo.put("fileType",sa.getFile_type().toString());
-			demo.put("fileUrl", request.getServerName()+":"+request.getServerPort()+"/api/scs/downFile?filePath="+sa.getLocation().toString()+"&fileName="+sa.getAlias_name().toString());
+		for (SysAttachment sa : list) {
+			Map<String, Object> demo = new HashMap<>();
+			demo.put("fileName", sa.getAlias_name().toString());
+			demo.put("fileType", sa.getFile_type().toString());
+			demo.put("fileUrl", request.getServerName() + ":" + request.getServerPort() + "/api/scs/downFile?filePath="
+					+ sa.getLocation().toString() + "&fileName=" + sa.getAlias_name().toString());
 			ace.add(demo);
 		}
 		jsonUtil.setResult(ace);
 		return JsonUtil.toJson(jsonUtil);
 	}
-	
-	//添加桌位
+
+	/*
+	 * 添加桌位
+	 */
 	public JSONObject addDeskInfo(JSONObject json) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		String[] key = { "userName","deskNumber","deskAlias","deskMemo","desk_x","desk_y","desk_z","desk_w","desk_v","desk_q","deskValid","deskSerialNumber" };
+		String[] key = { "userName", "deskNumber", "deskAlias", "deskMemo", "desk_x", "desk_y", "desk_z", "desk_w",
+				"desk_v", "desk_q", "deskValid", "deskSerialNumber" };
 		if (CharacterUtil.judgeJsonFormat(key, json)) {
 			List<ScsDesk> sbn = scsDeskDao.selectByNumber(json.getString("deskNumber"));
-			Map<String ,Object> map = new HashMap<>();
-			map.put("username",json.getString("userName"));
-			map.put("status",1);
+			Map<String, Object> map = new HashMap<>();
+			map.put("username", json.getString("userName"));
+			map.put("status", 1);
 			User ums_user = userDao.getByUsername(map);
-			if (ums_user != null){
-				if(sbn.size() == 0){
+			if (ums_user != null) {
+				if (sbn.size() == 0) {
 					ScsDesk sdi = new ScsDesk();
 					sdi.setId(RandomUtil.generateString(32));
 					sdi.setNumber(json.getString("deskNumber"));
@@ -278,93 +341,96 @@ public class ScsService {
 					sdi.setDesk_type(json.getByte("deskSerialNumber"));
 					sdi.setUpdater_fk(ums_user.getId().toString());
 					int n = scsDeskDao.insert(sdi);
-					if (n != 1){
+					if (n != 1) {
 						jsonUtil = getJsonUtilEntity(false);
 						jsonUtil.setMessage("Error from Database operations!");
 					}
-				}else{
+				} else {
 					jsonUtil = getJsonUtilEntity(false);
 					jsonUtil.setMessage("The deskNumber already exists!");
 				}
-			}else {
+			} else {
 				jsonUtil = getJsonUtilEntity(false);
 				jsonUtil.setMessage("The desk already exists!");
 			}
-		}else {
+		} else {
 			jsonUtil = getJsonUtilEntity(false);
 			jsonUtil.setMessage("Error from json format!");
 		}
 		return JsonUtil.toJson(jsonUtil);
 	}
 
-	//删除桌位信息
+	/*
+	 * 删除桌位信息
+	 */
 	public JSONObject deleteDeskInfo(JSONObject json) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		String[] key = { "deskNumbers","type"};
+		String[] key = { "deskNumbers", "type" };
 
 		if (CharacterUtil.judgeJsonFormat(key, json)) {
 			String[] str = json.getString("deskNumbers").split("&");
 			// JSONArray idArray = json.getJSONArray("deskNumbers");
-			for (String number: str) {
+			for (String number : str) {
 				List<ScsDesk> sdiList = scsDeskDao.selectByNumber(number.toString());
-				for (ScsDesk sdi:sdiList) {
-					if (json.getInteger("type") == -1){
-						if (sdi.getDesk_type() == -1 ){
+				for (ScsDesk sdi : sdiList) {
+					if (json.getInteger("type") == -1) {
+						if (sdi.getDesk_type() == -1) {
 							scsDeskDao.delete(sdi.getId().toString());
 						}
-					}else {
-						if (sdi.getDesk_type() != -1 ){
+					} else {
+						if (sdi.getDesk_type() != -1) {
 							scsDeskDao.delete(sdi.getId().toString());
 						}
 					}
 				}
 			}
-		}else {
+		} else {
 			jsonUtil = getJsonUtilEntity(false);
 			jsonUtil.setMessage("Error from json format!");
 		}
 		return JsonUtil.toJson(jsonUtil);
 	}
 
-	//查看所有桌位信息
-
+	/*
+	 * 查看所有桌位信息
+	 */
 	public JSONObject showAllDeskInfo(Integer desk_type) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		List<ScsDesk> list = scsDeskDao.selectAll();
 		List<Object> result = new ArrayList<>();
-		for (ScsDesk sdi: list) {
-			if (desk_type == -1){
-				if (sdi.getDesk_type() == -1){
-					Map<String,Object> map = new HashMap<>();
-					map.put("deskId",sdi.getId().toString());
-					map.put("deskNumber",sdi.getNumber().toString());
-					map.put("deskAlias",sdi.getAlias().toString());
-					map.put("deskMemo",sdi.getMemo().toString());
-					map.put("desk_x",sdi.getDeskx());
-					map.put("desk_y",sdi.getDesky());
-					map.put("desk_z",sdi.getDeskz());
-					map.put("desk_w",sdi.getDeskw());
-					map.put("desk_v",sdi.getDeskv());
-					map.put("desk_q",sdi.getDeskq());
-					map.put("deskValid",sdi.getValid());
-					map.put("deskSerialNumber",sdi.getDesk_type());
+		for (ScsDesk sdi : list) {
+			if (desk_type == -1) {
+				if (sdi.getDesk_type() == -1) {
+					Map<String, Object> map = new HashMap<>();
+					map.put("deskId", sdi.getId().toString());
+					map.put("deskNumber", sdi.getNumber().toString());
+					map.put("deskAlias", sdi.getAlias().toString());
+					map.put("deskMemo", sdi.getMemo().toString());
+					map.put("desk_x", sdi.getDeskx());
+					map.put("desk_y", sdi.getDesky());
+					map.put("desk_z", sdi.getDeskz());
+					map.put("desk_w", sdi.getDeskw());
+					map.put("desk_v", sdi.getDeskv());
+					map.put("desk_q", sdi.getDeskq());
+					map.put("deskValid", sdi.getValid());
+					map.put("deskSerialNumber", sdi.getDesk_type());
 					result.add(map);
 				}
-			}else {
-				if (sdi.getDesk_type() != -1){
-					Map<String,Object> map = new HashMap<>();
-					map.put("deskId",sdi.getId().toString());
-					map.put("deskNumber",sdi.getNumber().toString());
-					map.put("deskAlias",sdi.getAlias().toString());
-					map.put("deskMemo",sdi.getMemo().toString());
-					map.put("desk_x",sdi.getDeskx());
-					map.put("desk_y",sdi.getDesky());
-					map.put("desk_z",sdi.getDeskz());
-					map.put("desk_w",sdi.getDeskw());
-					map.put("desk_v",sdi.getDeskv());
-					map.put("deskValid",sdi.getValid());
-					map.put("desk_q",sdi.getDeskq());
-					map.put("deskSerialNumber",sdi.getDesk_type());
+			} else {
+				if (sdi.getDesk_type() != -1) {
+					Map<String, Object> map = new HashMap<>();
+					map.put("deskId", sdi.getId().toString());
+					map.put("deskNumber", sdi.getNumber().toString());
+					map.put("deskAlias", sdi.getAlias().toString());
+					map.put("deskMemo", sdi.getMemo().toString());
+					map.put("desk_x", sdi.getDeskx());
+					map.put("desk_y", sdi.getDesky());
+					map.put("desk_z", sdi.getDeskz());
+					map.put("desk_w", sdi.getDeskw());
+					map.put("desk_v", sdi.getDeskv());
+					map.put("deskValid", sdi.getValid());
+					map.put("desk_q", sdi.getDeskq());
+					map.put("deskSerialNumber", sdi.getDesk_type());
 					result.add(map);
 				}
 			}
@@ -372,7 +438,10 @@ public class ScsService {
 		jsonUtil.setResult(result);
 		return JsonUtil.toJson(jsonUtil);
 	}
-	//获得返回json
+
+	/*
+	 * 获得返回json
+	 */
 	public JsonUtil getJsonUtilEntity(boolean flag) {
 		JsonUtil jsonUtil;
 		if (flag) {
