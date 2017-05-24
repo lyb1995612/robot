@@ -112,6 +112,12 @@
 		                 </div>
 		              </div>
 			          
+			           <div class="row summary-banner">
+			              <div class="col-md-12">
+			                <span><label>群组名：</label>${robotGroup.group_name }</span> <span>目前数量<b>${relevance_num }</b>个</span>
+			              </div>
+			          </div> 
+			            
 			          <form class="form" id="robotGroupForm" name="form" action="${path }/rbg/${robotGroup.id}/robotGroupRef/save" method="post">
 			          <input type="hidden"  id="robotGroupRef-totalSize" name="robotGroupRef-totalSize" value="${fn:length(robot) }" />
 			          <div class="row">
