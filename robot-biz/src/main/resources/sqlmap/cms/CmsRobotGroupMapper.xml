@@ -27,12 +27,14 @@
     
   <select id="page" parameterType="map" resultMap="BaseResultMap">
 	   SELECT (SELECT COUNT(b.group_fk) 
-               FROM cms_robot_group_ref b
+               FROM cms_robot_group_ref b,cms_robot c
                WHERE b.valid = 1
-               and b.group_fk = a.id
+               AND c.valid = 1
+               AND c.sn= b.sn
+               AND b.group_fk = a.id
                GROUP BY b.group_fk)relevance_num,
-       a.id, a.group_name, a.type,(SELECT `name` FROM sys_data_dictionary WHERE id = a.TYPE)type_name, 
-       a.valid, a.updater_fk, a.creator_fk, a.date_update, a.date_create
+               a.id, a.group_name, a.type,(SELECT `name` FROM sys_data_dictionary WHERE id = a.TYPE)type_name, 
+               a.valid, a.updater_fk, a.creator_fk, a.date_update, a.date_create
        FROM cms_robot_group a
        WHERE a.valid = 1
 		<if test="group_name != null and group_name !=''">
@@ -89,7 +91,7 @@
       <if test="sn != null and sn != ''">
         AND tbl.sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
       </if>
-      <if test="type_name != null and type_name != ''">
+      <if test="type_name != null and type_name != ''and type_name != '-1'">
         AND tbl.type_name LIKE CONCAT(CONCAT('%', #{type_name}), '%')
       </if>
     </where>
