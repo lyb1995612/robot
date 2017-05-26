@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csjbot.robot.biz.scs.dao.ScsDishSNDao">
+    <resultMap id="BaseResultMap" type ="com.csjbot.robot.biz.scs.model.ScsDishSN">
+       <result property="id" column="id" jdbcType="CHAR"/>
+       <result column="sn" property="sn" jdbcType="VARCHAR" />
+       <result column="dish_id" property="dish_id" jdbcType="CHAR"/>
+       <result column="dish_name" property="dish_name" jdbcType="VARCHAR"/>
+       <result column="valid" property="valid" jdbcType="CHAR" />
+       <result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
+       <result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
+       <result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
+       <result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+    	id, sn, dish_id, dish_name, valid, updater_fk, creator_fk, date_update, date_create
+    </sql>
+    
+    <select id="selectSN" parameterType="map" resultMap="BaseResultMap">
+    	SELECT sn 
+    	FORM scs_dish_robot_ref
+    </select>
+    
+    <select id="selectDishSNAll" resultMap="BaseResultMap">
+		select * from scs_dish_robot_ref where valid = 1
+	</select>
+  
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from scs_dish_robot_ref
+		where id = #{id,jdbcType=CHAR}
+	</select>
+	
+	<select id="page" parameterType="map" resultMap="BaseResultMap">
+		select distinct sn
+		from scs_dish_robot_ref where valid = 1
+		<if test="sn != null and sn !=''">
+			and sn LIKE CONCAT('%', #{sn},'%')
+		</if>
+	</select>
+</mapper>

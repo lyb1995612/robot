@@ -212,8 +212,10 @@ public class CmsRobotGroupController {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("robotGroupId", id);
             params.put("sn", param.getSn());
-            SysDataDictionary sysDataDictionary = dictionaryService.findSysDataDicById(Integer.parseInt(param.getType_name()));
-            params.put("type_name", sysDataDictionary.getName());
+            if(Integer.parseInt(param.getType_name()) != -1){
+            	SysDataDictionary sysDataDictionary = dictionaryService.findSysDataDicById(Integer.parseInt(param.getType_name()));
+                params.put("type_name", sysDataDictionary.getName());
+            }
             List<Map<String, Object>> robot = cmsRobotGroupService.listRobot(params);
             result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "Success!", robot);
 
