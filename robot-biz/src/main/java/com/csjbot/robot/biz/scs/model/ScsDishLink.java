@@ -5,14 +5,14 @@ import java.util.Date;
 import com.csjbot.robot.base.util.StringUtil;
 
 /**
- * @explain 菜品绑定数据模型 
+ * @explain 菜品关联 
  * @author  AlexZhang
  * @date    2017年5月23日
  * @company PangolinRobot
  */
-public class ScsDishSN {
+public class ScsDishLink {
 	
-	private String id = StringUtil.createUUID();
+	private String id = StringUtil.createUUID();;
 
 	private String sn;
 
@@ -20,7 +20,7 @@ public class ScsDishSN {
 
 	private String dish_name;
 
-	private Byte vaild;
+	private Byte valid;
 
 	private String creator_fk;
 
@@ -29,19 +29,19 @@ public class ScsDishSN {
 	private Date date_create;
 
 	private Date date_update;
-
-	public ScsDishSN() {
+	
+	public ScsDishLink() {
 		super();
 	}
 
-	public ScsDishSN(String id, String sn, String dish_id, String dish_name, Byte vaild, String creator_fk,
+	public ScsDishLink(String id, String sn, String dish_id, String dish_name, Byte vaild, String creator_fk,
 			String updater_fk, Date date_create, Date date_update) {
 		super();
 		this.id = id;
 		this.sn = sn;
 		this.dish_id = dish_id;
 		this.dish_name = dish_name;
-		this.vaild = vaild;
+		this.valid = vaild;
 		this.creator_fk = creator_fk;
 		this.updater_fk = updater_fk;
 		this.date_create = date_create;
@@ -80,12 +80,12 @@ public class ScsDishSN {
 		this.dish_name = dish_name;
 	}
 
-	public Byte getVaild() {
-		return vaild;
+	public Byte getValid() {
+		return valid;
 	}
 
-	public void setVaild(Byte vaild) {
-		this.vaild = vaild;
+	public void setValid(Byte valid) {
+		this.valid = valid;
 	}
 
 	public String getCreator_fk() {

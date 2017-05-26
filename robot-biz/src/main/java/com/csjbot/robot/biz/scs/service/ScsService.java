@@ -8,9 +8,13 @@ import java.util.Map;
 import com.alibaba.fastjson.JSONObject;
 import com.csjbot.robot.base.page.Page;
 import com.csjbot.robot.base.page.PageContainer;
+import com.csjbot.robot.base.util.StringUtil;
 import com.csjbot.robot.biz.Constants;
+import com.csjbot.robot.biz.cms.model.CmsRobotGroupRef;
 import com.csjbot.robot.biz.sys.dao.SysAttachmentDao;
+import com.csjbot.robot.biz.sys.dao.SysDataDictionaryDao;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
+import com.csjbot.robot.biz.sys.model.SysDataDictionary;
 import com.csjbot.robot.biz.ums.dao.UserDao;
 import com.csjbot.robot.biz.ums.model.User;
 import com.csjbot.robot.biz.util.CharacterUtil;
@@ -22,12 +26,12 @@ import org.springframework.stereotype.Service;
 import com.csjbot.robot.biz.scs.dao.ScsAccessoryDAO;
 import com.csjbot.robot.biz.scs.dao.ScsDeskDao;
 import com.csjbot.robot.biz.scs.dao.ScsDishDAO;
-import com.csjbot.robot.biz.scs.dao.ScsDishSNDao;
+import com.csjbot.robot.biz.scs.dao.ScsDishLinkDao;
 import com.csjbot.robot.biz.scs.dao.ScsDishTypeDAO;
 import com.csjbot.robot.biz.scs.model.ScsAccessory;
 import com.csjbot.robot.biz.scs.model.ScsDesk;
 import com.csjbot.robot.biz.scs.model.ScsDish;
-import com.csjbot.robot.biz.scs.model.ScsDishSN;
+import com.csjbot.robot.biz.scs.model.ScsDishLink;
 import com.csjbot.robot.biz.scs.model.ScsDishType;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
@@ -63,41 +67,67 @@ public class ScsService {
 	private UserDao userDao;
 
 	@Autowired
-	private ScsDishSNDao scsDishSNDao;
+	private ScsDishLinkDao scsDishLinkDao;
+	
+	@Autowired
+	private SysDataDictionaryDao sysDicDao;
 
 	/*
-	 * ScsDishSN
+	 * ScsDishLink
 	 */
-	public int insertDishSN(ScsDishSN scsDishSN) {
-		return scsDishSNDao.insert(scsDishSN);
+	public int insertDishSN(ScsDishLink scsDishSN) {
+		return scsDishLinkDao.insert(scsDishSN);
 	}
 
 	public int countType(String sn, String dish_name) {
-		return scsDishSNDao.countType(sn, dish_name);
+		return scsDishLinkDao.countType(sn, dish_name);
 	}
 
-	public ScsDishSN selectByPK(String id) {
-		return scsDishSNDao.selectByPrimaryKey(id);
-	}
-
-	public ScsDishSN selectBySN(String sn) {
-		return scsDishSNDao.selectBySN(sn);
-	}
-
-	public List<Map<String, Object>> listDishSN(Map<String, Object> params) {
-		return scsDishSNDao.listDishSN(params);
-	}
-
-	public List<ScsDishSN> selectDishSNAll(){
-		return scsDishSNDao.selectAll();
+	public ScsDishLink getDish(String id){
+		return scsDishLinkDao.getDish(id);
 	}
 	
+	public ScsDishLink selectByPK(String id) {
+		return scsDishLinkDao.selectByPK(id);
+	}
+
+	public List<ScsDishLink> selectBySN(String sn) {
+		return scsDishLinkDao.selectBySN(sn);
+	}
+
+	public List<ScsDishLink> selectDishSNAll(){
+		return scsDishLinkDao.selectAll();
+	}
+	
+	public List<SysDataDictionary> findDictionaryByCode(String code) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("code", code);
+		return sysDicDao.findDictionaryByCode(params);
+	}
+	
+	 public List<Map<String, Object>> listDish(Map<String, Object> params) {
+	        return scsDishLinkDao.listDish(params);
+	    }
+	
+	 public int countDishLinkSize(String dishId){
+		 return scsDishLinkDao.countDishLinkSize(dishId);
+	 }
+	 
+	 public void saveOrUpdate(ScsDishLink scsDishLink) {
+	        if (scsDishLinkDao.update(scsDishLink) == 0) {
+	            if (StringUtil.isEmpty(scsDishLink.getId())) {
+	            	scsDishLink.setId(StringUtil.createUUID());
+	            }
+	            scsDishLinkDao.insert(scsDishLink);
+	        }
+	    }
+	 
 	public <E, K, V> Page<E> pageDishSN(Map<K, V> params, int current, int pagesize, String sortString) {
 		PageBounds pager = new PageBounds();
 		pager.setLimit(pagesize);
 		pager.setPage(current);
 		pager.setOrders(Order.formString(sortString));
-		PageList<E> result = scsDishSNDao.page(params, pager);
+		PageList<E> result = scsDishLinkDao.page(params, pager);
 		Paginator paginator = result.getPaginator();
 		return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result,
 				params);

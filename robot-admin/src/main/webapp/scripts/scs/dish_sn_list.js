@@ -65,7 +65,7 @@ $(function() {
 function operation( data, type, row ) {
     var editor =  "<a class='opt' id='detail_"+ row.id +"' href=\"javascript:void(0);\" ><span>关联菜品</span></a>&nbsp;&nbsp;"
         $(document).off("click", "#detail_" + row.id).on("click", "#detail_" + row.id, function(){
-            window.location = _path + "/dsn/" + row.id+ "/toDishSNRef";
+            window.location = _path + "/dsn/" + row.sn+ "/toDishSNRef";
          });
     return editor;
 }
