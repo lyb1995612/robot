@@ -26,7 +26,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/lib/alipay-sdk-java20170307171631.jar</systemPath>
         </dependency>
-         
+         <dependency>
+            <groupId>org.apkinfo</groupId>
+            <artifactId>apkinfo-sdk-java</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/lib/AXmlResourceParser.jar</systemPath>
+        </dependency>        
           <dependency>
 	        <groupId>com.fasterxml.jackson.core</groupId>
 	        <artifactId>jackson-core</artifactId>
