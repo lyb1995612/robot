@@ -1,9 +1,15 @@
-package com.csjbot.robot.biz.pay.model;
+package com.csjbot.robot.api.pay.model;
 
-import java.time.ZonedDateTime;
+import com.csjbot.robot.biz.pay.model.*;
+
 import java.util.List;
 import java.util.Map;
 
+/**
+ * wrap request data/record, used in data builder
+ * @see com.csjbot.robot.api.pay.service.WxPayDataService
+ */
+// Java method只能有一个返回结果，这个Class只是起打包多个实例、然后一并返回的作用
 public class WxPayDataWrapper {
     private boolean empty;
     private PmsOrderPay orderPay;

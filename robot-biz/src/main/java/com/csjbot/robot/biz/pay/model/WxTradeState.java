@@ -1,6 +1,7 @@
 package com.csjbot.robot.biz.pay.model;
 
-public enum TradeState {
+/** 微信支付参数 trade_status 的可能值 */
+public enum WxTradeState {
     SUCCESS, //支付成功
     REFUND, //转入退款
     NOTPAY, //未支付

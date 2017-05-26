@@ -2,11 +2,19 @@ package com.csjbot.robot.biz.pay.util;
 
 import java.util.Random;
 
+/**
+ * 随机字串生成器
+ */
 public final class RandomGen {
     private static final Random RAND = new Random();
     public static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
     public static final String NUMBER = "1234567890";
 
+    /**
+     * @param length  设定字串长度
+     * @param charset 设定字串的可选字符范围
+     * @return 生成的随机字串
+     */
     public static String randStr(int length, String charset) {
         final int size = charset.length();
         char[] text = new char[length];

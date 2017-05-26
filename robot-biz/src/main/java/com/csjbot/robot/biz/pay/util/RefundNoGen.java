@@ -2,17 +2,26 @@ package com.csjbot.robot.biz.pay.util;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * 退款流水号/refundNo生成器
+ */
 public class RefundNoGen {
     private static final AtomicInteger atomicInteger = new AtomicInteger();
     private static final String DEL = "-";
     public static final String regex = "[0-9]{7}-[0-9]{4}-[0-9]{4}";  // example: 1491442-4935-0001
 
+    /**
+     * 检查某一字串是否符合退款单号格式
+     */
     public static boolean check(String val) {
         return val != null && val.matches(regex);
     }
 
+    /**
+     * @return 新的退款单号
+     */
     public static String next() {
-        return genTime() + DEL + genCnt()+RandomGen.randStr(1, RandomGen.NUMBER);
+        return genTime() + DEL + genCnt() + RandomGen.randStr(1, RandomGen.NUMBER);
     }
 
     private static String genTime() {
@@ -26,9 +35,9 @@ public class RefundNoGen {
     }
 
     public static void main(String[] args) {
-        for (int i =0; i< 5;i++){
+        for (int i = 0; i < 5; i++) {
             String no = next();
-            System.out.println(no+" "+check(no));
+            System.out.println(no + " " + check(no));
         }
     }
 }

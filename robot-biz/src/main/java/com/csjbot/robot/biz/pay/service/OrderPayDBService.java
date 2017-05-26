@@ -5,6 +5,9 @@ import com.csjbot.robot.biz.pay.model.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  订单支付相关公用表的操作
+ */
 public interface OrderPayDBService {
     Map<String, String> getAccount();
 

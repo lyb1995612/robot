@@ -1,6 +1,9 @@
 package com.csjbot.robot.api.pay.controller;
 
 import com.csjbot.robot.api.pay.config.WxPayPorperties;
+import com.csjbot.robot.api.pay.model.WxClientRequest;
+import com.csjbot.robot.api.pay.model.WxClientResponse;
+import com.csjbot.robot.api.pay.model.WxPayDataWrapper;
 import com.csjbot.robot.biz.pay.model.*;
 import com.csjbot.robot.biz.pay.service.WxPayDBService;
 import com.csjbot.robot.api.pay.service.WxPayDataService;
@@ -20,24 +23,42 @@ import javax.annotation.PreDestroy;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.csjbot.robot.api.pay.controller.WxPayControllerHelper.fillPayResultData;
-import static com.csjbot.robot.api.pay.controller.WxPayControllerHelper.getQueryClientData;
-import static com.csjbot.robot.api.pay.controller.WxPayControllerHelper.mapFromTradeState;
 import static com.csjbot.robot.biz.pay.model.ReStatus.isSuccess;
 import static com.csjbot.robot.biz.pay.util.WxPayParamName.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.*;
 
 // todo 1.use object injection in controller 2.create object wrap wx result map
+/*
+微信支付的接口controller，一些说明：
+1. 具体业务逻辑一定要参考微信的开发文档https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1，
+   这里下单（order）方式使用的是 扫码支付模式二（统一下单）。
+   特别的，微信退款需要有ssl证书，请一定先阅读文档！
+2. 所有RequestMapping都是支付相关服务接口、代码流程基本相同：
+   首先都是由设备端发起http请求（请求JSON格式参考微信支付接口.md），后台通过order(), query(), refund()等方法收到，
+   经过一定的校验处理、如果通过、就代为向微信请求（helper.sendWxPost()）；收到微信的返回消息后、再在相应的
+   handleOrderResult(), handleQueryResult(), handleRefundResult()等方法中进行处理，并将最终处理结果返回给设备端。
+   这一系列操作都是简单的顺序、阻塞，按步骤看下来应该能很快理解（只是业务逻辑方面细节比较多、代码组织有点乱）。
+   只有callback()这一接口是接收来自微信的异步用户支付结果通知、不涉及设备端。实际就是微信发起Http Request、
+   后台处理request/获取支付结果、再返回给微信Http Response/告诉微信收没收到消息，所以其实也挺简单的。
+   下单处理（/order）写了详细的注释，可以先看这个接口（其他类似）。
+3. 因为用户扫码下单后、拿着手机最后到底付不付钱是我们后台和机器人设备端都无法得知的事，queryExecutor、queryScheduler、queryQueue
+   等参数作用是定时向微信查询一下本地未关闭/待付款（pay）的订单状态、在没有收到微信异步结果通知或等延迟过久才收到的情况下、
+   保证订单状态能够及时被更新。
+*/
 @RestController
 @RequestMapping("/pay/wx")
 public class WxPayController {
-    // @RequestMapping(produces = "text/plain;charset=UTF-8")
+
+
+    /** 测试接口，正式release里应该删去 */
     @RequestMapping
     @ResponseStatus(OK)
     public String hello() {
@@ -49,30 +70,31 @@ public class WxPayController {
         return hello;
     }
 
-    @RequestMapping("/echo")
-    @ResponseStatus(OK)
-    public String echo(@RequestParam("word") String echo) {
-        return echo;
-    }
-
     private static final Logger LOGGER = LoggerFactory.getLogger(WxPayController.class);
 
+    /** 配置参数 */
     private final WxPayPorperties porperties;
-    private final WxPayControllerHelper helper;
+    /** 包含Json解析、http发送消息等方法，减少这个controller代码长度 */
+    private final WxPayHttpHelper helper;
+    /** 数据库读写服务 */
     private final WxPayDBService dbService;
+    /** 微信请求xml生成服务 */
     private final WxPayDataService dataBuilder;
+    /** 定时查询worker */
     private final ThreadPoolTaskExecutor queryExecutor;
+    /** 定时查询schedule */
     private final ThreadPoolTaskScheduler queryScheduler;
+    /** 待查询的未关闭订单queue */
     private final BlockingQueue<String> queryQueue;
+    /** 标识符，如果某一轮查询正进行中则为true，目的是避免查询时间设的过短、上一轮的订单还没更新完下一轮又开始了 */
     private final AtomicBoolean isQueryScheduleRunning = new AtomicBoolean(false);
 
     @Autowired
-    public WxPayController(WxPayPorperties wxPayPorperties, WxPayControllerHelper helper,
+    public WxPayController(WxPayPorperties wxPayPorperties, WxPayHttpHelper helper,
                            @Qualifier("wxPayDBService") WxPayDBService wxPayDBService,
                            @Qualifier("wxDataService") WxPayDataService dataBuilder,
                            ThreadPoolTaskExecutor wxPayQueryExecutor,
                            ThreadPoolTaskScheduler wxPayQueryScheduler) {
-        System.out.println("init WxPayController");
         this.porperties = wxPayPorperties;
         this.helper = helper;
 
@@ -84,6 +106,7 @@ public class WxPayController {
         this.queryQueue = new ArrayBlockingQueue<>(porperties.getQueryQueueCapacity());//todo
     }
 
+    // 启动排程、定时更新订单状态
     @PostConstruct
     public void start() {
         LOGGER.debug("PostConstruct");
@@ -111,6 +134,7 @@ public class WxPayController {
         }, 1000 * 60 * porperties.getScheduleMinutes());
     }
 
+    // 结束时关闭线程池
     @PreDestroy
     public void stop() {
         LOGGER.debug("preDestroy");
@@ -118,11 +142,13 @@ public class WxPayController {
         queryScheduler.shutdown();
     }
 
+    // 是否为新创建的订单、主要在close的时候要检查（微信限制新创建5分钟内的订单不能被关闭）
     private boolean isNewOrder(ZonedDateTime createTime) {
         long minSinceCreate = WxPayUtil.minutesBetween(createTime, ZonedDateTime.now());
         return minSinceCreate <= WxPayPorperties.MIN_MINUTES + 1; // wx requires 5 min, add 1 more here for simple use
     }
 
+    // 检查是否应该向微信查询订单状态
     private boolean isSyncTimeSuitable(PmsOrderPay orderPay) {
         final ZonedDateTime lastSync = orderPay.getSyncTime();
         final ZonedDateTime now = ZonedDateTime.now();
@@ -137,6 +163,7 @@ public class WxPayController {
         return syncRemote(orderPay, dbService.getWxPayRecord(orderPay.getOrderId()));
     }
 
+    // 向微信（remote）查询订单、更新订单状态
     // todo refactor code, schedule this
     private boolean syncRemote(PmsOrderPay orderPay, PmsPayDetailWx wxDetail) {
         if (orderPay.isClosed()) return false; // if closed, don't check again
@@ -154,8 +181,7 @@ public class WxPayController {
             LOGGER.debug("new wx query result for order " + orderId + " " + resBody);
             logHttp(orderId, OrderPayOp.QUERY_PAY, false, porperties.getQueryUrl().toString(), resBody);
             Map<String, String> resMap = helper.deserializeWxXml(resBody);
-            if (resMap == null || !dataBuilder.checkSign(resMap)
-                || !isSuccess(resMap.get(K_RETURN_CODE))) {
+            if (resMap == null || !dataBuilder.checkSign(resMap) || !isSuccess(resMap.get(K_RETURN_CODE))) {
                 LOGGER.error("query wx for order " + orderId + " return error or fail");
                 return false;
             }
@@ -168,8 +194,8 @@ public class WxPayController {
             wxDetail.setTradeState(tradeState);
             wxDetail.setTradeStateDesc(tradeStateDesc);
             if (isSuccess(resultCode) && tradeState != null) {
-                TradeState state = TradeState.valueOf(tradeState);
-                if (TradeState.SUCCESS == state) {
+                WxTradeState state = WxTradeState.valueOf(tradeState);
+                if (WxTradeState.SUCCESS == state) {
                     if (tradeStateDesc == null) wxDetail.setTradeState("已支付");
                     fillPayResultData(wxDetail, resMap);
                 }
@@ -193,36 +219,44 @@ public class WxPayController {
         return true;
     }
 
+    // -------------------------- 下单处理 -----------------------------------
+
     /**
      * 二维码支付下单请求：设备->后台
      */
     @PostMapping(value = "/order", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> orderQR(@RequestBody String orderReqBody) {
+    public ResponseEntity<String> order(@RequestBody String orderReqBody) {
+        // 打印log，便于查错
         LOGGER.debug("order request " + orderReqBody);
+        // 将请求从String解析成WxClientRequest对象
         WxClientRequest orderReq = helper.deserializeClientJson(orderReqBody);
+        // 简单校验
         if (orderReq == null)
             return helper.clientErrResponse(BAD_REQUEST, "JSON解析失败");
         if (orderReq.getOrderList() == null || orderReq.getOrderList().size() == 0)
             return helper.clientErrResponse(BAD_GATEWAY, "商品列表为空");
+        // 获取关键参数
         final String reqId = orderReq.getId();
         final String pseudoNo = orderReq.getOrderPseudoNo();
+        // 检查是否重复下单
         if (dbService.orderPayRecordExists(pseudoNo, orderReq.getRobotUid()))
             return helper.clientErrResponse(BAD_REQUEST, pseudoNo, null, "pseudoNo已使用", reqId);
+        // 由设备端的下单请求生成向微信的下单请求参数（Map）
         final WxPayDataWrapper dataWrapper = dataBuilder.buildOrderData(orderReq);
         if (dataWrapper.isEmpty())
             return helper.clientErrResponse(BAD_REQUEST, pseudoNo, OrderStatus.FAIL,
                 "获取下单数据失败", reqId);
-        // get data ok
+        // 序列化请求参数Map成xml String
         final String reqXml = helper.serializeWxXml(dataWrapper.getWxParams());
-
+        // 数据库创建订单
         dbService.newOrderPayRecord(dataWrapper.getOrderPay());
         dbService.newWxPayRecord(dataWrapper.getWxDetail());
         dbService.insertOrderItems(dataWrapper.getItems());
-
+        // 数据库记录请求消息体（调试备份用、正式发布可以删去）
         final String orderId = dataWrapper.getOrderPay().getOrderId();
         logHttp(orderId, OrderPayOp.NEW_ORDER, true, "/pay/wx/order", orderReqBody);
         logHttp(orderId, OrderPayOp.NEW_PAY, true, porperties.getOrderUrl(), reqXml);
-
+        // 向微信发送POST请求，并处理微信的返回结果
         return handleOrderResult(helper.sendWxPost(porperties.getOrderUrl(), reqXml),
             dataWrapper, reqId);
     }
@@ -235,40 +269,46 @@ public class WxPayController {
         final String pseudoNo = orderPay.getOrderPseudoNo();
         final String orderId = orderPay.getOrderId();
         LOGGER.debug("new order " + orderId + " response " + wxOrderResBody);
-        // get response data & check sign
+        // get response data & check sign 获取微信返回结果并进行签名校验
         Map<String, String> wxOrderResMap = helper.deserializeWxXml(wxOrderResBody);
         if (wxOrderResMap == null || !dataBuilder.checkSign(wxOrderResMap))
             return helper.clientErrResponse(BAD_GATEWAY, pseudoNo, OrderStatus.FAIL,
                 "微信返回数据异常或解析失败", reqId);
-        // check return status & result
+        // check return status & result 具体返回结果处理
         final String returnCode = wxOrderResMap.get(K_RETURN_CODE); // todo
         final String returnMsg = wxOrderResMap.get(K_RETURN_MSG);
         final String resultCode = wxOrderResMap.get(K_RESULT_CODE);
         String errCode = wxOrderResMap.get(K_ERR_CODE);
         String errDesc = wxOrderResMap.get(K_ERR_CODE_DES);
         if (isSuccess(resultCode)) {
-            final String codeUrl = wxOrderResMap.get(K_CODE_URL);
+            // 微信下单成功
+            final String codeUrl = wxOrderResMap.get(K_CODE_URL);  // 获取关键二维码
             LOGGER.info("\n pseudoNo: " + pseudoNo + "  orderId: " + orderId + "\n" + codeUrl);
+            // 更新数据库订单状态
             orderPay.setOrderStatus(OrderStatus.SUCCESS);
             orderPay.setPayStatus(PayStatus.WAIT);
             wxDetail.setCodeUrl(codeUrl);
             wxDetail.setPrepayId(wxOrderResMap.get(K_PREPAY_ID));
             dbService.updateOrderPayRecord(orderPay);
             dbService.updateWxPayRecord(wxDetail);
-
+            // 将这一订单放入定时查询队列
             queryQueue.add(orderId);
-
+            // 返回设备端下单成功
             return helper.clientOkResponse(new WxClientResponse(orderId, orderPay.getOrderStatus(),
                 pseudoNo, codeUrl, reqId));
         } else {
+            // 微信下单失败
             HttpStatus status;
-            if (isSuccess(returnCode)) {  // todo how to handle http error
+            if (isSuccess(returnCode)) {
+                // http通信异常等（测试中未遇到过），暂未考虑
                 status = FORBIDDEN;
             } else {
+                // 下单失败
                 status = BAD_GATEWAY;
                 errCode = returnCode;
                 errDesc = returnMsg;
             }
+            // 数据库更新订单状态
             orderPay.setOrderStatus(OrderStatus.FAIL);
             orderPay.setPayStatus(PayStatus.CANCEL);
             orderPay.setOrderErrCode(errCode);
@@ -276,12 +316,14 @@ public class WxPayController {
             orderPay.setCloseTime(ZonedDateTime.now());
             orderPay.setClosed(true);
             dbService.updateOrderPayRecord(orderPay);
+            // 返回设备下单失败
             return helper.clientErrResponse(status, orderId, pseudoNo,
                 orderPay.getOrderStatus(), orderPay.getPayStatus(),
                 errCode, errDesc, "微信支付下单请求失败", reqId);
         }
     }
 
+    // -------------------------- 异步支付结果处理 -----------------------------------
 
     /**
      * 微信平台异步通知结果：微信->后台
@@ -337,6 +379,9 @@ public class WxPayController {
         return helper.wxCallbackOkResponse();
     }
 
+
+    // -------------------------- 查询订单处理 -----------------------------------
+
     /**
      * 订单状况查询：设备->后台
      */
@@ -365,6 +410,8 @@ public class WxPayController {
             return helper.clientErrResponse(BAD_REQUEST, "订单号错误");
         }
     }
+
+    // -------------------------- 关闭订单处理 -----------------------------------
 
     /**
      * 关闭订单：设备->后台
@@ -428,9 +475,17 @@ public class WxPayController {
         return helper.clientOkResponse(new WxClientResponse(orderId, orderStatus, orderPay.getPayStatus(), reqId));
     }
 
+
+    // -------------------------- 退款相关处理 -----------------------------------
+
+    /***
+     * 微信支付退款接口： 设备 -> 后台
+     */
     // todo lack data validation & user auth, do not use in product!
     @PostMapping(path = "/refund", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> refund(@RequestBody String clientReqJson) {
+        // todo 退款接口需要ssl证书/安全性要求较高，这里写的比较简单，
+        // TODO 所以增加了pay.wx.refund.enable变量来控制是否需要启用这个接口
         if (!porperties.isRefundEnabled())
             return helper.textResponse(NOT_FOUND, TEXT_PLAIN, "未开放退款功能");
         LOGGER.debug("new refund request\n " + clientReqJson);
@@ -507,6 +562,9 @@ public class WxPayController {
             helper.clientOkResponse(clientRes) : helper.clientErrResponse(BAD_GATEWAY, clientRes);
     }
 
+    /***
+     * 微信支付查询退款接口： 设备 -> 后台
+     */
     @GetMapping(value = "/refund/query", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> refundQuery(@RequestParam("refundno") String refundNo) {
         if (!porperties.isRefundEnabled())
@@ -541,7 +599,7 @@ public class WxPayController {
             if (isSuccess(resultCode)) {
                 status = OK;
                 boolean allOk = true;
-                for (PmsRefundDetailWx wxRefund : WxPayControllerHelper.parseRefundResultData(refund, resMap)) {
+                for (PmsRefundDetailWx wxRefund : parseRefundResultData(refund, resMap)) {
                     LOGGER.debug("refund no " + refundNo + " n=" + wxRefund.getRefundIdSn()
                         + " fee " + wxRefund.getRefundFee() + " status " + wxRefund.getRefundStatus());
                     dbService.newWxRefundRecord(wxRefund);
@@ -578,11 +636,95 @@ public class WxPayController {
         return helper.clientErrResponse(status, clientRes);
     }
 
-    public void logHttp(String orderId, OrderPayOp op, boolean isReq, URI url, String body) {
+    // -------------------------- 其它 -----------------------------------
+
+    // 转换微信返回的trade_status至自己设置的PayStatus
+    private static PayStatus mapFromTradeState(WxTradeState state, boolean isExpired) {
+        PayStatus payStatus = null;
+        switch (state) {
+            case SUCCESS:
+                payStatus = PayStatus.SUCCESS;
+                break;
+            case NOTPAY:
+                if (isExpired) payStatus = PayStatus.EXPIRE;
+                break;
+            case CLOSED:
+                payStatus = PayStatus.CLOSE;
+                break;
+            case PAYERROR:
+                payStatus = PayStatus.FAIL;
+                break;
+            default: // todo not handle
+        }
+        return payStatus;
+    }
+
+    // 合并了一些get/set操作
+    private static WxClientResponse getQueryClientData(PmsOrderPay orderPay, PmsPayDetailWx wxDetail) {
+        WxClientResponse res = new WxClientResponse(orderPay.getOrderId());
+        final OrderStatus orderStatus = orderPay.getOrderStatus();
+        res.setOrderTime(orderPay.getOrderTime());
+        res.setCloseTime(orderPay.getCloseTime());
+        res.setOrderTotalFee(orderPay.getOrderTotalFee());
+        res.setOrderStatus(orderStatus);
+        res.setPayStatus(orderPay.getPayStatus());
+        if (OrderStatus.SUCCESS == orderStatus) {
+            res.setPayTimeStart(wxDetail.getTimeStart());
+            res.setPayTimeExpire(wxDetail.getTimeExpire());
+            res.setPayTimeEnd(wxDetail.getTimeEnd());
+            res.setPayCashFee(wxDetail.getCashFee());
+            res.setPayCouponFee(wxDetail.getCouponFee());
+            res.setWxOpenId(wxDetail.getOpenid());
+            res.setWxTransactionId(wxDetail.getTransactionId());
+        }
+        return res;
+    }
+
+    // 合并了一些get/set操作
+    private static void fillPayResultData(PmsPayDetailWx wxDetail, Map<String, String> resMap) {
+        wxDetail.setOutTradeNo(resMap.get(K_OUT_TRADE_NO));
+        wxDetail.setTransactionId(resMap.get(K_TRANSACTION_ID));
+        wxDetail.setTimeEnd(WxPayUtil.parseDateTime(resMap.get(K_TIME_END)));
+
+        wxDetail.setOpenid(resMap.get(K_OPENID));
+        wxDetail.setIsSubscribe(resMap.get(K_IS_SUBSCRIBE));
+
+        wxDetail.setBankType(resMap.get(K_BANK_TYPE));
+        wxDetail.setSettlementTotalFee(WxPayUtil.parseFee(resMap.get(K_SETTLEMENT_TOTAL_FEE)));
+        wxDetail.setCashFee(WxPayUtil.parseFee(resMap.get(K_CASH_FEE)));
+        wxDetail.setCashFeeType(resMap.get(K_CASH_FEE_TYPE));
+        wxDetail.setCouponFee(WxPayUtil.parseFee(resMap.get(K_COUPON_FEE)));
+    }
+
+    // 解析退款返回，微信退款返回参数设计的很糟糕、而且定义不清晰，这里只是简单处理
+    // todo imcomplete do not use!
+    private static List<PmsRefundDetailWx> parseRefundResultData(PmsRefund refund, Map<String, String> resMap) {
+        final List<PmsRefundDetailWx> list = new ArrayList<>();
+        final String refundNo = refund.getRefundNo();
+        final Integer cnt = Integer.parseInt(resMap.get(K_REFUND_COUNT));
+        for (int i = 0; i < cnt; i++) {
+            PmsRefundDetailWx wxRefund = new PmsRefundDetailWx();
+            wxRefund.setRefundNo(refundNo);
+            wxRefund.setRefundCount(cnt);
+            wxRefund.setRefundIdSn(i);
+            wxRefund.setRefundId(resMap.get(getNthKey(K_REFUND_ID, i)));
+            wxRefund.setRefundChannel(resMap.get(getNthKey(K_REFUND_CHANNEL, i)));
+            wxRefund.setRefundAccount(resMap.get(getNthKey(K_REFUND_ACCOUNT, i)));
+            wxRefund.setRefundRecvAccout(resMap.get(getNthKey(K_REFUND_RECV_ACCOUT, i)));
+            wxRefund.setRefundStatus(resMap.get(getNthKey(K_REFUND_STATUS, i)));
+            wxRefund.setRefundSuccessTime(WxPayUtil.parseDateTime(resMap.get(getNthKey(K_REFUND_SUCCESS_TIME, i))));
+            wxRefund.setRefundFee(WxPayUtil.parseFee(resMap.get(getNthKey(K_REFUND_FEE, i))));
+            list.add(wxRefund);
+        }
+        return list;
+    }
+
+    /** 记录请求消息体，主要是调试备份用，正式版本可以删去 */
+    private void logHttp(String orderId, OrderPayOp op, boolean isReq, URI url, String body) {
         logHttp(orderId, op, isReq, url.toString(), body);
     }
 
-    public void logHttp(String orderId, OrderPayOp op, boolean isReq, String path, String body) {
+    private void logHttp(String orderId, OrderPayOp op, boolean isReq, String path, String body) {
         dbService.log(new PmsOrderPayHttpLog(orderId, op, isReq, path, body));
     }
 }

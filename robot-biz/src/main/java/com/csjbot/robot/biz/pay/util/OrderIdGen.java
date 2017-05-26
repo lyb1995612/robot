@@ -2,16 +2,25 @@ package com.csjbot.robot.biz.pay.util;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * 订单流水号/orderId 生成器
+ */
 public final class OrderIdGen {
 
     private static final AtomicInteger atomicInteger = new AtomicInteger();
     private static final String DEL = "-";
     public static final String regex = "[0-9]{7}-[0-9]{4}(-[0-9]{3}){3}";  // example: 1491442-4935-000-001-816
 
+    /**
+     * 检查某一字串是否符合orderId格式
+     */
     public static boolean check(String val) {
         return val != null && val.matches(regex);
     }
 
+    /**
+     * @return 新的订单流水号/orderId
+     */
     public static String next() {
         return genTime() + DEL + genCnt() + DEL + RandomGen.randStr(3, RandomGen.NUMBER);
     }

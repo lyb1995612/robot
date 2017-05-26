@@ -1,5 +1,8 @@
 package com.csjbot.robot.biz.pay.util;
 
+/**
+ * 微信支付涉及的参数名称
+ */
 public final class WxPayParamName {
 
     /** 计算前面时最后加的key=(apikey) */

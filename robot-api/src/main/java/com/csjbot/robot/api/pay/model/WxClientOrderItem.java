@@ -1,6 +1,6 @@
-package com.csjbot.robot.biz.pay.model;
+package com.csjbot.robot.api.pay.model;
 
-// todo use PmsOrderItem?
+// todo 下单请求里的商品、考虑直接用 PmsOrderItem?
 public class WxClientOrderItem {
     private String itemId;
     private Integer itemQty;

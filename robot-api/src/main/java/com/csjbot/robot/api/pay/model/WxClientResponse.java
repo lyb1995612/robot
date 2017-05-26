@@ -1,57 +1,15 @@
-package com.csjbot.robot.biz.pay.model;
+package com.csjbot.robot.api.pay.model;
+
+import com.csjbot.robot.biz.pay.model.OrderStatus;
+import com.csjbot.robot.biz.pay.model.PayStatus;
+import com.csjbot.robot.biz.pay.model.RefundStatus;
 
 import java.time.ZonedDateTime;
 
+/**
+ * 返回给设备端的结果
+ */
 public class WxClientResponse {
-    //
-    // public static class Refund {
-    //     // private String refundNo;
-    //     private Integer refundFee;
-    //     private RefundStatus refundStatus;
-    //     private ZonedDateTime refundTime;
-    //     private String wxRefundId;
-    //
-    //     public Refund() { }
-    //
-    //     public Refund(Integer refundFee, RefundStatus refundStatus, ZonedDateTime refundTime, String wxRefundId) {
-    //         this.refundFee = refundFee;
-    //         this.refundStatus = refundStatus;
-    //         this.refundTime = refundTime;
-    //         this.wxRefundId = wxRefundId;
-    //     }
-    //
-    //     public Integer getRefundFee() {
-    //         return refundFee;
-    //     }
-    //
-    //     public void setRefundFee(Integer refundFee) {
-    //         this.refundFee = refundFee;
-    //     }
-    //
-    //     public RefundStatus getRefundStatus() {
-    //         return refundStatus;
-    //     }
-    //
-    //     public void setRefundStatus(RefundStatus refundStatus) {
-    //         this.refundStatus = refundStatus;
-    //     }
-    //
-    //     public ZonedDateTime getRefundTime() {
-    //         return refundTime;
-    //     }
-    //
-    //     public void setRefundTime(ZonedDateTime refundTime) {
-    //         this.refundTime = refundTime;
-    //     }
-    //
-    //     public String getWxRefundId() {
-    //         return wxRefundId;
-    //     }
-    //
-    //     public void setWxRefundId(String wxRefundId) {
-    //         this.wxRefundId = wxRefundId;
-    //     }
-    // }
 
     private String id;
 

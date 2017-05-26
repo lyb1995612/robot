@@ -1,7 +1,9 @@
 package com.csjbot.robot.api.pay.service;
 
 import com.csjbot.robot.api.pay.config.WxPayPorperties;
-import com.csjbot.robot.biz.pay.model.WxPayDataWrapper;
+import com.csjbot.robot.api.pay.model.WxClientOrderItem;
+import com.csjbot.robot.api.pay.model.WxClientRequest;
+import com.csjbot.robot.api.pay.model.WxPayDataWrapper;
 import com.csjbot.robot.biz.pay.model.*;
 import com.csjbot.robot.biz.pay.service.WxPayDBService;
 import com.csjbot.robot.biz.pay.util.WxPayUtil;

@@ -14,6 +14,10 @@ import static com.csjbot.robot.biz.pay.util.WxPayParamName.K_API_KEY;
 import static com.csjbot.robot.biz.pay.util.WxPayParamName.K_SIGN;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * 微信支付相关的util方法，
+ * 上层应用开发应该直接调用这个class、而非分别import OrderIdGen、RandomGen等等
+ */
 public final class WxPayUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(WxPayUtil.class);
     private static final String NONCE_STR_SRC =
@@ -40,6 +44,7 @@ public final class WxPayUtil {
     }
 
     // todo what is productId and how to create??
+    // 并不清楚微信productId的意义或作用，目前只是简单将orderId和clientOrderNo拼接了下
     public static String newProductId(String orderId, String clientOrderNo) {
         String src = (orderId + clientOrderNo).replace("-", "");
         int srcLen = src.length();
@@ -143,6 +148,11 @@ public final class WxPayUtil {
         return ChronoUnit.MINUTES.between(start, end);
     }
 
+    /**
+     * 获取费用/金额数（微信所有的Fee都是精确到分后取整）
+     * @param val String表示的金额数
+     * @return 解析出来的Integer金额数
+     */
     public static Integer parseFee(String val) {
         if (val == null || !val.matches("[0-9]+")) return null;
         return Integer.parseInt(val);

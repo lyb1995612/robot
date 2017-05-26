@@ -1,8 +1,13 @@
-package com.csjbot.robot.biz.pay.model;
+package com.csjbot.robot.api.pay.model;
+
+import com.csjbot.robot.biz.pay.model.WxTradeType;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 
+/**
+ * 设备端发起的请求对象
+ */
 public class WxClientRequest {
     private String id;
 

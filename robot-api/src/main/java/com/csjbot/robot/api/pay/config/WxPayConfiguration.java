@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.nio.charset.Charset;
 import java.security.KeyStore;
 
+// 这是一个配置文件，和spring-xxx.xml配置文件一样都可以创建bean，只不过形式是写Java代码
 @Configuration
 public class WxPayConfiguration {
 
@@ -27,6 +28,15 @@ public class WxPayConfiguration {
     @Autowired
     private WxPayPorperties porperties;
 
+    /**
+     * 创建一个HTTP RestTemplate bean交由Spring管理；
+     * 可以在别处注入使用，比如
+     * <pre>
+     * &#064Autowired
+     * private RestTemplate restTemplate;
+     * //注意因为暂时没有进行更多设置、变量名一定要和method名一致（即restTemplate）、否则会注入失败
+     * </pre>
+     */
     @Bean
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
@@ -35,6 +45,12 @@ public class WxPayConfiguration {
         return restTemplate;
     }
 
+    /**
+     * 创建一个HTTPS RestTemplate bean，用于微信退款接口；
+     * 使用方法同restTemplate()
+     *
+     * @see WxPayConfiguration#restTemplate
+     */
     @Bean
     public RestTemplate restTemplateWithCert() throws Exception {
         ClientHttpRequestFactory factory = createHttpRequestFactory();
@@ -59,7 +75,7 @@ public class WxPayConfiguration {
             keyManagerFactory.init(keyStore, passwd.toCharArray());
             SslContext sslContext = sslContextBuilder.keyManager(keyManagerFactory).build();
             factory.setSslContext(sslContext);
-        }else {
+        } else {
             factory.setSslContext(sslContextBuilder.build());
         }
         return factory;

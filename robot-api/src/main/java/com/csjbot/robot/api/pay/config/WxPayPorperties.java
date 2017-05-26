@@ -5,6 +5,10 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ * 微信支付相关参数配置，来源是application.properties(2017/02/05)；
+ * 部分参数已经封装成方法，其他的可以用getValue(参数名)获取
+ */
 public class WxPayPorperties {
 
     public static final int MIN_MINUTES = 5;

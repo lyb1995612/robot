@@ -2,15 +2,20 @@ package com.csjbot.robot.biz.pay.util;
 
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class ChecksumGen {
 
-    public static final String MD5="MD5";
-    public static final String SHA1="SHA1";
+    public static final String MD5 = "MD5";
+    public static final String SHA1 = "SHA1";
 
+    /**
+     * 计算String的checksum值
+     *
+     * @see MessageDigest#getInstance(String)
+     * @see String#getBytes()
+     */
     public static String compute(String checksumAlg, String src, Charset charSet)
         throws NoSuchAlgorithmException {
         final byte[] hashBytes = MessageDigest.getInstance(checksumAlg)
