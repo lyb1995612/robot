@@ -1,5 +1,7 @@
 package com.csjbot.robot.admin.controller.tms;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,8 @@ import com.csjbot.robot.biz.sys.service.SysAttachService;
 import com.csjbot.robot.biz.tms.realm.ErrorRealm;
 import com.csjbot.robot.biz.tms.service.VrcService;
 import com.csjbot.robot.biz.ums.model.User;
+import com.csjbot.robot.biz.util.FileUtil;
+import com.csjbot.robot.biz.util.ReadUtil;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 @Controller
@@ -58,7 +62,7 @@ public class VersionRobotController {
 	/**
 	 * @discription 版本列表
 	 * @author CJay
-	 * @created 2017�?4�?20�? 下午2:44:52
+	 * @created 2017�?4�?20�? 下午2:44:52
 	 */
 	@RequestMapping(value = "/list")
 	public ModelAndView portal() {
@@ -71,9 +75,9 @@ public class VersionRobotController {
 	}
 
 	/**
-	 * @discription 修改�?
+	 * @discription 修改�?
 	 * @author CJay
-	 * @created 2017�?4�?21�? 上午10:19:59
+	 * @created 2017�?4�?21�? 上午10:19:59
 	 */
 	@RequestMapping(value = "{id}/toVersionUpdate")
 	public ModelAndView toProducUpdate(@PathVariable String id, HttpServletRequest request) {
@@ -84,9 +88,9 @@ public class VersionRobotController {
 	}
 
 	/**
-	 * @discription 详情�?
+	 * @discription 详情�?
 	 * @author CJay
-	 * @created 2017�?4�?21�? 上午10:20:27
+	 * @created 2017�?4�?21�? 上午10:20:27
 	 */
 	@RequestMapping(value = "{id}/toVersionDetail")
 	public ModelAndView toProductDetail(@PathVariable String id, HttpServletRequest request) {
@@ -105,7 +109,9 @@ public class VersionRobotController {
 		mv.addObject("sysVersionRobot", sysVersionRobot);
 		SysAttachment attach = attachService.getAttachByTransInfo(sysVersionRobot.getId(),
 				Constants.Attachment.Type.VERSION_ROBOT_FILE);
-		// mv.addObject("file_url","/attach/"+sysVersionRobot.getId()+"/"+Constants.Attachment.Type.VERSION_ROBOT_FILE+"/"+attach.getName());
+		//mv.addObject("file_url","/attach/"+sysVersionRobot.getId()+"/"+Constants.Attachment.Type.VERSION_ROBOT_FILE+"/"+attach.getName());
+		//mv.addObject("file_url","/attach/"+sysVersionRobot.getId()+"/"+Constants.Attachment.Type.VERSION_ROBOT_FILE+"/tms";
+		//mv.addObject("file_url","/attach/"+sysVersionRobot.getId()+"/"+Constants.Attachment.Type.VERSION_ROBOT_FILE+"/tms"); 
 		mv.addObject("file_url", "http://" + request.getServerName() + ":8001"
 				+ Constants.Attachment.Path.VERSION_ROBOT_FILE_PATH + attach.getAlias_name());
 		mv.addObject("file_name", attach.getOriginal_name());
@@ -115,7 +121,7 @@ public class VersionRobotController {
 	/**
 	 * @discription 跳转新增页面
 	 * @author CJay
-	 * @created 2017�?4�?20�? 下午2:45:07
+	 * @created 2017�?4�?20�? 下午2:45:07
 	 */
 	@RequestMapping(value = "/toVersionAdd")
 	public ModelAndView toProductAdd() {
@@ -130,7 +136,7 @@ public class VersionRobotController {
 	/**
 	 * @discription 新增版本
 	 * @author CJay
-	 * @created 2017�?3�?23�? 上午11:03:26
+	 * @created 2017�?3�?23�? 上午11:03:26
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> productAdd(SysVersionRobot sysVersionRobot,
@@ -158,8 +164,22 @@ public class VersionRobotController {
 		attach.setUpdater_fk(loginUser.getId());
 		attach.setMemo(sysVersionRobot.getMemo());
 		attach.setSort(0);
+		
+		FileUtil fileUtil = new FileUtil();
+		String ver_file_url = null;
 		if (ver_file != null) {
-			ErrorRealm errorRealm = new ErrorRealm();
+			attachService.deleteByTransInfo(attach.getTransaction_id(),attach.getTransaction_type());
+	    	
+			//ver_file_url=fileUtil.uploadAndModifyAttach(attachService,attach, ver_file, Constants.UPLOAD_PATH, Constants.Attachment.Path.PRODUCT_PIC_PATH);
+			ver_file_url=fileUtil.uploadAndModifyAttach(attachService,attach, ver_file, Constants.UPLOAD_PATH, Constants.Attachment.Path.VERSION_ROBOT_FILE_PATH);
+			
+			if ("error".equals(ver_file_url)) {
+		    	msg = ResultEntity.KW_STATUS_FAIL;
+		    	result.put("msg", msg);
+		    	logger.error("Product upload picture error!");
+		        return new ResponseEntity<String>(result.toString() ,headers, HttpStatus.OK);
+		    }
+			/*ErrorRealm errorRealm = new ErrorRealm();
 			url = errorRealm.uploadAndModifyAttach(attach, Constants.Attachment.Type.VERSION_ROBOT_FILE, ver_file,
 					nginx_path, Constants.Attachment.Path.VERSION_ROBOT_FILE_PATH);
 			if ("error".equals(url)) {
@@ -167,7 +187,7 @@ public class VersionRobotController {
 				result.put("msg", msg);
 				logger.error("Product upload picture error!");
 				return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
-			}
+			}*/
 		}
 		if (vrcService.insert(sysVersionRobot)) {
 			msg = ResultEntity.KW_STATUS_SUCCESS;
@@ -179,7 +199,7 @@ public class VersionRobotController {
 	/**
 	 * @discription 修改版本
 	 * @author CJay
-	 * @created 2017�?4�?21�? 下午4:52:52
+	 * @created 2017�?4�?21�? 下午4:52:52
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<String> versionUpdate(SysVersionRobot sysVersionRobot, HttpServletRequest request,
@@ -222,7 +242,7 @@ public class VersionRobotController {
 	/**
 	 * @discription 版本删除
 	 * @author CJay
-	 * @created 2017�?4�?21�? 下午2:15:55
+	 * @created 2017�?4�?21�? 下午2:15:55
 	 */
 	@RequestMapping(value = "{id}/versionDelete")
 	public ResponseEntity<String> versionDelete(@PathVariable String id, HttpServletResponse response) {
@@ -282,4 +302,26 @@ public class VersionRobotController {
         response.setCharacterEncoding("UTF-8");
         return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
     }
+	
+	@RequestMapping(value = "/getVersionCode", method = RequestMethod.POST)
+	public ResponseEntity<String> getVersionCode(@RequestParam(value="file", required=false) MultipartFile file, HttpServletRequest request,	HttpServletResponse response) throws IOException {
+		JSONObject result = new JSONObject();
+		HttpHeaders headers = new HttpHeaders();
+		File f = null;
+	    f=File.createTempFile("tmp", null);
+	    file.transferTo(f);
+	    f.deleteOnExit();       
+        Map<String,Object> res= ReadUtil.readVersionCode(f);
+        String versionCode= res.get("versionCode").toString();
+        String versionName= res.get("versionName").toString();
+		System.out.println(versionCode);
+		result.put("versionCode", versionCode);
+		result.put("versionName", versionName);
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		response.setCharacterEncoding("UTF-8");
+		// FileUtil fileUtil = new FileUtil();
+		result.put("msg", ResultEntity.KW_STATUS_SUCCESS);
+		return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
+	}
+
 }

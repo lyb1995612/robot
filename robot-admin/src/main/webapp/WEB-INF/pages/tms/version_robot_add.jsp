@@ -89,7 +89,7 @@
 											<div class="form-group">
 												<div class="input-group">
 													<div class="input-group-addon">Version Code</div>
-													<input class="form-control" type="text" id="version_code" name="version_code" maxlength="25" placeholder="请输入Version Code"/>
+													<input class="form-control" type="text" id="version_code" name="version_code"  maxlength="25" placeholder="请输入Version Code"/>
 												</div>
 											</div>
 										</div>											               

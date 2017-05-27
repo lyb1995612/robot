@@ -24,7 +24,7 @@ public interface SysAttachmentDao {
 
 	SysAttachment getAttachByTransInfo(@Param("transaction_id")String transaction_id,@Param("transaction_type")String transaction_type);
 	
-	SysAttachment getAttachByTransInfoName(@Param("transaction_id")String transaction_id,@Param("transaction_type")String transaction_type,@Param("fileName")String fileName);
+	SysAttachment getAttachByTransInfoName(@Param("transaction_id")String transaction_id,@Param("transaction_type")String transaction_type,@Param("name")String name);
 
 	void deleteByTransInfo(@Param("transaction_id")String transation_id, @Param("transaction_type")String transation_type);
 

@@ -18,9 +18,11 @@ import org.xmlpull.v1.XmlPullParser;
  */
 public final class ReadUtil {
 	
-	public static String readVersionCode(File file){
-		Map<String,Object> mapApk = ReadUtil.readAPK(file);
-		return (String) mapApk.get("versionCode");
+	public static Map<String,Object> readVersionCode(File file){
+		 return ReadUtil.readAPK(file);
+		 
+		// Map<String,String>
+		//(String) mapApk.get("versionCode");
 	}
 	
     /**
@@ -41,7 +43,8 @@ public final class ReadUtil {
 
                 } else {
                     if ("androidmanifest.xml".equals(zipEntry.getName().toLowerCase())) {
-                        AXmlResourceParser parser = new AXmlResourceParser();
+                    	 final AXmlResourceParser parser = new AXmlResourceParser(); 
+                    	//AXmlResourceParser parser = new AXmlResourceParser();
                         parser.open(zipFile.getInputStream(zipEntry));
                         while (true) {
                             int type = parser.next();

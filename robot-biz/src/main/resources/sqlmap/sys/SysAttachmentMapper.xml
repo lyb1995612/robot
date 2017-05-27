@@ -38,6 +38,7 @@
       select 
 	    <include refid="Base_Column_List" />
 	    from sys_attachment
+	   
 	    <where>
 			<if test="transaction_id != null and transaction_id !=''">
 				transaction_id = #{transaction_id}

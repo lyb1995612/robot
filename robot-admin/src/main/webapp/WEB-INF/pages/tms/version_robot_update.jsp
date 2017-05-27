@@ -20,8 +20,7 @@
             
             <div class="main-content" id="mainContent">
                 <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
-            
-                    <ul class="breadcrumb">
+            		<ul class="breadcrumb">
                         <li>
                             <i class="icon-home home-icon"></i>
                             <a href="${path}/">首页</a>

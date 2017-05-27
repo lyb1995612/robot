@@ -1,4 +1,8 @@
-$(function(){  
+$(function(){
+    $("#ver_file").change(function(){
+    	getVersionCode();
+    })
+    	
     
 	validator = $('#version_form').validate({
 	    	errorElement : 'span',  
@@ -84,3 +88,32 @@ $(function(){
 	});
     
 });
+
+
+function getVersionCode(){
+	var formData = new FormData();
+    formData.append('file',$("#ver_file")[0].files[0]); 
+	$.ajax({
+        type: "POST",
+        url: _path + "/vrc/getVersionCode",
+        async:false,
+        contentType: false,    //这个一定要写
+        processData: false, //这个也一定要写，不然会报错
+        data: formData,  
+        dataType: "json",
+        success : function(data) {  
+        	//alert(data.versionCode);
+        	$("#version_code").val(data.versionCode);
+        	$("#version_name").val(data.versionName);
+        	/*if (data.msg == "S") {
+        		csjbotui.ui.msg.alert({
+        			msg : "新增版本成功!",
+        		});
+        	} else {
+        		csjbotui.ui.msg.alert("新增版本失败!");
+        	}   */    	
+        },  
+        error : function(data) {  
+        }  
+   });  
+}
