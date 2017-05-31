@@ -35,9 +35,10 @@ import com.csjbot.robot.biz.sys.model.SysDataDictionary;
 import com.csjbot.robot.biz.sys.model.SysVersionRobot;
 import com.csjbot.robot.biz.sys.service.DictionaryService;
 import com.csjbot.robot.biz.sys.service.SysAttachService;
-import com.csjbot.robot.biz.tms.realm.ErrorRealm;
+
 import com.csjbot.robot.biz.tms.service.VrcService;
 import com.csjbot.robot.biz.ums.model.User;
+import com.csjbot.robot.biz.util.ErrorRealm;
 import com.csjbot.robot.biz.util.FileUtil;
 import com.csjbot.robot.biz.util.ReadUtil;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -57,6 +58,7 @@ public class VersionRobotController {
 	@Autowired
 	private SysAttachService attachService;
 
+	//文件路径
 	private final String nginx_path = "/opt/pkg";
 
 	/**
@@ -164,14 +166,11 @@ public class VersionRobotController {
 		attach.setUpdater_fk(loginUser.getId());
 		attach.setMemo(sysVersionRobot.getMemo());
 		attach.setSort(0);
-		
 		FileUtil fileUtil = new FileUtil();
 		String ver_file_url = null;
 		if (ver_file != null) {
 			attachService.deleteByTransInfo(attach.getTransaction_id(),attach.getTransaction_type());
-	    	
-			//ver_file_url=fileUtil.uploadAndModifyAttach(attachService,attach, ver_file, Constants.UPLOAD_PATH, Constants.Attachment.Path.PRODUCT_PIC_PATH);
-			ver_file_url=fileUtil.uploadAndModifyAttach(attachService,attach, ver_file, Constants.UPLOAD_PATH, Constants.Attachment.Path.VERSION_ROBOT_FILE_PATH);
+	    	ver_file_url=fileUtil.uploadAndModifyAttach(attachService,attach, ver_file, nginx_path, Constants.Attachment.Path.VERSION_ROBOT_FILE_PATH);
 			
 			if ("error".equals(ver_file_url)) {
 		    	msg = ResultEntity.KW_STATUS_FAIL;
@@ -179,7 +178,9 @@ public class VersionRobotController {
 		    	logger.error("Product upload picture error!");
 		        return new ResponseEntity<String>(result.toString() ,headers, HttpStatus.OK);
 		    }
-			/*ErrorRealm errorRealm = new ErrorRealm();
+		}
+		if (ver_file != null) {
+			ErrorRealm errorRealm = new ErrorRealm();
 			url = errorRealm.uploadAndModifyAttach(attach, Constants.Attachment.Type.VERSION_ROBOT_FILE, ver_file,
 					nginx_path, Constants.Attachment.Path.VERSION_ROBOT_FILE_PATH);
 			if ("error".equals(url)) {
@@ -187,8 +188,9 @@ public class VersionRobotController {
 				result.put("msg", msg);
 				logger.error("Product upload picture error!");
 				return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
-			}*/
+			}
 		}
+		
 		if (vrcService.insert(sysVersionRobot)) {
 			msg = ResultEntity.KW_STATUS_SUCCESS;
 		}
