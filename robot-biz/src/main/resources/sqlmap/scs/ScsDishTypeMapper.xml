@@ -37,6 +37,11 @@
 	<select id="selectAll" resultType="com.csjbot.robot.biz.scs.model.ScsDishType">
 		select * from scs_dish_type
 	</select>
+	
+	
+	<select id="selectBySn" parameterType="java.lang.String" resultType="com.csjbot.robot.biz.scs.model.ScsDishType">
+		select * from scs_dish_type <!--  where sn=#{sn} -->
+	</select>
 
 	<insert id="insert" parameterType="com.csjbot.robot.biz.scs.model.ScsDishType">
 		insert into scs_dish_type ( type_name, updater_fk,creator_fk, date_update, date_create)

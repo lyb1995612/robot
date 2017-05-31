@@ -41,4 +41,11 @@
       now(), now())
   </insert>
   
+  <select id="selectBySn">
+  	select rear.access_fk id,  rear.sn_fk as sn,
+	ay.memo from  scs_accessory_robot_ref rear
+	inner join  cms_robot robot on rear.sn_fk= robot.sn
+	inner join  scs_accessory ay on rear.access_fk=ay.id
+	where rear.sn_fk=#{sn} and  real.type
+   </select>
 </mapper>

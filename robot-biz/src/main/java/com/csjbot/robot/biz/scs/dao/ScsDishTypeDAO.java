@@ -27,4 +27,6 @@ public interface ScsDishTypeDAO {
 	int updateByPrimaryKeySelective(ScsDishType scsDishType);
 
     List<ScsDishType> selectAll();
+    
+    List<ScsDishType> selectBySn(String sn);
 }

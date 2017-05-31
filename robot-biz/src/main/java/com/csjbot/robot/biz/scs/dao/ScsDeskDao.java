@@ -27,6 +27,8 @@ public interface ScsDeskDao {
 	List<ScsDesk> selectByNumber(String number);
 
 	List<ScsDesk> selectAll();
+	
+	List<ScsDesk> selectBySn(String sn);
 
 	public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
 }

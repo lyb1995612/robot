@@ -62,5 +62,16 @@
     <select id="selectAll"  resultMap="BaseResultMap">
         select * from scs_desk_info
     </select>
+    
+    <select id="selectBySn" resultMap="BaseResultMap">
+    	select rerd.desk_id as id, rerd.sn , desk.number,desk.alias,desk.memo,
+		deskx,desky,deskz, deskw,deskv,deskq from scs_robot_desk_ref  rerd
+		inner join  scs_desk_info desk on rerd.desk_id=desk.id 
+		inner join cms_robot robot on rerd.sn =robot.sn
+		<where>
+			
+			rerd.sn=#{sn}
+		</where>
+    </select>
 </mapper>
 

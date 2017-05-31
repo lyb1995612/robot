@@ -29,6 +29,7 @@ public interface ScsDishDAO {
 	int updateByPrimaryKeySelective(ScsDish scsDish);
 
 	List<ScsDish> selectAll();
+	List<ScsDish> selectBySn(String sn);
 	
 	public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
 }

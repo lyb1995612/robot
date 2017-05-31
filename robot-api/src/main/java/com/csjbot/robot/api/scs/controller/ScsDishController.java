@@ -31,18 +31,27 @@ public class ScsDishController {
             throws IOException {
         ResponseUtil.write(response,scsService.findAllDishInfo(request));
     }
+    
+    // 查询所有菜品信息
+    @RequestMapping(value = "/scs/findDishInfoBySn", method = RequestMethod.GET)
+    @ResponseBody
+    public void findDishInfoBySn(HttpServletResponse response, HttpServletRequest request)
+            throws IOException {
+        //ResponseUtil.write(response,scsService.findAllDishInfo(request));
+        ResponseUtil.write(response, scsService.findDishInfoBySn(request));
+    }
 
 
 
     //查询所有菜品类型信息
     @RequestMapping(value = "/scs/findAllDishTypeInfo", method = RequestMethod.GET)
     @ResponseBody
-    public void findAllDishTypeInfo( HttpServletResponse response)
+    public void findAllDishTypeInfo( HttpServletResponse response,HttpServletRequest request)
             throws IOException {
-        ResponseUtil.write(response,scsService.findAllDishType());
+        ResponseUtil.write(response,scsService.findAllDishType(request));
     }
 
-
+    
     //获得送餐附件信息
     @RequestMapping(value = "/scs/showDishAccessory", method = RequestMethod.GET)
     @ResponseBody
@@ -71,6 +80,16 @@ public class ScsDishController {
             throws IOException {
         int type = Integer.valueOf(request.getParameter("type"));
         ResponseUtil.write(response,scsService.showAllDeskInfo(type));
+    }
+    
+  //按SN查询桌位
+    @RequestMapping(value = "/scs/showDeskInfoBySN", method = RequestMethod.GET)
+    @ResponseBody
+    public void showDeskInfoBySN(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        //int type = Integer.valueOf(request.getParameter("type"));
+        ResponseUtil.write(response, scsService.findDeskInfoBySn(request));
+       // ResponseUtil.write(response,scsService.showAllDeskInfo(type));
     }
 
     //下载文件接口

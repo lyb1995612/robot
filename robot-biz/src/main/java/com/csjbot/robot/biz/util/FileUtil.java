@@ -82,43 +82,42 @@ public class FileUtil{
 	}
 	
 	public String uploadAndModifyAttach(SysAttachService attachService, SysAttachment attach, MultipartFile file, String dir, String foldername) {
-		url = "";
-		String fileName = file.getOriginalFilename();
-		if (!checkFileType(fileName)||attach.getTransaction_id()==null || attach.getTransaction_type()==null) {
-			return "error";
-		}
-		attach.setOriginal_name(fileName);
-		attach.setSuffix(this.getFileExt(fileName));
-		attach.setSize((int)file.getSize());
-		attach.setFile_type(file.getContentType());
-		fileName = getName(fileName);
-		attach.setAlias_name(fileName);
-		attach.setName(this.getFilePre(fileName));
-		
-		String folderUrl = dir + foldername;
-		File path = new File(folderUrl);
-		if (!path.exists()) {
-			try {
-				path.mkdirs();
-			} catch (Exception e) {
-				e.printStackTrace();
+		try{
+			url = "";
+			String fileName = file.getOriginalFilename();
+			if (!checkFileType(fileName)||attach.getTransaction_id()==null || attach.getTransaction_type()==null) {
+				return "error";
 			}
-		}
-		url = folderUrl + fileName;
-		File outFile = new File(url);
-		attach.setDirectory(folderUrl);
-		attach.setLocation(url);
-		try {
+			attach.setOriginal_name(fileName);
+			attach.setSuffix(this.getFileExt(fileName));
+			attach.setSize((int)file.getSize());
+			attach.setFile_type(file.getContentType());
+			fileName = getName(fileName);
+			attach.setAlias_name(fileName);
+			attach.setName(this.getFilePre(fileName));
+			
+			String folderUrl = dir + foldername;
+			File path = new File(folderUrl);
+			if (!path.exists()) {
+				try {
+					path.mkdirs();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			url = folderUrl + fileName;
+			File outFile = new File(url);
+			attach.setDirectory(folderUrl);
+			attach.setLocation(url);
 			file.transferTo(outFile);
 			attachService.insert(attach);
 			return this.url;
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ServiceException e) {
+
+			
+		}catch(Exception e){
 			e.printStackTrace();
 		}
+		
 		return "error";
 	}
 

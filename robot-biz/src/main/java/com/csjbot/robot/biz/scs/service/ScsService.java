@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.csjbot.robot.base.page.Page;
 import com.csjbot.robot.base.page.PageContainer;
@@ -260,6 +261,89 @@ public class ScsService {
 	/**
 	 * api接口部分
 	 */
+	
+	/**
+	 * 按SN查询菜品
+	 * @param request
+	 * @return
+	 */
+	public JSONObject findDishInfoBySn(HttpServletRequest request){
+		JsonUtil jsonUtil = getJsonUtilEntity(true);
+		String sn=request.getParameter("sn");
+		List<Object> dishes = new ArrayList<>();
+		List<ScsDish> list = scsDishDAO.selectBySn(sn);
+		
+		for (ScsDish sdi : list) {
+			Map<String, Object> dish = new HashMap<>();
+			ScsDishType sdt = scsDishTypeDAO.selectByPrimaryKey(sdi.getDish_type());
+			SysAttachment saList = sysAttachmentDao.getAttachByTransInfo(sdi.getId().toString(),
+					Constants.Attachment.Type.DISH_PIC.toString());// getSystByProId(sdi.getId().toString());
+			if (sdt != null) {
+				dish.put("dishTypeId", sdt.getId());
+				dish.put("dishTypeName", sdt.getType_name().toString());
+			} else {
+				dish.put("dishTypeId", "");
+				dish.put("dishTypeName", "未知类型");
+			}
+			if (saList != null) {
+				dish.put("dishImageName", saList.getAlias_name());
+				dish.put("dishImageUrl",
+						request.getServerName() + ":" + request.getServerPort() + "/api/scs/downFile?filePath="
+								+ saList.getLocation().toString() + "&fileName=" + saList.getAlias_name().toString());
+			} else {
+				dish.put("dishImageName", "");
+				dish.put("dishImageUrl", "");
+			}
+			dish.put("dishId", sdi.getId().toString());
+			dish.put("dishName", sdi.getName().toString());
+			dish.put("dishPrice", sdi.getPrice());
+			dish.put("dishMemo", sdi.getMemo().toString());
+			dishes.add(dish);
+		}
+		Map<String, Object> result = new HashMap<>();
+		result.put("dishes", dishes);
+		jsonUtil.setResult(result);
+		return JsonUtil.toJson(jsonUtil);
+		
+	}
+	
+	/**
+	 * 按SN查询DESK
+	 * @param request
+	 * @return
+	 */
+	public JSONObject findDeskInfoBySn(HttpServletRequest request){
+		 JsonUtil jsonUtil = getJsonUtilEntity(true);
+		 String sn=request.getParameter("sn");
+		 List<ScsDesk> list= scsDeskDao.selectBySn(sn);
+		 Map<String, Object> result = new HashMap<>();
+		 result.put("desks", list);
+		 jsonUtil.setResult(result);
+		 return JsonUtil.toJson(jsonUtil);
+	}
+	
+	/**
+	 * 按SN 查询附件信息
+	 * @param request
+	 * @return
+	 */
+	public JSONObject findScsAccessoryBySn(HttpServletRequest request){
+		 JsonUtil jsonUtil = getJsonUtilEntity(true);
+		 String sn=request.getParameter("sn");
+		 Map<String,String> params= new HashMap<String,String>();
+		 params.put("sn", sn);
+		 params.put("type", Constants.Attachment.Type.SC_ACCESSORY);
+		 List<ScsAccessory> list= scsAccessoryDAO.selectBySn(params);
+		 
+		 
+		 
+		 
+		 
+		 Map<String, Object> result = new HashMap<>();
+		 result.put("desks", list);
+		 jsonUtil.setResult(result);
+		 return JsonUtil.toJson(jsonUtil);
+	}
 	/*
 	 * 查询所有菜品信息
 	 */
@@ -304,11 +388,19 @@ public class ScsService {
 	/*
 	 * 查询所有菜品类型信息
 	 */
-	public JSONObject findAllDishType() {
+	public JSONObject findAllDishType(HttpServletRequest request) {
+		String sn=request.getParameter("sn");
+		
+		System.out.println(sn);
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		List<Object> dishes = new ArrayList<>();
-
-		List<ScsDishType> list = scsDishTypeDAO.selectAll();
+		List<ScsDishType> list= new ArrayList<>();
+		if(StringUtil.isEmpty(sn)){
+			 list = scsDishTypeDAO.selectAll();
+		}else{
+			 list= scsDishTypeDAO.selectBySn(sn);
+		}
+		
 		for (ScsDishType sdt : list) {
 			Map<String, Object> dish_type = new HashMap<>();
 			dish_type.put("dishTypeId", 2000 + sdt.getId());
