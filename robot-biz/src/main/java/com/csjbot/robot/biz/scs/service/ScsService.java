@@ -5,13 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.csjbot.robot.base.page.Page;
 import com.csjbot.robot.base.page.PageContainer;
 import com.csjbot.robot.base.util.StringUtil;
 import com.csjbot.robot.biz.Constants;
-import com.csjbot.robot.biz.cms.model.CmsRobotGroupRef;
 import com.csjbot.robot.biz.sys.dao.SysAttachmentDao;
 import com.csjbot.robot.biz.sys.dao.SysDataDictionaryDao;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
@@ -69,7 +67,7 @@ public class ScsService {
 
 	@Autowired
 	private ScsDishLinkDao scsDishLinkDao;
-	
+
 	@Autowired
 	private SysDataDictionaryDao sysDicDao;
 
@@ -84,10 +82,10 @@ public class ScsService {
 		return scsDishLinkDao.countType(sn, dish_name);
 	}
 
-	public ScsDishLink getDish(String id){
+	public ScsDishLink getDish(String id) {
 		return scsDishLinkDao.getDish(id);
 	}
-	
+
 	public ScsDishLink selectByPK(String id) {
 		return scsDishLinkDao.selectByPK(id);
 	}
@@ -96,33 +94,37 @@ public class ScsService {
 		return scsDishLinkDao.selectBySN(sn);
 	}
 
-	public List<ScsDishLink> selectDishSNAll(){
+	public List<ScsDishLink> selectDishSNAll() {
 		return scsDishLinkDao.selectAll();
 	}
-	
+
 	public List<SysDataDictionary> findDictionaryByCode(String code) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("code", code);
 		return sysDicDao.findDictionaryByCode(params);
 	}
+
+	public List<Map<String, Object>> listDish(Map<String, Object> params) {
+		return scsDishLinkDao.listDish(params);
+	}
+
+	public int countDishLinkSize(String dishId) {
+		return scsDishLinkDao.countDishLinkSize(dishId);
+	}
+
+	public void saveOrUpdate(ScsDishLink scsDishLink) {
+		if (scsDishLinkDao.update(scsDishLink) == 0) {
+			if (StringUtil.isEmpty(scsDishLink.getId())) {
+				scsDishLink.setId(StringUtil.createUUID());
+			}
+			scsDishLinkDao.insert(scsDishLink);
+		}
+	}
 	
-	 public List<Map<String, Object>> listDish(Map<String, Object> params) {
-	        return scsDishLinkDao.listDish(params);
-	    }
-	
-	 public int countDishLinkSize(String dishId){
-		 return scsDishLinkDao.countDishLinkSize(dishId);
-	 }
-	 
-	 public void saveOrUpdate(ScsDishLink scsDishLink) {
-	        if (scsDishLinkDao.update(scsDishLink) == 0) {
-	            if (StringUtil.isEmpty(scsDishLink.getId())) {
-	            	scsDishLink.setId(StringUtil.createUUID());
-	            }
-	            scsDishLinkDao.insert(scsDishLink);
-	        }
-	    }
-	 
+	public List<String> selectPKBySN(String sn){
+		return scsDishLinkDao.selectPKBySN(sn);
+	}
+
 	public <E, K, V> Page<E> pageDishSN(Map<K, V> params, int current, int pagesize, String sortString) {
 		PageBounds pager = new PageBounds();
 		pager.setLimit(pagesize);
@@ -261,18 +263,19 @@ public class ScsService {
 	/**
 	 * api接口部分
 	 */
-	
+
 	/**
 	 * 按SN查询菜品
+	 * 
 	 * @param request
 	 * @return
 	 */
-	public JSONObject findDishInfoBySn(HttpServletRequest request){
+	public JSONObject findDishInfoBySn(HttpServletRequest request) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		String sn=request.getParameter("sn");
+		String sn = request.getParameter("sn");
 		List<Object> dishes = new ArrayList<>();
 		List<ScsDish> list = scsDishDAO.selectBySn(sn);
-		
+
 		for (ScsDish sdi : list) {
 			Map<String, Object> dish = new HashMap<>();
 			ScsDishType sdt = scsDishTypeDAO.selectByPrimaryKey(sdi.getDish_type());
@@ -304,46 +307,45 @@ public class ScsService {
 		result.put("dishes", dishes);
 		jsonUtil.setResult(result);
 		return JsonUtil.toJson(jsonUtil);
-		
+
 	}
-	
+
 	/**
 	 * 按SN查询DESK
+	 * 
 	 * @param request
 	 * @return
 	 */
-	public JSONObject findDeskInfoBySn(HttpServletRequest request){
-		 JsonUtil jsonUtil = getJsonUtilEntity(true);
-		 String sn=request.getParameter("sn");
-		 List<ScsDesk> list= scsDeskDao.selectBySn(sn);
-		 Map<String, Object> result = new HashMap<>();
-		 result.put("desks", list);
-		 jsonUtil.setResult(result);
-		 return JsonUtil.toJson(jsonUtil);
+	public JSONObject findDeskInfoBySn(HttpServletRequest request) {
+		JsonUtil jsonUtil = getJsonUtilEntity(true);
+		String sn = request.getParameter("sn");
+		List<ScsDesk> list = scsDeskDao.selectBySn(sn);
+		Map<String, Object> result = new HashMap<>();
+		result.put("desks", list);
+		jsonUtil.setResult(result);
+		return JsonUtil.toJson(jsonUtil);
 	}
-	
+
 	/**
 	 * 按SN 查询附件信息
+	 * 
 	 * @param request
 	 * @return
 	 */
-	public JSONObject findScsAccessoryBySn(HttpServletRequest request){
-		 JsonUtil jsonUtil = getJsonUtilEntity(true);
-		 String sn=request.getParameter("sn");
-		 Map<String,String> params= new HashMap<String,String>();
-		 params.put("sn", sn);
-		 params.put("type", Constants.Attachment.Type.SC_ACCESSORY);
-		 List<ScsAccessory> list= scsAccessoryDAO.selectBySn(params);
-		 
-		 
-		 
-		 
-		 
-		 Map<String, Object> result = new HashMap<>();
-		 result.put("desks", list);
-		 jsonUtil.setResult(result);
-		 return JsonUtil.toJson(jsonUtil);
+	public JSONObject findScsAccessoryBySn(HttpServletRequest request) {
+		JsonUtil jsonUtil = getJsonUtilEntity(true);
+		String sn = request.getParameter("sn");
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("sn", sn);
+		params.put("type", Constants.Attachment.Type.SC_ACCESSORY);
+		List<ScsAccessory> list = scsAccessoryDAO.selectBySn(params);
+
+		Map<String, Object> result = new HashMap<>();
+		result.put("desks", list);
+		jsonUtil.setResult(result);
+		return JsonUtil.toJson(jsonUtil);
 	}
+
 	/*
 	 * 查询所有菜品信息
 	 */
@@ -384,23 +386,23 @@ public class ScsService {
 		jsonUtil.setResult(result);
 		return JsonUtil.toJson(jsonUtil);
 	}
-	
+
 	/*
 	 * 查询所有菜品类型信息
 	 */
 	public JSONObject findAllDishType(HttpServletRequest request) {
-		String sn=request.getParameter("sn");
-		
+		String sn = request.getParameter("sn");
+
 		System.out.println(sn);
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		List<Object> dishes = new ArrayList<>();
-		List<ScsDishType> list= new ArrayList<>();
-		if(StringUtil.isEmpty(sn)){
-			 list = scsDishTypeDAO.selectAll();
-		}else{
-			 list= scsDishTypeDAO.selectBySn(sn);
+		List<ScsDishType> list = new ArrayList<>();
+		if (StringUtil.isEmpty(sn)) {
+			list = scsDishTypeDAO.selectAll();
+		} else {
+			list = scsDishTypeDAO.selectBySn(sn);
 		}
-		
+
 		for (ScsDishType sdt : list) {
 			Map<String, Object> dish_type = new HashMap<>();
 			dish_type.put("dishTypeId", 2000 + sdt.getId());
@@ -410,7 +412,7 @@ public class ScsService {
 		jsonUtil.setResult(dishes);
 		return JsonUtil.toJson(jsonUtil);
 	}
-	
+
 	/*
 	 * 查询所有附件信息
 	 */

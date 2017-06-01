@@ -78,18 +78,6 @@
 									<div class="row">
 										<div class="col-md-12">
 											<span><label >当前 S/N 号：</label>${sn }</span>
-											<%-- <div class="col-md-3">
-												<div class="form-group">
-													<div class="input-group">
-														<div class="input-group">
-															<div style="width: 100px" class="input-group-addon">当前
-																S/N</div>
-															<input class="form-control" readonly type="text" id="sn"
-																name="sn" value="${sn}" maxlength="25" />
-														</div>
-													</div>
-												</div>
-											</div> --%>
 										</div>
 									</div>
 								</form>

@@ -6,8 +6,9 @@
 		<result property="id" column="id" jdbcType="CHAR" />
 		<result column="sn" property="sn" jdbcType="VARCHAR" />
 		<result column="dish_id" property="dish_id" jdbcType="CHAR" />
-		<result column="dish_name" property="dish_name" jdbcType="VARCHAR" />
-		<result column="valid" property="valid" jdbcType="CHAR" />
+		<result column="valid" property="valid" jdbcType="TINYINT" />
+		<result column="validT" property="validT" jdbcType="BOOLEAN" />
+		<result column="checkedF" property="checkedF" jdbcType="BOOLEAN" />
 		<result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
 		<result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
 		<result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
@@ -18,60 +19,85 @@
 		<result property="checked" column="checked" javaType="boolean" />
 		<result property="sn" column="sn" jdbcType="VARCHAR" />
 		<result property="id" column="id" jdbcType="VARCHAR" />
-		<result property="dish_name" column="dish_name" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id, sn, dish_id, dish_name, valid, updater_fk, creator_fk,
+		id, sn, dish_id, valid, updater_fk, creator_fk,
 		date_update,
 		date_create
 	</sql>
 
 	<select id="selectDishSNAll" resultMap="BaseResultMap">
-		SELECT *
-		FROM scs_dish_robot_ref
-		WHERE valid = 1
+		SELECT
+		r.id,r.sn,r.dish_id,d.name
+		dish_name,r.valid,r.updater_fk,r.creator_fk,
+		r.date_create,r.date_update
+		FROM
+		scs_dish_robot_ref r
+		LEFT JOIN
+		scs_dish_info d ON d.id = r.dish_id
+		WHERE r.valid = 1
 	</select>
 
-	<insert id="insertDishLink" parameterType="com.csjbot.robot.biz.scs.model.ScsDishLink">
+	<insert id="insert" parameterType="com.csjbot.robot.biz.scs.model.ScsDishLink">
 		INSERT INTO
-		scs_dish_robot_ref(id, sn, dish_id, dish_name, valid,
+		scs_dish_robot_ref(id,
+		sn,
+		dish_id,
+		validT,
 		updater_fk,
-		creator_fk, date_update, date_create)
+		creator_fk,
+		date_update, date_create)
 		VALUES
-		(#{id,jdbcType=CHAR},#{sn,jdbcType=VARCHAR},#{dish_id,jdbcType=CHAR},
-		#{dish_name,jdbcType=VARCHAR},#{valid,jdbcType=TINYINT},#{updater_fk,jdbcType=CHAR},
-		#{creator_fk,jdbcType=CHAR},#{date_update},
+		(#{id,jdbcType=CHAR},
+		#{sn,jdbcType=VARCHAR},
+		#{dish_id,jdbcType=CHAR},
+		#{validT,jdbcType=BOOLEAN},
+		#{updater_fk,jdbcType=CHAR},
+		#{creator_fk,jdbcType=CHAR},
+		#{date_update},
 		#{date_create})
 	</insert>
 
-	<update id="updateDishLink" parameterType="com.csjbot.robot.biz.scs.model.ScsDishLink">
+	<update id="update" parameterType="com.csjbot.robot.biz.scs.model.ScsDishLink">
 		UPDATE
 		scs_dish_robot_ref
 		SET
-		sn=#{sn,jdbcType=VARCHAR},dish_name=#{dish_name,jdbcType=VARCHAR},valid=#{valid,jdbcType=TINYINT},
-		updater_fk=#{updater_fk,jdbcType=CHAR},date_update=#{date_update}
+		dish_id=#{dish_id,jdbcType=CHAR},
+		validT=#{validT,jdbcType=BOOLEAN},
+		updater_fk=#{updater_fk,jdbcType=CHAR},
+		date_update=#{date_update}
 		WHERE id=#{id,jdbcType=CHAR}
 	</update>
 
-	<delete id="deleteDishLink" parameterType="map">
-		DELETE FROM
-		scs_dish_robot_ref
-		WHERE id = #{id,jdbcType=CHAR}
-	</delete>
-	
 	<select id="selectByPK" resultMap="BaseResultMap" parameterType="map">
-		SELECT 
-		<include refid="Base_Column_List" />
-		FROM scs_dish_robot_ref
+		SELECT
+		r.id,r.sn,r.dish_id,d.name
+		dish_name,r.valid,r.updater_fk,r.creator_fk,
+		r.date_create,r.date_update
+		FROM
+		scs_dish_robot_ref r
+		LEFT JOIN
+		scs_dish_info d ON d.id = r.dish_id
 		WHERE id = #{id,jdbcType=CHAR}
+	</select>
+
+	<select id="selectPKBySN" parameterType="map" resultMap="BaseResultMap">
+		SELECT id 
+		FROM scs_dish_robot_ref 
+		WHERE sn = #{sn,jdbcType=VARCHAR}
 	</select>
 
 	<select id="selectBySN" resultMap="BaseResultMap" parameterType="map">
 		SELECT
-		<include refid="Base_Column_List" />
-		FROM scs_dish_robot_ref
-		WHERE sn = #{sn,jdbcType=VARCHAR} 
+		r.id,r.sn,r.dish_id,d.name
+		dish_name,r.valid,r.updater_fk,r.creator_fk,
+		r.date_create,r.date_update
+		FROM
+		scs_dish_robot_ref r
+		LEFT JOIN
+		scs_dish_info d ON d.id = r.dish_id
+		WHERE sn = #{sn,jdbcType=VARCHAR}
 	</select>
 
 	<select id="page" parameterType="map" resultMap="BaseResultMap">
@@ -85,15 +111,21 @@
 
 	<select id="listDish" parameterType="map" resultMap="dishPermission">
 		SELECT * FROM
-		(SELECT a.id , IFNULL(a.valid = 1, 0) AS checked,u.id AS robot_id,
-		u.valid AS
-		STATUS,u.sn AS sn,u.type AS TYPE,a.dish_name AS dish_name,
-		a.date_create ,a.date_update
-		FROM (SELECT * FROM cms_robot WHERE
+		(SELECT a.id , IFNULL(a.valid = 1, 0) AS checked,u.id AS
+		robot_id,
+		u.valid AS STATUS,u.sn AS sn,i.name AS dish_name,u.type AS
+		TYPE,a.date_create,a.date_update
+		FROM (SELECT * FROM cms_robot
+		WHERE
 		valid=1) AS u
-		LEFT JOIN scs_dish_robot_ref AS a
+		LEFT JOIN
+		scs_dish_robot_ref AS a
 		ON u.sn = a.sn
-		AND a.sn = #{sn}) AS tbl
+		LEFT JOIN
+		scs_dish_info AS i
+		ON i.id = a.dish_id
+		AND
+		a.sn = #{sn}) AS tbl
 		<where>
 			<if test="sn != null and sn != ''">
 				AND tbl.sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
@@ -108,18 +140,36 @@
 
 	<select id="countDishLinkSize" parameterType="map" resultType="int">
 		SELECT COUNT(a.dish_id) AS amount
-		FROM scs_dish_robot_ref a, cms_robot b
+		FROM scs_dish_robot_ref a, cms_robot
+		b
 		WHERE a.valid = 1
 		AND b.valid = 1
 		AND a.sn= b.sn
-		AND a.dish_id = #{dishId}
+		AND a.dish_id =
+		#{dishId}
 	</select>
 
+	<select id="getDish" parameterType="map" resultMap="BaseResultMap">
+		SELECT
+		r.id,r.sn,r.dish_id,d.name
+		dish_name,r.valid,r.updater_fk,r.creator_fk,
+		r.date_create,r.date_update
+		FROM
+		scs_dish_robot_ref r
+		LEFT JOIN
+		scs_dish_info d ON d.id = r.dish_id
+		WHERE r.id = #{id,jdbcType=CHAR}
+	</select>
 
- 	<select id="getDish" parameterType="map" resultMap="BaseResultMap">
-		SELECT *
-		FROM  scs_dish_robot_ref 
-		WHERE id = #{id,jdbcType=CHAR}
-  </select>
-  
+	<!-- API接口 -->
+	<select id="selectDishIdBySN" parameterType="map" resultMap="BaseResultMap">
+		SELECT r.dish_id
+		FROM
+		scs_dish_robot_ref r
+		LEFT JOIN
+		scs_dish_info d ON
+		d.id = r.dish_id
+		WHERE sn = #{sn,jdbcType=VARCHAR}
+	</select>
+
 </mapper>

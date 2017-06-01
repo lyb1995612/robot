@@ -242,6 +242,7 @@ public class DishController {
      * @author CJay       
      * @created 2017�?3�?23�? 上午11:03:26
 	 */
+	@SuppressWarnings("unused")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<String> dishUpdate(ScsDish scsDish, HttpServletRequest request,HttpServletResponse response) {
 		System.out.println(111111);

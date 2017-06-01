@@ -39,6 +39,8 @@ public interface ScsDishLinkDao {
 	
 	public int insert(ScsDishLink scsDishLink);
 
+	public List<String> selectPKBySN(String sn);
+
     public int update(ScsDishLink scsDishLink);
 
 }

@@ -29,7 +29,8 @@ public class OrderPayDBServiceImpl implements OrderPayDBService {
     public OrderPayDBServiceImpl() {
     }
 
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public Map<String, String> getAccount() {
         List<Map<String, String>> res = customMapper.getAccount();
         Map<String, String> map = new HashMap<>();
