@@ -405,6 +405,8 @@ public class ScsService {
 
 	/*
 	 * 查询所有菜品类型信息
+	 * 
+	 * 
 	 */
 	public JSONObject findAllDishType(HttpServletRequest request) {
 		String sn = request.getParameter("sn");
