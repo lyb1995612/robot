@@ -5,22 +5,24 @@ import java.util.Date;
 import com.csjbot.robot.base.util.StringUtil;
 
 /**
- * @explain 菜品关联 
- * @author  AlexZhang
- * @date    2017年5月23日
+ * @explain 菜品关联
+ * @author AlexZhang
+ * @date 2017年5月23日
  * @company PangolinRobot
  */
 public class ScsDishLink {
-	
+
 	private String id = StringUtil.createUUID();;
 
 	private String sn;
 
 	private String dish_id;
 
-	private String dish_name;
-
 	private Byte valid;
+
+	private boolean validT = true;
+
+	private boolean checkedF = false;
 
 	private String creator_fk;
 
@@ -29,19 +31,20 @@ public class ScsDishLink {
 	private Date date_create;
 
 	private Date date_update;
-	
+
 	public ScsDishLink() {
 		super();
 	}
 
-	public ScsDishLink(String id, String sn, String dish_id, String dish_name, Byte vaild, String creator_fk,
-			String updater_fk, Date date_create, Date date_update) {
+	public ScsDishLink(String id, String sn, String dish_id, String dish_name, Byte vaild, boolean validT,
+			boolean checkedF, String creator_fk, String updater_fk, Date date_create, Date date_update) {
 		super();
 		this.id = id;
 		this.sn = sn;
 		this.dish_id = dish_id;
-		this.dish_name = dish_name;
 		this.valid = vaild;
+		this.validT = validT;
+		this.checkedF = checkedF;
 		this.creator_fk = creator_fk;
 		this.updater_fk = updater_fk;
 		this.date_create = date_create;
@@ -72,20 +75,28 @@ public class ScsDishLink {
 		this.dish_id = dish_id;
 	}
 
-	public String getDish_name() {
-		return dish_name;
-	}
-
-	public void setDish_name(String dish_name) {
-		this.dish_name = dish_name;
-	}
-
 	public Byte getValid() {
 		return valid;
 	}
 
 	public void setValid(Byte valid) {
 		this.valid = valid;
+	}
+
+	public boolean isValidT() {
+		return validT;
+	}
+
+	public void setValidT(boolean validT) {
+		this.validT = validT;
+	}
+
+	public boolean isCheckedF() {
+		return checkedF;
+	}
+
+	public void setCheckedF(boolean checkedF) {
+		this.checkedF = checkedF;
 	}
 
 	public String getCreator_fk() {

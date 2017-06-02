@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.csjbot.robot.base.util.StringUtil;
 import com.csjbot.robot.biz.cms.dao.CmsRobotGroupRefDao;
 import com.csjbot.robot.biz.cms.model.CmsRobotGroupRef;
-import com.csjbot.robot.biz.sys.model.RolePermissionRef;
 
 @Service
 public class CmsRobotGroupRefService {

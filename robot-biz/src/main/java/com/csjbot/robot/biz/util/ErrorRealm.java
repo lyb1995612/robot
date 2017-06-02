@@ -8,7 +8,6 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.csjbot.robot.base.exception.ServiceException;
