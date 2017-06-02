@@ -327,23 +327,19 @@ public class ScsService {
 	 * @param request
 	 * @return
 	 */
-	public JSONObject findScsAccessoryBySn(HttpServletRequest request){
+	/*public JSONObject findScsAccessoryBySn(HttpServletRequest request){
 		 JsonUtil jsonUtil = getJsonUtilEntity(true);
 		 String sn=request.getParameter("sn");
 		 Map<String,String> params= new HashMap<String,String>();
 		 params.put("sn", sn);
 		 params.put("type", Constants.Attachment.Type.SC_ACCESSORY);
 		 List<ScsAccessory> list= scsAccessoryDAO.selectBySn(params);
-		 
-		 
-		 
-		 
-		 
+		  
 		 Map<String, Object> result = new HashMap<>();
-		 result.put("desks", list);
+		 result.put("accessories", list);
 		 jsonUtil.setResult(result);
 		 return JsonUtil.toJson(jsonUtil);
-	}
+	}*/
 	/*
 	 * 查询所有菜品信息
 	 */
@@ -436,7 +432,7 @@ public class ScsService {
 	public JSONObject addDeskInfo(JSONObject json) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "userName", "deskNumber", "deskAlias", "deskMemo", "desk_x", "desk_y", "desk_z", "desk_w",
-				"desk_v", "desk_q", "deskValid", "deskSerialNumber" };
+				"desk_v", "desk_q", "deskValid", "deskSerialNumber","sn" };
 		if (CharacterUtil.judgeJsonFormat(key, json)) {
 			List<ScsDesk> sbn = scsDeskDao.selectByNumber(json.getString("deskNumber"));
 			Map<String, Object> map = new HashMap<>();
@@ -463,6 +459,8 @@ public class ScsService {
 					sdi.setDesk_type(json.getByte("deskSerialNumber"));
 					sdi.setUpdater_fk(ums_user.getId().toString());
 					int n = scsDeskDao.insert(sdi);
+					addDeskRobotFef(json.getString("sn"),sdi.getId(),ums_user.getId().toString());
+					
 					if (n != 1) {
 						jsonUtil = getJsonUtilEntity(false);
 						jsonUtil.setMessage("Error from Database operations!");
@@ -471,6 +469,8 @@ public class ScsService {
 					jsonUtil = getJsonUtilEntity(false);
 					jsonUtil.setMessage("The deskNumber already exists!");
 				}
+				
+				
 			} else {
 				jsonUtil = getJsonUtilEntity(false);
 				jsonUtil.setMessage("The desk already exists!");
@@ -480,6 +480,40 @@ public class ScsService {
 			jsonUtil.setMessage("Error from json format!");
 		}
 		return JsonUtil.toJson(jsonUtil);
+	}
+	/**
+	 * 
+	     * @discription 添加机器人与DESK关联数据
+	     * @author SJZ       
+	     * @created 2017年6月1日 下午2:44:26
+	 */
+	
+	public int addDeskRobotFef(String sn,String deskId,String uid){
+		Map<String,Object> params= new HashMap<String,Object>();
+		params.put("id", RandomUtil.generateString(32));
+		params.put("deskId", deskId);
+		params.put("sn", sn);
+		params.put("updaterFk", uid);
+		params.put("creatorFk", uid);
+		params.put("dateUpdate", RandomUtil.getTimeStampFor());
+		params.put("dateCreate", RandomUtil.getTimeStampFor());
+		return scsDeskDao.insertRobotDeskRef(params);
+		
+	}
+	
+	
+	/**
+	 * 
+	     * @discription  按SN 删除DESK
+	     * @author CJay       
+	     * @created 2017年6月1日 下午3:32:42
+	 */
+	public JSONObject  deleteDeskInfoBySn(String  sn){
+		JsonUtil jsonUtil = getJsonUtilEntity(true);
+		scsDeskDao.deleteBySn(sn);
+		scsDeskDao.deleteRobotDeskRefBySn(sn);
+		return JsonUtil.toJson(jsonUtil);
+		
 	}
 
 	/*

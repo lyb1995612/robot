@@ -39,9 +39,25 @@
 	</select>
 	
 	
-	<select id="selectBySn" parameterType="java.lang.String" resultType="com.csjbot.robot.biz.scs.model.ScsDishType">
-		select * from scs_dish_type <!--  where sn=#{sn} -->
+	<select id="selectBySn"  resultType="com.csjbot.robot.biz.scs.model.ScsDishType">
+		
+		
+		select  dt.id, dt.type_name, dt.updater_fk, dt.creator_fk, dt.date_update, dt.date_create
+		
+		from scs_dish_dishtype_ref redd
+		
+		inner  join scs_dish_info dish on  redd.dish_id=dish.id
+		
+		inner  join  scs_dish_type  dt on redd.dish_type_id=dt.id
+		
+		inner join  scs_dish_robot_ref redr on redr.dish_id= redd.dish_id
+	
+ 
+		where redr.sn=#{sn}
+		
 	</select>
+	
+	
 
 	<insert id="insert" parameterType="com.csjbot.robot.biz.scs.model.ScsDishType">
 		insert into scs_dish_type ( type_name, updater_fk,creator_fk, date_update, date_create)

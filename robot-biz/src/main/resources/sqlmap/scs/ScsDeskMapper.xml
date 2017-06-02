@@ -38,6 +38,16 @@
             where id = #{id,jdbcType=CHAR}
        </delete>
       
+      
+      <delete id="deleteBySn">
+      
+     <!--   delete from scs_desk_info desk where exists(select desk_id from scs_robot_desk_ref rbref where rbref.desk_id=desk.id and sn=#{sn}) -->
+       delete from scs_desk_info where id in (select desk_id from scs_robot_desk_ref where sn=#{sn})
+      </delete>
+      
+      <delete id="deleteRobotDeskRefBySn">
+       delete from scs_robot_desk_ref where sn=#{sn}
+      </delete>
       <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
        select 
          <include refid="Base_Column_List" />
@@ -53,6 +63,11 @@
                   #{desk_type,jdbcType=TINYINT},#{deskx,jdbcType=DOUBLE},#{desky,jdbcType=DOUBLE},#{deskz,jdbcType=DOUBLE},#{deskw,jdbcType=DOUBLE},
                   #{deskv,jdbcType=DOUBLE},#{deskq,jdbcType=DOUBLE},#{updater_fk,jdbcType=CHAR},#{creator_fk,jdbcType=CHAR},now(), now()
                   )
+        </insert>
+        
+        <insert id="insertRobotDeskRef" parameterType="map">
+        	insert into scs_robot_desk_ref(id,desk_id,sn,updater_fk,creator_fk,date_update,date_create)
+        	values(#{id},#{deskId},#{sn},#{updaterFk},#{creatorFk},#{dateUpdate},#{dateCreate})
         </insert>
     <select id="selectByNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" />
