@@ -31,38 +31,6 @@ public class ScsDishController {
             throws IOException {
         ResponseUtil.write(response,scsService.findAllDishInfo(request));
     }
-    
-    // 按SN查询所有菜品信息
-    @RequestMapping(value = "/scs/showDishInfoBySn", method = RequestMethod.GET)
-    @ResponseBody
-    public void showDishInfoBySn(HttpServletResponse response, HttpServletRequest request)
-            throws IOException {
-        //ResponseUtil.write(response,scsService.findAllDishInfo(request));
-        ResponseUtil.write(response, scsService.findDishInfoBySn(request));
-    }
-    
-    //按SN查询桌位
-    @RequestMapping(value = "/scs/showDeskInfoBySn", method = RequestMethod.GET)
-    @ResponseBody
-    public void showDeskInfoBySN(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        //int type = Integer.valueOf(request.getParameter("type"));
-        ResponseUtil.write(response, scsService.findDeskInfoBySn(request));
-       // ResponseUtil.write(response,scsService.showAllDeskInfo(type));
-    }
-    
-  
-    
-
-  //按SN删除桌位
-    @RequestMapping(value = "/scs/deleteDeskInfoBysn", method = RequestMethod.POST)
-    @ResponseBody
-    public void deleteDeskInfoBySn(@RequestBody JSONObject data, HttpServletResponse response)
-            throws IOException {
-        String sn=data.get("sn").toString();
-        ResponseUtil.write(response,scsService.deleteDeskInfoBySn(sn));
-    }
-
     //查询所有菜品类型信息
     @RequestMapping(value = "/scs/findAllDishTypeInfo", method = RequestMethod.GET)
     @ResponseBody
@@ -71,16 +39,6 @@ public class ScsDishController {
         ResponseUtil.write(response,scsService.findAllDishType(request));
     }
 
-    
-    //获得送餐附件信息
-   /* @RequestMapping(value = "/scs/showDishAccessoryBySn", method = RequestMethod.GET)
-    @ResponseBody
-    public void showDishAccessoryBySn(HttpServletResponse response, HttpServletRequest request)
-            throws IOException {
-        ResponseUtil.write(response,scsService.findScsAccessoryBySn(request));
-    }*/
-    
-    
     //获得送餐附件信息
     @RequestMapping(value = "/scs/showDishAccessory", method = RequestMethod.GET)
     @ResponseBody
@@ -95,10 +53,6 @@ public class ScsDishController {
             throws IOException {
         ResponseUtil.write(response,scsService.addDeskInfo(data));
     }
-    
-    
-    
-    
     //删除桌位
     @RequestMapping(value = "/scs/deleteDeskInfo", method = RequestMethod.POST)
     @ResponseBody
@@ -114,9 +68,6 @@ public class ScsDishController {
         int type = Integer.valueOf(request.getParameter("type"));
         ResponseUtil.write(response,scsService.showAllDeskInfo(type));
     }
-    
- 
-
     //下载文件接口
     @RequestMapping(value = "/scs/downFile", method = RequestMethod.GET)
     @ResponseBody
@@ -138,6 +89,4 @@ public class ScsDishController {
         ous.flush();
         ous.close();
     }
-
-
 }
