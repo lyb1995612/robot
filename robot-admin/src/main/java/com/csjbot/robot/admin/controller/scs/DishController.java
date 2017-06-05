@@ -245,7 +245,7 @@ public class DishController {
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<String> dishUpdate(ScsDish scsDish, HttpServletRequest request,HttpServletResponse response) {
-		System.out.println(111111);
+		System.out.println(scsDish.getDish_type());
 		JSONObject result = new JSONObject();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -275,6 +275,8 @@ public class DishController {
 			    }
 		    }
         }
+		String dish_type = request.getParameter("dish_type");
+		scsDish.setDish_type(Integer.valueOf(dish_type));
         if (scsService.updateDish(scsDish) > 0) {
         	msg = ResultEntity.KW_STATUS_SUCCESS;
 		}

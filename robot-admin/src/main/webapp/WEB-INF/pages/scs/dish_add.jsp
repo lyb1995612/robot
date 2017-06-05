@@ -84,10 +84,11 @@
 												<div class="form-group">
 													<div class="input-group">
 														<div class="input-group-addon">菜品类型</div>
-														<select class="dish_type">
-															<option value="1">凉菜</option>
-															<option value="2">热菜</option>
-															<option value="3">主菜</option>
+														<select class="dish_type" <c:if test="${editable == 0 }">disabled</c:if>>
+															<c:forEach var="dt" items = "${dish_type_list}">
+																<option value="${dt.id}">${dt.type_name}</option>
+															</c:forEach>
+
 														</select>
 													</div>
 												</div>

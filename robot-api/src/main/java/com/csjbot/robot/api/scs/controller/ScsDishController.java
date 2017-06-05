@@ -31,6 +31,9 @@ public class ScsDishController {
             throws IOException {
         ResponseUtil.write(response,scsService.findAllDishInfo(request));
     }
+
+
+
     //查询所有菜品类型信息
     @RequestMapping(value = "/scs/findAllDishTypeInfo", method = RequestMethod.GET)
     @ResponseBody
@@ -38,6 +41,16 @@ public class ScsDishController {
             throws IOException {
         ResponseUtil.write(response,scsService.findAllDishType(request));
     }
+
+
+    //获得送餐附件信息
+   /* @RequestMapping(value = "/scs/showDishAccessoryBySn", method = RequestMethod.GET)
+    @ResponseBody
+    public void showDishAccessoryBySn(HttpServletResponse response, HttpServletRequest request)
+            throws IOException {
+        ResponseUtil.write(response,scsService.findScsAccessoryBySn(request));
+    }*/
+
 
     //获得送餐附件信息
     @RequestMapping(value = "/scs/showDishAccessory", method = RequestMethod.GET)
@@ -53,6 +66,10 @@ public class ScsDishController {
             throws IOException {
         ResponseUtil.write(response,scsService.addDeskInfo(data));
     }
+
+
+
+
     //删除桌位
     @RequestMapping(value = "/scs/deleteDeskInfo", method = RequestMethod.POST)
     @ResponseBody
@@ -68,12 +85,15 @@ public class ScsDishController {
         int type = Integer.valueOf(request.getParameter("type"));
         ResponseUtil.write(response,scsService.showAllDeskInfo(type));
     }
+
+
+
     //下载文件接口
     @RequestMapping(value = "/scs/downFile", method = RequestMethod.GET)
     @ResponseBody
     public void downFile(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        File file = new File(request.getParameter("filePath")); //要下载的文件绝对路径
+        File file = new File(request.getParameter("fileUrl"));//要下载的文件绝对路径
         FileZipUtil.assignPermission(file);
         InputStream ins = new BufferedInputStream(new FileInputStream(request.getParameter("filePath")));
         byte [] buffer = new byte[ins.available()];
@@ -89,4 +109,6 @@ public class ScsDishController {
         ous.flush();
         ous.close();
     }
+
+
 }

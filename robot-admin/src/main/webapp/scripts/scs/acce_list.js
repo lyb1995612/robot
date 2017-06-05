@@ -41,6 +41,7 @@ $(function() {
 			columns : [ {
 				title : "附件id",
 				data : "id",
+				hidden : true,
 				width : "30%"
 			}, {
 				title : "附件名",
