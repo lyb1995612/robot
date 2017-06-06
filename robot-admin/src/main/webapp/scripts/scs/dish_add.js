@@ -37,7 +37,9 @@ $(function(){
 	    });
 	
     $("#submit").click(function(){
-    	var dish_type = $('.dish_type option:selected').val();
+    	var dish_type = $('#dish_type option:selected').val();
+    	var shop_fk = $('#shop option:selected').val();
+    	csjbotui.ui.msg.alert(dish_type);
     	if (validator.form()) {
     		if($("#photo").val()==""){
     			csjbotui.ui.msg.alert("必须上传菜品图片");
@@ -50,7 +52,9 @@ $(function(){
     		$("#dish_form").ajaxSubmit({
                 type: "POST",
                 url: _path + "/dish/add",
-                data:{"dish_type":dish_type},
+                data:{"dish_type":dish_type,
+                	   "shop_fk":shop_fk
+                	},
                 dataType: "json",
                 success: function(data){
                 	csjbotui.ui.msg.waiting.remove();

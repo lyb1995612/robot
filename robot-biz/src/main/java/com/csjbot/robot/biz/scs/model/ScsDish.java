@@ -19,6 +19,7 @@ public class ScsDish {
 	private String creator_fk;
 	private Timestamp date_update;
 	private Timestamp date_create;
+	private String shop_fk;
 	public String getId() {
 		return id;
 	}
@@ -78,6 +79,12 @@ public class ScsDish {
 	}
 	public void setDate_create(Timestamp date_create) {
 		this.date_create = date_create;
+	}
+	public String getShop_fk() {
+		return shop_fk;
+	}
+	public void setShop_fk(String shop_fk) {
+		this.shop_fk = shop_fk;
 	}
 	
 	

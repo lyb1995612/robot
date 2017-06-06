@@ -35,10 +35,10 @@
   <insert id="insert" parameterType="com.csjbot.robot.biz.scs.model.ScsAccessory" >
     insert into scs_accessory (id, name, memo, valid,
       updater_fk, creator_fk, 
-      date_update, date_create)
+      date_update, date_create, shop_fk)
     values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 1,
       #{updater_fk,jdbcType=CHAR}, #{creator_fk,jdbcType=CHAR}, 
-      now(), now())
+      now(), now(), #{shop_fk,jdbcType=CHAR})
   </insert>
   
   <!-- <select id="selectBySn">

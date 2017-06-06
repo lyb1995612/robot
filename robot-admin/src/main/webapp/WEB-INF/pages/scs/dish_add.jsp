@@ -25,7 +25,7 @@
 						<li><i class="icon-home home-icon"></i> <a href="${path}/">首页</a>
 						</li>
 						<li class="active">送餐机器人</li>
-						<li><a href="${path}/pms/list">菜品管理</a></li>
+						<li><a href="${path}/dish/list">菜品管理</a></li>
 						<li class="active">新增菜品</li>
 					</ul>
 					<!-- .breadcrumb -->
@@ -84,15 +84,26 @@
 												<div class="form-group">
 													<div class="input-group">
 														<div class="input-group-addon">菜品类型</div>
-														<select class="dish_type" <c:if test="${editable == 0 }">disabled</c:if>>
+														<select class="form-control" id="dish_type" name="dish_type" <c:if test="${editable == 0 }">disabled</c:if>>
 															<c:forEach var="dt" items = "${dish_type_list}">
 																<option value="${dt.id}">${dt.type_name}</option>
 															</c:forEach>
-
 														</select>
 													</div>
 												</div>
 											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<div class="input-group">
+														<div class="input-group-addon">店铺</div>
+														<select class="form-control" id="shop_fk" name="shop_fk">
+															<c:forEach var="shop_fk" items = "${shop_list}">
+																<option value="${shop_fk.id}">${shop_fk.shop_name}</option>
+															</c:forEach>
+														</select>														
+													</div>
+												</div>
+											</div>											
 										</div>
 									</div>
 									<div class="row">

@@ -18,8 +18,18 @@ public class ScsAccessory {
     private Date date_update;
 
     private Date date_create;
+    
+    private String shop_fk;
 
-    public String getId() {
+    public String getShop_fk() {
+		return shop_fk;
+	}
+
+	public void setShop_fk(String shop_fk) {
+		this.shop_fk = shop_fk;
+	}
+
+	public String getId() {
         return id;
     }
 

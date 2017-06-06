@@ -1,6 +1,7 @@
 package com.csjbot.robot.admin.controller.scs;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.scs.model.ScsDish;
 import com.csjbot.robot.biz.scs.model.ScsDishType;
+import com.csjbot.robot.biz.scs.model.ScsShop;
 import com.csjbot.robot.biz.scs.service.ScsService;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.sys.service.SysAttachService;
@@ -72,6 +74,8 @@ public class DishController {
 	public ModelAndView toDeskAdd() {
 		ModelAndView mv = new ModelAndView("scs/dish_add");
 		java.util.List<ScsDishType> list = scsService.selectAll();
+		List<ScsShop> shopList=scsService.selectShopAll();
+		mv.addObject("shop_list", shopList);
 		mv.addObject("dish_type_list", list);
 		return mv;
 	}

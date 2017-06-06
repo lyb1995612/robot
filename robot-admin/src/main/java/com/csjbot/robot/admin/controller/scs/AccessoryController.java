@@ -1,6 +1,7 @@
 package com.csjbot.robot.admin.controller.scs;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import com.csjbot.robot.base.web.entity.ResultEntity;
 import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.scs.model.ScsAccessory;
+import com.csjbot.robot.biz.scs.model.ScsShop;
 import com.csjbot.robot.biz.scs.service.ScsService;
 import com.csjbot.robot.biz.sys.model.SysAttachment;
 import com.csjbot.robot.biz.sys.service.SysAttachService;
@@ -70,6 +72,8 @@ public class AccessoryController {
 	@RequestMapping(value = "/toAcceAdd")
 	public ModelAndView toDeskAdd() {
 		ModelAndView mv = new ModelAndView("scs/accessory_add");
+		List<ScsShop> shopList=scsService.selectShopAll();
+		mv.addObject("shop_list", shopList);
 		return mv;
 	}
 	

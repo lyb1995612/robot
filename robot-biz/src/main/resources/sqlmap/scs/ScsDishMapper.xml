@@ -53,13 +53,13 @@
 		insert into scs_dish_info (id,
 		dish_type, name, memo, valid, price,
 		updater_fk, creator_fk,
-		date_update,date_create)
+		date_update,date_create,shop_fk)
 		values (#{id,jdbcType=CHAR},
 		#{dish_type,jdbcType=TINYINT},
 		#{name,jdbcType=VARCHAR},
 		#{memo,jdbcType=VARCHAR}, 1,
 		#{price,jdbcType=DECIMAL},#{updater_fk,jdbcType=CHAR},#{creator_fk,jdbcType=CHAR},now(),
-		now())
+		now(),#{shop_fk,jdbcType=CHAR})
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.csjbot.robot.biz.scs.model.ScsDish">
 		update scs_dish_info
