@@ -259,7 +259,106 @@ public class ScsService {
 		return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result,
 				params);
 	}
+/**
+ * api接口部分
+ */
 
+	/**
+	 * 按SN查询菜品
+	 *
+	 * @param request
+	 * @return
+	 */
+	public JSONObject findDishInfoBySn(HttpServletRequest request) {
+		JsonUtil jsonUtil = getJsonUtilEntity(true);
+		String sn = request.getParameter("sn");
+		List<Object> dishes = new ArrayList<>();
+		List<ScsDish> list = scsDishDAO.selectBySn(sn);
+
+		for (ScsDish sdi : list) {
+			Map<String, Object> dish = new HashMap<>();
+			ScsDishType sdt = scsDishTypeDAO.selectByPrimaryKey(sdi.getDish_type());
+			SysAttachment saList = sysAttachmentDao.getAttachByTransInfo(sdi.getId().toString(),
+					Constants.Attachment.Type.DISH_PIC.toString());// getSystByProId(sdi.getId().toString());
+			if (sdt != null) {
+				dish.put("dishTypeId", sdt.getId());
+				dish.put("dishTypeName", sdt.getType_name().toString());
+			} else {
+				dish.put("dishTypeId", "");
+				dish.put("dishTypeName", "未知类型");
+			}
+			if (saList != null) {
+				dish.put("dishImageName", saList.getAlias_name());
+				dish.put("dishImageUrl",
+						request.getServerName() + ":" + request.getServerPort() + "/api/scs/downFile?filePath="
+								+ saList.getLocation().toString() + "&fileName=" + saList.getAlias_name().toString());
+			} else {
+				dish.put("dishImageName", "");
+				dish.put("dishImageUrl", "");
+			}
+			dish.put("dishId", sdi.getId().toString());
+			dish.put("dishName", sdi.getName().toString());
+			dish.put("dishPrice", sdi.getPrice());
+			dish.put("dishMemo", sdi.getMemo().toString());
+			dishes.add(dish);
+		}
+		Map<String, Object> result = new HashMap<>();
+		result.put("dishes", dishes);
+		jsonUtil.setResult(result);
+		return JsonUtil.toJson(jsonUtil);
+
+	}
+
+	/**
+	 * 按SN查询DESK
+	 *
+	 * @param request
+	 * @return
+	 */
+	public JSONObject findDeskInfoBySn(HttpServletRequest request) {
+		JsonUtil jsonUtil = getJsonUtilEntity(true);
+		String sn = request.getParameter("sn");
+		List<ScsDesk> list = scsDeskDao.selectBySn(sn);
+		Map<String, Object> result = new HashMap<>();
+		result.put("desks", list);
+		jsonUtil.setResult(result);
+		return JsonUtil.toJson(jsonUtil);
+	}
+
+	/**
+	 * 按SN 查询附件信息
+	 *
+	 * @param request
+	 * @return
+	 */
+
+	/*public JSONObject findScsAccessoryBySn(HttpServletRequest request){
+		 JsonUtil jsonUtil = getJsonUtilEntity(true);
+		 String sn=request.getParameter("sn");
+		 Map<String,String> params= new HashMap<String,String>();
+		 params.put("sn", sn);
+		 params.put("type", Constants.Attachment.Type.SC_ACCESSORY);
+		 List<ScsAccessory> list= scsAccessoryDAO.selectBySn(params);
+
+		 Map<String, Object> result = new HashMap<>();
+		 result.put("accessories", list);
+		 jsonUtil.setResult(result);
+		 return JsonUtil.toJson(jsonUtil);
+	}*/
+
+	public JSONObject findScsAccessoryBySn(HttpServletRequest request) {
+		JsonUtil jsonUtil = getJsonUtilEntity(true);
+		String sn = request.getParameter("sn");
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("sn", sn);
+		params.put("type", Constants.Attachment.Type.SC_ACCESSORY);
+		List<ScsAccessory> list = scsAccessoryDAO.selectBySn(params);
+
+		Map<String, Object> result = new HashMap<>();
+		result.put("desks", list);
+		jsonUtil.setResult(result);
+		return JsonUtil.toJson(jsonUtil);
+	}
 	/*
 	 * 查询所有菜品信息
 	 */
@@ -381,7 +480,7 @@ public class ScsService {
 					sdi.setDesk_type(json.getByte("deskSerialNumber"));
 					sdi.setUpdater_fk(ums_user.getId().toString());
 					int n = scsDeskDao.insert(sdi);
-
+					addDeskRobotFef(json.getString("sn"),sdi.getId(),ums_user.getId().toString());
 					if (n != 1) {
 						jsonUtil = getJsonUtilEntity(false);
 						jsonUtil.setMessage("Error from Database operations!");
@@ -402,7 +501,40 @@ public class ScsService {
 		}
 		return JsonUtil.toJson(jsonUtil);
 	}
+	/**
+	 *
+	 * @discription 添加机器人与DESK关联数据
+	 * @author SJZ
+	 * @created 2017年6月1日 下午2:44:26
+	 */
 
+	public int addDeskRobotFef(String sn,String deskId,String uid){
+		Map<String,Object> params= new HashMap<String,Object>();
+		params.put("id", RandomUtil.generateString(32));
+		params.put("deskId", deskId);
+		params.put("sn", sn);
+		params.put("updaterFk", uid);
+		params.put("creatorFk", uid);
+		params.put("dateUpdate", RandomUtil.getTimeStampFor());
+		params.put("dateCreate", RandomUtil.getTimeStampFor());
+		return scsDeskDao.insertRobotDeskRef(params);
+
+	}
+
+
+	/**
+	 *
+	 * @discription  按SN 删除DESK
+	 * @author CJay
+	 * @created 2017年6月1日 下午3:32:42
+	 */
+	public JSONObject  deleteDeskInfoBySn(String  sn){
+		JsonUtil jsonUtil = getJsonUtilEntity(true);
+		scsDeskDao.deleteBySn(sn);
+		scsDeskDao.deleteRobotDeskRefBySn(sn);
+		return JsonUtil.toJson(jsonUtil);
+
+	}
 	/*
 	 * 删除桌位信息
 	 */

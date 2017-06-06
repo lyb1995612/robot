@@ -31,7 +31,36 @@ public class ScsDishController {
             throws IOException {
         ResponseUtil.write(response,scsService.findAllDishInfo(request));
     }
+    // 按SN查询所有菜品信息
+    @RequestMapping(value = "/scs/showDishInfoBySn", method = RequestMethod.GET)
+    @ResponseBody
+    public void showDishInfoBySn(HttpServletResponse response, HttpServletRequest request)
+            throws IOException {
+        //ResponseUtil.write(response,scsService.findAllDishInfo(request));
+        ResponseUtil.write(response, scsService.findDishInfoBySn(request));
+    }
 
+    //按SN查询桌位
+    @RequestMapping(value = "/scs/showDeskInfoBySn", method = RequestMethod.GET)
+    @ResponseBody
+    public void showDeskInfoBySN(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        //int type = Integer.valueOf(request.getParameter("type"));
+        ResponseUtil.write(response, scsService.findDeskInfoBySn(request));
+        // ResponseUtil.write(response,scsService.showAllDeskInfo(type));
+    }
+
+
+
+
+    //按SN删除桌位
+    @RequestMapping(value = "/scs/deleteDeskInfoBysn", method = RequestMethod.POST)
+    @ResponseBody
+    public void deleteDeskInfoBySn(@RequestBody JSONObject data, HttpServletResponse response)
+            throws IOException {
+        String sn=data.get("sn").toString();
+        ResponseUtil.write(response,scsService.deleteDeskInfoBySn(sn));
+    }
 
 
     //查询所有菜品类型信息
