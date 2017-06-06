@@ -26,6 +26,8 @@ import com.csjbot.robot.base.web.entity.ResultEntityHashMapImpl;
 import com.csjbot.robot.biz.Constants;
 import com.csjbot.robot.biz.cms.model.CmsRobot;
 import com.csjbot.robot.biz.cms.service.CmsRobotService;
+import com.csjbot.robot.biz.scs.model.ScsShop;
+import com.csjbot.robot.biz.scs.service.ScsService;
 import com.csjbot.robot.biz.sys.model.SysDataDictionary;
 import com.csjbot.robot.biz.ums.model.User;
 
@@ -38,8 +40,8 @@ public class CmsRobotController {
 	@Autowired
 	private CmsRobotService cmsRobotService;
 	
-/*	@Autowired
-	private SysAttachService attachService;*/
+	@Autowired
+	private ScsService scsService;
 	
 	/**
 	 * 机器人清单列表
@@ -61,6 +63,8 @@ public class CmsRobotController {
     public ModelAndView toRobotAdd() {
         ModelAndView mv = new ModelAndView("cms/robot_add");
         List<SysDataDictionary> cplist = cmsRobotService.findDictionaryByCode(Constants.DataDictionary.CPFL);
+		List<ScsShop> shopList=scsService.selectShopAll();
+		mv.addObject("shop_list", shopList);
 		mv.addObject("cplist", cplist);
         return mv;
     }

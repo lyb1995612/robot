@@ -63,10 +63,10 @@
   </delete>
   
   <insert id="insert" parameterType="com.csjbot.robot.biz.cms.model.CmsRobot" >
-    insert into cms_robot (id, sn, type, valid, register, updater_fk, creator_fk, date_update, date_create)
+    insert into cms_robot (id, sn, type, valid, register, updater_fk, creator_fk, date_update, date_create, shop_fk)
     values (#{id,jdbcType=CHAR}, #{sn,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 1,now(),
       #{updater_fk,jdbcType=CHAR}, #{creator_fk,jdbcType=CHAR}, 
-      now(), now())
+      now(), now(), #{shop_fk,jdbcType=CHAR})
   </insert>
   
   <update id="updateByPrimaryKey" parameterType="com.csjbot.robot.biz.cms.model.CmsRobot" >

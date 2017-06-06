@@ -40,7 +40,7 @@ $(function(){
 	    });
 	
     $("#submit").click(function(){
-    	
+    	var shop_fk = $('.shop option:selected').val();
     	if (validator.form()) {
     		csjbotui.ui.msg.waiting({
     			title : "正在新增产品",

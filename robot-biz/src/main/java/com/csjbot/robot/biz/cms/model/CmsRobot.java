@@ -28,6 +28,8 @@ public class CmsRobot extends PaginationParam{
 	
 	private Date date_update;
 	
+	private String shop_fk;
+	
 	public String getType_name() {
 		return type_name;
 	}
@@ -51,9 +53,6 @@ public class CmsRobot extends PaginationParam{
 	public void setSn(String sn) {
 		this.sn = sn;
 	}
-
-
-	
 
 	public String getType() {
 		return type;
@@ -115,13 +114,21 @@ public class CmsRobot extends PaginationParam{
 		this.date_update = date_update;
 	}
 
+	public String getShop_fk() {
+		return shop_fk;
+	}
+
+	public void setShop_fk(String shop_fk) {
+		this.shop_fk = shop_fk;
+	}
+
 	public CmsRobot() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public CmsRobot(String id, String sn, String type, String type_name, Byte valid, Date register, String creator_fk,
-			String updater_fk, Date date_create, Date date_update) {
+			String updater_fk, Date date_create, Date date_update, String shop_fk) {
 		super();
 		this.id = id;
 		this.sn = sn;
@@ -133,6 +140,7 @@ public class CmsRobot extends PaginationParam{
 		this.updater_fk = updater_fk;
 		this.date_create = date_create;
 		this.date_update = date_update;
+		this.shop_fk = shop_fk;
 	}
 
 	@Override
