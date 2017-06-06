@@ -14,19 +14,21 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
  *
  */
 public interface ScsDishTypeDAO {
+	
 	public final static java.lang.String PREFIX = ScsDishTypeDAO.class.getName();
 
-	int insert(ScsDishType scsDishType);
+	public int insert(ScsDishType scsDishType);
 
-	int delete(Integer id);
+	public int delete(Integer id);
 
-	ScsDishType selectByPrimaryKey(Integer id);
+	public ScsDishType selectByPrimaryKey(Integer id);
 
 	public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
 	
-	int updateByPrimaryKeySelective(ScsDishType scsDishType);
+	public int updateByPrimaryKeySelective(ScsDishType scsDishType);
 
-    List<ScsDishType> selectAll();
+	public List<ScsDishType> selectAll();
     
-    List<ScsDishType> selectBySn(String sn);
+	public List<ScsDishType> selectBySn(String sn);
+	
 }

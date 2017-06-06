@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjbot.robot.biz.scs.dao.ScsShopDao">
+	<resultMap id="BaseResultMap" type="com.csjbot.robot.biz.scs.model.ScsShop">
+		<result column="id" property="id" jdbcType="CHAR" />
+		<result column="shop_code" property="shop_code" jdbcType="CHAR" />
+		<result column="shop_name" property="shop_name" jdbcType="VARCHAR" />
+		<result column="shop_address" property="shop_address" jdbcType="VARCHAR" />
+		<result column="valid" property="valid" jdbcType="TINYINT" />
+		<result column="memo" property="memo" jdbcType="VARCHAR" />
+		<result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
+		<result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
+		<result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
+		<result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,shop_code,shop_name,shop_address,valid,memo,creator_fk,updater_fk,date_create,date_update
+	</sql>
+
+	<select id="selectByPK" resultMap="BaseResultMap" parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM scs_shop
+		WHERE id = #{id,jdbcType=CHAR}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM scs_shop
+		GROUP BY shop_code
+	</select>
+
+	<insert id="insertSelective" parameterType="com.csjbot.robot.biz.scs.model.ScsShop">
+		INSERT INTO scs_shop
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="shop_name != null">
+				shop_name,
+			</if>
+			<if test="shop_code != null">
+				shop_code,
+			</if>
+			<if test="shop_address != null">
+				shop_address,
+			</if>
+			<if test="valid != null">
+				valid,
+			</if>
+			<if test="memo != null">
+				memo,
+			</if>
+			<if test="creator_fk != null">
+				creator_fk,
+			</if>
+			<if test="updater_fk != null">
+				updater_fk,
+			</if>
+			<if test="date_create != null">
+				date_create,
+			</if>
+			<if test="date_update != null">
+				date_update,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=CHAR},
+			</if>
+			<if test="shop_name != null">
+				#{shop_name,jdbcType=VARCHAR},
+			</if>
+			<if test="shop_code != null">
+				#{shop_code,jdbcType=CHAR},
+			</if>
+			<if test="shop_address != null">
+				#{shop_address,jdbcType=VARCHAR},
+			</if>
+			<if test="valid != null">
+				#{valid,jdbcType=TINYINT},
+			</if>
+			<if test="memo != null">
+				#{memo,jdbcType=VARCHAR},
+			</if>
+			<if test="creator_fk != null">
+				#{creator_fk,jdbcType=CHAR},
+			</if>
+			<if test="updater_fk != null">
+				#{updater_fk,jdbcType=CHAR},
+			</if>
+			<if test="date_create != null">
+				now(),
+			</if>
+			<if test="date_update != null">
+				now(),
+			</if>
+		</trim>
+	</insert>
+
+	<insert id="insert" parameterType="com.csjbot.robot.biz.scs.model.ScsShop">
+		INSERT INTO scs_shop
+		(id,
+		shop_code, shop_name,
+		shop_address, valid, memo,
+		creator_fk,updater_fk,
+		date_create,date_update)
+		VALUES
+		(#{id,jdbcType=CHAR},
+		#{shop_code,jdbcType=CHAR},
+		#{shop_name,jdbcType=VARCHAR},
+		#{shop_address,jdbcType=VARCHAR},
+		1,
+		#{memo,jdbcType=VARCHAR},
+		#{creator_fk,jdbcType=CHAR},
+		#{updater_fk,jdbcType=CHAR},
+		now(),
+		now())
+	</insert>
+
+	<delete id="delete" parameterType="map">
+		DELETE FROM scs_shop
+		WHERE id =
+		#{id,jdbcType=CHAR}
+	</delete>
+	
+	<update id="update" parameterType="com.csjbot.robot.biz.scs.model.ScsShop">
+    	UPDATE scs_shop
+    	SET shop_name = #{shop_name,jdbcType=VARCHAR},
+			shop_code = #{shop_code,jdbcType=CHAR},
+			shop_address = #{shop_address,jdbcType=VARCHAR},
+			memo = #{memo,jdbcType=VARCHAR},
+			valid = #{valid,jdbcType=TINYINT},
+			updater_fk = #{updater_fk,jdbcType=CHAR},
+			creator_fk = #{creator_fk,jdbcType=CHAR},
+			date_update = now(),
+			date_create = #{date_create,jdbcType=TIMESTAMP}
+		WHERE id = #{id,jdbcType=CHAR}
+	</update>
+	
+	<update id="updateSelective" parameterType="com.csjbot.robot.biz.scs.model.ScsShop">
+		UPDATE scs_shop
+		<set>
+			<if test="shop_name != null">
+				shop_name = #{shop_name,jdbcType=VARCHAR},
+			</if>
+			<if test="shop_code != null">
+				shop_code = #{shop_code,jdbcType=CHAR},
+			</if>
+			<if test="shop_address != null">
+				shop_address = #{shop_address,jdbcType=VARCHAR},
+			</if>
+			<if test="memo != null">
+				memo = #{memo,jdbcType=VARCHAR},
+			</if>
+			<if test="valid != null">
+				valid = #{valid,jdbcType=TINYINT},
+			</if>
+			<if test="updater_fk != null">
+				updater_fk = #{updater_fk,jdbcType=CHAR},
+			</if>
+			<if test="creator_fk != null">
+				creator_fk = #{creator_fk,jdbcType=CHAR},
+			</if>
+			date_update = now(),
+			<if test="date_create != null">
+				date_create = #{date_create,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		WHERE id = #{id,jdbcType=CHAR}
+	</update>
+	
+	<select id="page" parameterType="map" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM scs_shop
+		WHERE valid = 1
+		<if test="shop_name != null and shop_name !=''">
+			AND shop_name LIKE CONCAT('%', #{shop_name},'%')
+		</if>
+		<if test="shop_code != null and shop_code !=''">
+			AND shop_code LIKE CONCAT('%', #{shop_code},'%')
+		</if>
+		GROUP BY shop_code
+	</select>
+
+</mapper>

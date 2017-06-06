@@ -2,7 +2,6 @@ package com.csjbot.robot.admin.controller.scs;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -121,11 +120,8 @@ public class DishLinkController {
 		List<SysDataDictionary> cplist = scsService.findDictionaryByCode(Constants.DataDictionary.CPFL);
 		mv.addObject("cplist", cplist);
 		mv.addObject("scsDishLink", scsDishLink);
-		Iterator<ScsDishLink> it = scsDishLink.iterator();
-		while (it.hasNext()) {
-			int relevance_num = scsService.countDishLinkSize(it.next().getId());
-			mv.addObject("relevance_num", relevance_num);
-		}
+		int relevance_num = scsService.countDishLinkSize(sn);
+		mv.addObject("relevance_num", relevance_num);
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sn", sn);
 		List<Map<String, Object>> dish = scsService.listDish(params);

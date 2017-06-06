@@ -77,7 +77,8 @@
 								<form class="form searchform" id="searchform" name="searchform">
 									<div class="row">
 										<div class="col-md-12">
-											<span><label >当前 S/N 号：</label>${sn }</span>
+											<span style="font-size:16px;">当前 S/N 号：<span style="font-size:16px;font-weight: bold;">${sn }</span></span>
+											<span style="font-size:16px;">目前数量：<b>&nbsp;${relevance_num }&nbsp;</b>个</span>
 										</div>
 									</div>
 								</form>

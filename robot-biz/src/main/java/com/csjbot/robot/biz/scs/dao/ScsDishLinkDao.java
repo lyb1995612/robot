@@ -16,6 +16,8 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
  * @company PangolinRobot
  */
 public interface ScsDishLinkDao {
+	
+	public final static String PREFIX = ScsDishLinkDao.class.getName();
 
 	public int countType(@Param("sn") String sn, @Param("dish_name") String dish_name);
 

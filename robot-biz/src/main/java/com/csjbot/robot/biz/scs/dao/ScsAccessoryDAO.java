@@ -14,22 +14,25 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
  */
 
 public interface ScsAccessoryDAO {
+	
 	public final static String PREFIX = ScsAccessoryDAO.class.getName();
 	
-    int deleteByPrimaryKey(String id);
+	public int deleteByPrimaryKey(String id);
     
-    int seleteByPrimaryKey(String id);
+	public int seleteByPrimaryKey(String id);
 
-    int insert(ScsAccessory record);
+    public int insert(ScsAccessory record);
 
-    int insertSelective(ScsAccessory record);
+    public int insertSelective(ScsAccessory record);
     
-    ScsAccessory selectByPrimaryKey(String id);
+    public ScsAccessory selectByPrimaryKey(String id);
 
-    ScsAccessory Accessory(String id);
+    public ScsAccessory Accessory(String id);
     
-    List<ScsAccessory> selectAll();
-    List<ScsAccessory> selectBySn(Map<String,String> params);
+    public List<ScsAccessory> selectAll();
+    
+    public List<ScsAccessory> selectBySn(Map<String,String> params);
 	 
     public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
+    
 }

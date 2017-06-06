@@ -112,9 +112,11 @@
 		                 </div>
 		              </div>
 			          
-			           <div class="row summary-banner">
+			          <div class="row summary-banner">
 			              <div class="col-md-12">
-			                <span><label>群组名：</label>${robotGroup.group_name }</span> <span>目前数量<b>${relevance_num }</b>个</span>
+			              	<span style="font-size:16px;">群组名：<span style="font-size:16px;font-weight: bold;">${robotGroup.group_name }</span></span>
+							<span style="font-size:16px;">目前数量：<b>&nbsp;${relevance_num }&nbsp;</b>个</span>
+			                <%-- <span><label>群组名：</label>${robotGroup.group_name }</span> <span>目前数量<b>${relevance_num }</b>个</span> --%>
 			              </div>
 			          </div> 
 			            

@@ -12,7 +12,7 @@ import com.csjbot.robot.base.util.StringUtil;
  */
 public class ScsDishLink {
 
-	private String id = StringUtil.createUUID();;
+	private String id = StringUtil.createUUID();
 
 	private String sn;
 

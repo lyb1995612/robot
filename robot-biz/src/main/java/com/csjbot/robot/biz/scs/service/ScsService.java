@@ -27,11 +27,13 @@ import com.csjbot.robot.biz.scs.dao.ScsDeskDao;
 import com.csjbot.robot.biz.scs.dao.ScsDishDAO;
 import com.csjbot.robot.biz.scs.dao.ScsDishLinkDao;
 import com.csjbot.robot.biz.scs.dao.ScsDishTypeDAO;
+import com.csjbot.robot.biz.scs.dao.ScsShopDao;
 import com.csjbot.robot.biz.scs.model.ScsAccessory;
 import com.csjbot.robot.biz.scs.model.ScsDesk;
 import com.csjbot.robot.biz.scs.model.ScsDish;
 import com.csjbot.robot.biz.scs.model.ScsDishLink;
 import com.csjbot.robot.biz.scs.model.ScsDishType;
+import com.csjbot.robot.biz.scs.model.ScsShop;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -70,6 +72,9 @@ public class ScsService {
 
 	@Autowired
 	private SysDataDictionaryDao sysDicDao;
+
+	@Autowired
+	private ScsShopDao scsShopDao;
 
 	/*
 	 * ScsDishLink
@@ -120,8 +125,8 @@ public class ScsService {
 			scsDishLinkDao.insert(scsDishLink);
 		}
 	}
-	
-	public List<String> selectPKBySN(String sn){
+
+	public List<String> selectPKBySN(String sn) {
 		return scsDishLinkDao.selectPKBySN(sn);
 	}
 
@@ -574,5 +579,43 @@ public class ScsService {
 			jsonUtil = new JsonUtil("500", "", null);
 		}
 		return jsonUtil;
+	}
+
+	/*
+	 * ScsShop
+	 */
+	public ScsShop selectByShopPK(String id) {
+		return scsShopDao.selectByPK(id);
+	}
+
+	public List<ScsShop> selectShopAll() {
+		return scsShopDao.selectAll();
+	}
+	
+	public int insertShopSelective(ScsShop shop){
+		return scsShopDao.insertSelective(shop);
+	}
+	
+	public int insertShop(ScsShop shop){
+		return scsShopDao.insert(shop);
+	}
+	
+	public int updateShopSelective(ScsShop shop){
+		return scsShopDao.updateSelective(shop);
+	}
+	
+	public int deleteByShopPK(String id){
+		return scsShopDao.delete(id);
+	}
+
+	public <E, K, V> Page<E> shopPage(Map<K, V> params, int current, int pagesize, String sortString) {
+		PageBounds pager = new PageBounds();
+		pager.setLimit(pagesize);
+		pager.setPage(current);
+		pager.setOrders(Order.formString(sortString));
+		PageList<E> result = scsShopDao.page(params, pager);
+		Paginator paginator = result.getPaginator();
+		return new PageContainer<E, K, V>(paginator.getTotalCount(), paginator.getLimit(), paginator.getPage(), result,
+				params);
 	}
 }

@@ -22,13 +22,14 @@ public interface ScsDeskDao {
 	
 	public int delete(String id);
 	
-	ScsDesk selectByPrimaryKey(String  id);
+	public ScsDesk selectByPrimaryKey(String  id);
 
-	List<ScsDesk> selectByNumber(String number);
+	public List<ScsDesk> selectByNumber(String number);
 
-	List<ScsDesk> selectAll();
+	public List<ScsDesk> selectAll();
 	
-	List<ScsDesk> selectBySn(String sn);
+	public List<ScsDesk> selectBySn(String sn);
 
 	public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
+	
 }

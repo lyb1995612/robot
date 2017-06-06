@@ -14,6 +14,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
  *
  */
 public interface ScsDishDAO {
+	
 	public final static java.lang.String PREFIX = ScsDishDAO.class.getName();
 	
 	public int insert(ScsDish scsDish);
@@ -31,4 +32,5 @@ public interface ScsDishDAO {
 	public List<ScsDish> selectBySn(String sn);
 	
 	public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
+	
 }

@@ -140,13 +140,11 @@
 
 	<select id="countDishLinkSize" parameterType="map" resultType="int">
 		SELECT COUNT(a.dish_id) AS amount
-		FROM scs_dish_robot_ref a, cms_robot
-		b
+		FROM scs_dish_robot_ref a, cms_robot b
 		WHERE a.valid = 1
 		AND b.valid = 1
 		AND a.sn= b.sn
-		AND a.dish_id =
-		#{dishId}
+		AND a.sn = #{sn,jdbcType=VARCHAR}
 	</select>
 
 	<select id="getDish" parameterType="map" resultMap="BaseResultMap">
