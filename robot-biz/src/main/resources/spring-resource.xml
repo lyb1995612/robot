@@ -17,27 +17,34 @@
 <!-- <context:property-placeholder ignore-resource-not-found="false" location="file:/opt/config/jdbc.properties" />
 <util:properties id="appconfig" location="file:/opt/config/config.properties"/>  -->
 
-  <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
-		init-method="init" destroy-method="close">
+
+<bean id="parentDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+</bean>  
+
+
+  <bean id="csjbotdb" parent="parentDataSource">
 		<property name="driverClassName" value="${jdbc.driver}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
-		<property name="initialSize" value="${jdbc.initialSize}" />
-		<property name="maxActive" value="${jdbc.maxActive}" />
-		<property name="filters" value="${jdbc.filters}" />
-		<property name="maxWait" value="${jdbc.maxWait}" />
-		<property name="minIdle" value="${jdbc.minIdle}" />
-		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" />
-		<property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}" />
-		<property name="validationQuery" value="${jdbc.validationQuery}" />
-		<property name="testWhileIdle" value="${jdbc.testWhileIdle}" />
-		<property name="testOnBorrow" value="${jdbc.testOnBorrow}" />
-		<property name="testOnReturn" value="${jdbc.testOnReturn}" />
-		<property name="poolPreparedStatements" value="${jdbc.poolPreparedStatements}" />
-		<property name="maxPoolPreparedStatementPerConnectionSize" value="${jdbc.maxPoolPreparedStatementPerConnectionSize}" />
-		<property name="removeAbandoned" value="${jdbc.removeAbandoned}" />
-		<property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}" />
-		<property name="logAbandoned" value="${jdbc.logAbandoned}" />
-	</bean>
+  </bean>
+  
+  <bean id="csj_blackduckzhou" parent="parentDataSource">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbcDe.url}" />
+		<property name="username" value="${jdbcDe.username}" />
+		<property name="password" value="${jdbcDe.password}" />
+  </bean>
+	
+	
+	
+	<bean class="com.csjbot.robot.biz.datasource.DynamicDataSource" id="dataSource">  
+    <property name="targetDataSources">   
+       <map key-type="java.lang.String">   
+           <entry value-ref="csjbotdb" key="csjbotdb"></entry>  
+           <entry value-ref="csj_blackduckzhou" key="csj_blackduckzhou"></entry>  
+       </map>   
+    </property>   
+    <property name="defaultTargetDataSource" ref="csjbotdb" ></property>  
+</bean>  
 </beans>
