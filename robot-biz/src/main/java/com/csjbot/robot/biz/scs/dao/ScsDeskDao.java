@@ -20,10 +20,16 @@ public interface ScsDeskDao {
 	
 	public int insert(ScsDesk scsDesk);
 	
+	public int insertRobotDeskRef(Map<String,Object> params);
+	
 	public int delete(String id);
 	
+	public int deleteBySn(String sn);
+	
+	public int deleteRobotDeskRefBySn(String sn);
+	
 	public ScsDesk selectByPrimaryKey(String  id);
-
+	
 	public List<ScsDesk> selectByNumber(String number);
 
 	public List<ScsDesk> selectAll();

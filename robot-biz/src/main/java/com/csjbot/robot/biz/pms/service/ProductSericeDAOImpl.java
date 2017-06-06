@@ -121,8 +121,10 @@ public class ProductSericeDAOImpl implements ProductServiceDAO {
 		}
 		Map<String, String> zipMap = FileZipUtil.BackZipInfo(filePath,request.getServerName());
 		// 压缩文件
-		result.put("zipName", zipMap.get("zipName").toString());
-		result.put("zipUrl", zipMap.get("zipUrl").toString());
+		String filePath_ = "/opt/pkg/zip/"+zipMap.get("zipName").toString();
+		String fileName = zipMap.get("zipName").toString();
+		result.put("zipName", fileName);
+		result.put("zipUrl", request.getServerName() + ":" + request.getServerPort()+"/api/pdt/downFile?filePath="+filePath_+"&fileName="+fileName);
 		// 使用阿里云存储，默认写死路径
 		// result.put("zipName", "1.zip");
 		// result.put("zipUrl",
@@ -171,8 +173,10 @@ public class ProductSericeDAOImpl implements ProductServiceDAO {
 		}
 		Map<String, String> zipMap = FileZipUtil.BackZipInfo(filePath,request.getServerName());
 		// 压缩文件
-		result.put("zipName", zipMap.get("zipName").toString());
-		result.put("zipUrl", zipMap.get("zipUrl").toString());
+		String filePath_ = "/opt/pkg/zip/"+zipMap.get("zipName").toString();
+		String fileName = zipMap.get("zipName").toString();
+		result.put("zipName", fileName);
+		result.put("zipUrl", request.getServerName() + ":" + request.getServerPort()+"/api/pdt/downFile?filePath="+filePath_+"&fileName="+fileName);
 		// 使用阿里云存储，默认写死路径
 		 //result.put("zipName", "1.zip");
 		// result.put("zipUrl",
