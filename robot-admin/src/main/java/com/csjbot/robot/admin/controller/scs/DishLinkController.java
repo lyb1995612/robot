@@ -79,7 +79,7 @@ public class DishLinkController {
 			}
 			Page<Map<String, Object>> pageMap = cmsRobotService.page(params, (start / length) + 1, length, sortString);
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
-			if (pageMap.getRows() != null && pageMap.getRows().size() > 0) {
+			if (pageMap.getRows() != null) {
 				result.addObject("data", pageMap.getRows());
 				result.addObject("recordsFiltered", pageMap.getTotal());
 				result.addObject("recordsTotal", pageMap.getTotal());

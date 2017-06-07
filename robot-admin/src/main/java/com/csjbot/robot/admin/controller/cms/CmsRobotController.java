@@ -214,7 +214,7 @@ public class CmsRobotController {
             }
             Page<Map<String, Object>> pageMap = cmsRobotService.page(params, (start / length) + 1, length, sortString);
             result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
-            if (pageMap.getRows() != null && pageMap.getRows().size() > 0) {
+            if (pageMap.getRows() != null ) {
                 result.addObject("data", pageMap.getRows());
                 result.addObject("recordsFiltered", pageMap.getTotal());
                 result.addObject("recordsTotal", pageMap.getTotal());
@@ -222,8 +222,8 @@ public class CmsRobotController {
                 result.addObject("data", null);
                 result.addObject("recordsFiltered", 0);
                 result.addObject("recordsTotal", 0);
+//            	result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "search fail!");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "Internal Server Error!");
