@@ -74,7 +74,7 @@ public class ShopController {
 			}
 			String sortString = null;
 			if (orderName != null && !"".equals(orderName) && dir != null && !"".equals(dir)) {
-				sortString = orderName + "." + dir; // shop_code.asc
+				sortString = orderName + "." + dir;
 			}
 			Page<Map<String, Object>> pageMap = scsService.shopPage(params, (start / length) + 1, length, sortString);
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
