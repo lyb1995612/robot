@@ -36,34 +36,38 @@ $(function() {
 				columns : [{
 					title : "广告名称",
 					data : "name",
-					width : "15%"
+					width : "20%"
+				},  {
+					title : "广告类型",
+					data : "type",
+					width : "20%"
 				},  {
 					title : "备注",
 					data : "memo",
-					width : "15%"
+					width : "20%"
 				}, {
 					title : "创建时间",
 					data : "date_create",
 					dataType : 'datetime',
-					width : "15%"
+					width : "20%"
 				}, {
 					title : "操作",
-					width : "15%",
+					width : "20%",
 					style : "operation-column"
 				}],
 				columnDefs: [{ 
-		               targets: [ 2 ],
+		               targets: [ 3 ],
 		               render: function ( data, type, row ) {
 		            	   var datetime = new Date(Number(row.date_create)).Format( "yyyy-MM-dd HH:mm");
 		                   return datetime;
 		               }
 				},
 	           {
-	               targets: [ 3 ],
+	               targets: [ 4 ],
 	               render: operation,
 	               orderable: false
 	           }],
-		        order: [[ 2, 'desc' ]],
+		        order: [[ 3, 'desc' ]],
 		        remoteSort : true,
 				pagination : true,
 				paginationParam : {

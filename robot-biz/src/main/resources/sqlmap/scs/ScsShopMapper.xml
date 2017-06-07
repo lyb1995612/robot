@@ -122,8 +122,7 @@
 
 	<delete id="delete" parameterType="map">
 		DELETE FROM scs_shop
-		WHERE id =
-		#{id,jdbcType=CHAR}
+		WHERE id = #{id,jdbcType=CHAR}
 	</delete>
 	
 	<update id="update" parameterType="com.csjbot.robot.biz.scs.model.ScsShop">
