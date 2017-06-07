@@ -302,7 +302,7 @@ public ResponseEntity<String> advertiseUpdate(PmsAdvertisement pmsAdvertisement,
             }
             Page<Map<String, Object>> pageMap = pmsService.advPage(params, (start / length) + 1, length, sortString);
             result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
-            if (pageMap.getRows() != null && pageMap.getRows().size() > 0) {
+            if (pageMap.getRows() != null) {
                 result.addObject("data", pageMap.getRows());
                 result.addObject("recordsFiltered", pageMap.getTotal());
                 result.addObject("recordsTotal", pageMap.getTotal());
@@ -311,7 +311,6 @@ public ResponseEntity<String> advertiseUpdate(PmsAdvertisement pmsAdvertisement,
                 result.addObject("recordsFiltered", 0);
                 result.addObject("recordsTotal", 0);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_FAIL, "Internal Server Error!");

@@ -74,11 +74,11 @@ public class ShopController {
 			}
 			String sortString = null;
 			if (orderName != null && !"".equals(orderName) && dir != null && !"".equals(dir)) {
-				sortString = orderName + "." + dir; // shop_code.asc
+				sortString = orderName + "." + dir;
 			}
 			Page<Map<String, Object>> pageMap = scsService.shopPage(params, (start / length) + 1, length, sortString);
 			result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
-			if (pageMap.getRows() != null && pageMap.getRows().size() > 0) {
+			if (pageMap.getRows() != null ) {
 				result.addObject("data", pageMap.getRows());
 				result.addObject("recordsFiltered", pageMap.getTotal());
 				result.addObject("recordsTotal", pageMap.getTotal());

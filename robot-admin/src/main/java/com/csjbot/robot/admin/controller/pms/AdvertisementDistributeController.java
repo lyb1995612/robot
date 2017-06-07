@@ -219,7 +219,7 @@ public class AdvertisementDistributeController {
             }
             PageList<PmsAdvertisementDistribute> list = pmsService.adDisPage(params, (start / length) + 1, length, sortString);
             result = new ResultEntityHashMapImpl(ResultEntity.KW_STATUS_SUCCESS, "search success");
-            if (list != null && list.size() > 0) {
+            if (list != null) {
                 result.addObject("data", list);
                 result.addObject("recordsFiltered", list.size());
                 result.addObject("recordsTotal", list.size());
