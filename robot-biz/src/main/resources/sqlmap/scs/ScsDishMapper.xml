@@ -6,6 +6,8 @@
 		<id column="id" property="id" jdbcType="CHAR" />
 		<result column="dish_type" property="dish_type" jdbcType="TINYINT" />
 		<result column="type_name" property="type_name" jdbcType="VARCHAR" />
+		<result column="shop_fk" property="shop_fk" jdbcType="VARCHAR" />		
+		<result column="shop_name" property="shop_name" jdbcType="VARCHAR" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="memo" property="memo" jdbcType="VARCHAR" />
 		<result column="valid" property="valid" jdbcType="TINYINT" />
@@ -17,7 +19,7 @@
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id, dish_type, name, memo, valid, price, updater_fk,
+		id, dish_type, shop_fk, name, memo, valid, price, updater_fk,
 		creator_fk,
 		date_update,date_create
 	</sql>
@@ -26,12 +28,18 @@
 <!-- 		select -->
 <!-- 		<include refid="Base_Column_List" /> -->
 <!-- 		from scs_dish_info where valid = 1  -->
-        select 
-        scs_dish_info.id as id, dish_type, type_name, name, memo, valid, price,
-        scs_dish_info.date_create as date_create
-        from 
-        scs_dish_info join scs_dish_type 
-        on scs_dish_info.dish_type=scs_dish_type.id
+
+<!--         select  -->
+<!--         scs_dish_info.id as id, dish_type, type_name, name, memo, valid, price, -->
+<!--         scs_dish_info.date_create as date_create -->
+<!--         from  -->
+<!--         scs_dish_info join scs_dish_type  -->
+<!--         on scs_dish_info.dish_type=scs_dish_type.id -->
+	        select 
+	        a.id, b.type_name, a.name, c.shop_name, a.memo, a.valid, a.price, a.date_create
+	        from scs_dish_info a
+	        join scs_dish_type b on a.dish_type=b.id
+	        join scs_shop c on a.shop_fk=c.id
 		<if test="name != null and name !=''">
 			and name LIKE CONCAT('%', #{name},'%')
 		</if>
@@ -80,6 +88,9 @@
 			<if test="price != null">
 				price = #{price,jdbcType=DECIMAL},
 			</if>
+			<if test="shop_fk != null">
+				shop_fk = #{shop_fk,jdbcType=VARCHAR},
+			</if>			
 			<if test="memo != null">
 				memo = #{memo,jdbcType=VARCHAR},
 			</if>

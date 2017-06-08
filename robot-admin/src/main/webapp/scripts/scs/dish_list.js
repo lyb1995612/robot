@@ -44,7 +44,6 @@ $(function() {
 				width : "20%"
 			}, {
 				title : "菜品类型",
-//				data : "dish_type",
 				data : "type_name",
 				width : "10%"
 			}, {
@@ -56,9 +55,13 @@ $(function() {
 				data : "price",
 				width : "10%"
 			}, {
+				title : "店铺名称",
+				data : "shop_name",
+				width : "10%"
+			}, {
 				title : "备注",
 				data : "memo",
-				width : "20%"
+				width : "10%"
 			}, {
 				title : "创建时间",
 				data : "date_create",
@@ -70,19 +73,18 @@ $(function() {
 				style : "operation-column"
 			} ],
 			columnDefs : [ {
-				targets : [ 5 ],
+				targets : [ 6 ],
 				render : function(data, type, row) {
 					var datetime = new Date(Number(row.date_create)).Format("yyyy-MM-dd HH:mm");
-					//  alert(new Date(Number(row.date_create)).Format( "yyyy-MM-dd HH:mm"));
 					return datetime;
 				}
 			},
 				{
-					targets : [ 6 ],
+					targets : [ 7 ],
 					render : operation,
 					orderable : false
 				} ],
-			order : [ [ 5, 'desc' ] ],
+			order : [ [ 6, 'desc' ] ],
 			remoteSort : true,
 			pagination : true,
 			paginationParam : {

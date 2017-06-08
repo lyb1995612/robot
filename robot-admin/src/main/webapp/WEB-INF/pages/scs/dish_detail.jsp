@@ -78,18 +78,25 @@
 												<div class="form-group">
 													<div class="input-group">
 														<div class="input-group-addon">菜品类型</div>
-														<select class="dish_type" name="dish_type" <c:if test="${editable == 0 }">disabled</c:if>>
-														<c:forEach var="dt" items = "${dish_type_list}">
-														<option value="${dt.id}">${dt.type_name}</option>
-														</c:forEach>
-															
+														<select class="form-control" name="dish_type" <c:if test="${editable == 0 }">disabled</c:if>>
+															<c:forEach var="dt" items = "${dish_type_list}">
+																<option value="${dt.id}"  <c:if test="${dt.id eq dish.dish_type}">selected="selected"</c:if>>${dt.type_name}</option>
+															</c:forEach>															
 														</select>
-														<%-- <input class="form-control" type="text" id="dish_type" name="dish_type" maxlength="25" value="${dish_type.type_name}" placeholder="请输入菜品名称" <c:if test="${editable == 0 }">readonly</c:if>/> --%>
 													</div>
 												</div>
 											</div>
-											<div class="col-md-6">
-												
+						                    <div class="col-md-6">
+												<div class="form-group">
+													<div class="input-group">
+														<div class="input-group-addon">店铺</div>
+														<select class="form-control" id="shop_fk" name="shop_fk" <c:if test="${editable == 0 }">disabled</c:if>>
+															<c:forEach var="shop_fk" items = "${shop_list}">
+																<option value="${shop_fk.id}" <c:if test="${shop_fk.id eq dish.shop_fk}">selected="selected"</c:if>>${shop_fk.shop_name}</option>
+															</c:forEach>
+														</select>														
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>

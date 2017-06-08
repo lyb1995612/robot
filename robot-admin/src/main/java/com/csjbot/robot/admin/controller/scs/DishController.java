@@ -88,12 +88,10 @@ public class DishController {
 	public ModelAndView toProducUpdate(@PathVariable String id) {
 		ScsDish scsDish = scsService.selectDisByPrimaryKey(id);
 	    ModelAndView mv = new ModelAndView("scs/dish_detail");
-	    ScsDishType scsDishType = scsService.selectDishTypeByPrimaryKey(scsDish.getDish_type());
+		List<ScsShop> shopList=scsService.selectShopAll();
 		java.util.List<ScsDishType> list = scsService.selectAll();
+		mv.addObject("shop_list", shopList);
 		mv.addObject("dish_type_list", list);
-		mv.addObject("select_style", "block");
-		mv.addObject("input_style", "none");
-	    mv.addObject("dish_type", scsDishType);
 	    mv.addObject("dish",scsDish);
 	    mv.addObject("location","/attach/"+scsDish.getId()+"/"+Constants.Attachment.Type.DISH_PIC+"/pic");
 	    mv.addObject("editable",1);
@@ -109,12 +107,14 @@ public class DishController {
 	public ModelAndView toDeskDetail(@PathVariable String id) {
 		ScsDish scsDish = scsService.selectDisByPrimaryKey(id);
 		ModelAndView mv = new ModelAndView("scs/dish_detail");
-		ScsDishType scsDishType = scsService.selectDishTypeByPrimaryKey(scsDish.getDish_type());
+//		ScsDishType scsDishType = scsService.selectDishTypeByPrimaryKey(scsDish.getDish_type());
+		List<ScsShop> shopList=scsService.selectShopAll();
 		java.util.List<ScsDishType> list = scsService.selectAll();
+		mv.addObject("shop_list", shopList);		
 		mv.addObject("dish_type_list", list);
-		mv.addObject("dish_type", scsDishType);
-		mv.addObject("select_style", "none");
-		mv.addObject("input_style", "block");
+//		mv.addObject("dish_type", scsDishType);
+//		mv.addObject("select_style", "none");
+//		mv.addObject("input_style", "block");
 		mv.addObject("dish", scsDish);
 		mv.addObject("location","/attach/" + scsDish.getId() + "/" + Constants.Attachment.Type.DISH_PIC + "/pic");
 		mv.addObject("editable",0);
@@ -280,7 +280,9 @@ public class DishController {
 		    }
         }
 		String dish_type = request.getParameter("dish_type");
+		String shop_fk = request.getParameter("shop_fk");
 		scsDish.setDish_type(Integer.valueOf(dish_type));
+		scsDish.setShop_fk(shop_fk);
         if (scsService.updateDish(scsDish) > 0) {
         	msg = ResultEntity.KW_STATUS_SUCCESS;
 		}

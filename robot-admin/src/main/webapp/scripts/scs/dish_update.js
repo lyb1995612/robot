@@ -40,7 +40,7 @@ $(function(){
     	
     	if (validator.form()) {
     		csjbotui.ui.msg.waiting({
-    			title : "正在修改产品",
+    			title : "正在修改菜品",
     			msg : "请稍等..."
     		});
     		$("#dish_form").ajaxSubmit({
@@ -51,13 +51,13 @@ $(function(){
                 	csjbotui.ui.msg.waiting.remove();
                 	if (data.msg == "S") {
                 		csjbotui.ui.msg.alert({
-                			msg : "修改产品成功!",
+                			msg : "修改菜品成功!",
                 			ok : function(){
                 				window.location = _path + "/dish/list";
                 			}
                 		});
                 	} else {
-                		csjbotui.ui.msg.alert("修改产品失败!");
+                		csjbotui.ui.msg.alert("修改菜品失败!");
                 	}
                 },  
                 error : function(xhr, msg, error) {  
