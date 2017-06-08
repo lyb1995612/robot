@@ -62,7 +62,7 @@
 		                                    <div class="col-md-3">
 		                                        <div class="form-group">
 		                                            <div class="input-group">
-		                                                <div class="input-group-addon">产品名称</div>
+		                                                <div class="input-group-addon">广告名称</div>
 		                                                <input  class="form-control" type="input" id="name" name="name" maxlength="25" />  
 		                                            </div>
 		                                        </div>
