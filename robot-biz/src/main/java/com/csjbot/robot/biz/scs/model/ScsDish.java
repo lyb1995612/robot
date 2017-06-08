@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 public class ScsDish {
 	private String id;
 	private int dish_type;
+	private String type_name;
 	private String name;
 	private BigDecimal price;
 	private String memo;
@@ -20,6 +21,12 @@ public class ScsDish {
 	private Timestamp date_update;
 	private Timestamp date_create;
 	private String shop_fk;
+	public String getType_name() {
+		return type_name;
+	}
+	public void setType_name(String type_name) {
+		this.type_name = type_name;
+	}
 	public String getId() {
 		return id;
 	}

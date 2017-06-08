@@ -44,7 +44,8 @@ $(function() {
 				width : "20%"
 			}, {
 				title : "菜品类型",
-				data : "dish_type",
+//				data : "dish_type",
+				data : "type_name",
 				width : "10%"
 			}, {
 				title : "菜品名称",
