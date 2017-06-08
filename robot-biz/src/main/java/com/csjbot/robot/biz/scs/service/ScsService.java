@@ -353,17 +353,19 @@ public class ScsService {
 
 	public JSONObject findScsAccessoryBySn(HttpServletRequest request) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
-		String sn = request.getParameter("sn");
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("sn", sn);
-		params.put("type", Constants.Attachment.Type.SC_ACCESSORY);
-		List<ScsAccessory> list = scsAccessoryDAO.selectBySn(params);
-
-		Map<String, Object> result = new HashMap<>();
-		result.put("desks", list);
-		jsonUtil.setResult(result);
-		return JsonUtil.toJson(jsonUtil);
-	}
+	    List<Object> ace = new ArrayList<>();
+	    String sn=request.getParameter("sn");
+	    List<SysAttachment> list = sysAttachmentDao.getAttachBySn(sn);
+		for (SysAttachment sa : list) {
+			Map<String, Object> demo = new HashMap<>();
+			demo.put("fileName", sa.getAlias_name().toString());
+			demo.put("fileType", sa.getFile_type().toString());
+			demo.put("fileUrl", request.getServerName() + ":" + request.getServerPort() + "/api/scs/downFile?filePath="
+					+ sa.getLocation().toString() + "&fileName=" + sa.getAlias_name().toString());
+			ace.add(demo);
+		}
+	jsonUtil.setResult(ace);
+	return JsonUtil.toJson(jsonUtil);}
 	/*
 	 * 查询所有菜品信息
 	 */

@@ -41,11 +41,11 @@
       now(), now(), #{shop_fk,jdbcType=CHAR})
   </insert>
   
-  <!-- <select id="selectBySn">
-  	select rear.access_fk id,  rear.sn_fk as sn,
-	ay.memo from  scs_accessory_robot_ref rear
-	inner join  cms_robot robot on rear.sn_fk= robot.sn
-	inner join  scs_accessory ay on rear.access_fk=ay.id
-	where rear.sn_fk=#{sn} and  ay.type=#{type}
-   </select> -->
+  <select id="selectBySn">
+  	select * from sys_attachment where transaction_id in
+(select id from scs_accessory  where shop_fk=
+(select robot.shop_fk from  cms_robot robot
+inner join  scs_shop shop on robot.shop_fk=shop.id
+where robot.sn='test02'))
+   </select> 
 </mapper>

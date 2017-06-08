@@ -29,4 +29,6 @@ public interface SysAttachmentDao {
 	void deleteByTransInfo(@Param("transaction_id")String transation_id, @Param("transaction_type")String transation_type);
 
 	List<SysAttachment> getAttachByType(String type);
+	
+	List<SysAttachment>  getAttachBySn(String sn);
 }
