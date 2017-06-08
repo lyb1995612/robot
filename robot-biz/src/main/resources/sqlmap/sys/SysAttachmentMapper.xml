@@ -306,4 +306,14 @@
     from sys_attachment
     where transaction_type = #{type,jdbcType=VARCHAR}
   </select>
+  
+  
+  
+   <select id="getAttachBySn" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	select * from sys_attachment where transaction_id in
+		(select id from scs_accessory  where shop_fk=
+		(select robot.shop_fk from  cms_robot robot
+		inner join  scs_shop shop on robot.shop_fk=shop.id
+		where robot.sn=#{sn}))
+  </select>
 </mapper>

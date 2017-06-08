@@ -105,14 +105,10 @@
 	</select>
 	<!-- 按SN查询DISH -->
 	<select id="selectBySn" resultMap="BaseResultMap">
-		select <!--  redf.id ,redf.sn , -->redf.dish_id as id,dish_type, dish.name as name ,
-		dish.price,dish.memo
-		from  scs_dish_robot_ref redf
-		inner join  cms_robot robot on robot.sn=redf.sn
-		INNER JOIN  scs_dish_info  dish on redf.dish_id=dish.id 
-		<where>
-			redf.sn=#{sn}
-		</where>
+			select *  from scs_dish_info where shop_fk=
+				(select robot.shop_fk from  cms_robot robot
+				inner join  scs_shop shop on robot.shop_fk=shop.id
+				where robot.sn=#{sn})
 	</select>
 </mapper>
 
