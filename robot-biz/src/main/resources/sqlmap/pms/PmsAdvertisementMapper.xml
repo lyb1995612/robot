@@ -20,7 +20,8 @@
 	</sql>
 
 	<select id="page" parameterType="map" resultMap="BaseResultMap">
-		SELECT id, name, memo, type, valid, updater_fk, creator_fk,
+		SELECT id, name, memo, type,
+		valid, updater_fk, creator_fk,
 		date_update, date_create
 		FROM pms_advertisement
 		WHERE valid = 1

@@ -74,12 +74,14 @@
 												<div class="form-group">
 													<div class="input-group">
 														<div class="input-group-addon">广告类型</div>
-														<input class="form-control" type="text" name="type" id="type" 
-														value="<c:if test='${advertisement.type == 1 }'>图片/音频</c:if><c:if test='${advertisement.type == 2 }'>视频</c:if>"
-														readonly />
-													</div>
+														<input class="form-control hide" type="text" name="type" id="type" 
+															value="${advertisement.type}"> 
+														<input class="form-control" type="text" name="typename" id="typename" 
+															value="<c:if test='${advertisement.type == 1 }'>图片/音频</c:if><c:if test='${advertisement.type == 2 }'>视频</c:if>"
+															readonly />
+														</div>
 												</div>
-											</div>
+											</div> 
 										</div>
 									</div>
 									<div class="row" id="image">

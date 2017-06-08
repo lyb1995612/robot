@@ -1,6 +1,6 @@
 $(function() {
-	var type = $("#type").value;
-	//alert(type);
+	var type = $("#typename").value;
+	alert(type);
 	if (type == 1) {
 		$("#image,#audio").show();
 		$("#video").hide();
@@ -18,11 +18,10 @@ $(function() {
 				required : true,
 				rangelength : [ 0, 25 ]
 			}
-
 		},
 		messages : {
 			name : {
-				required : "必须填写广告名称."
+				required : "必须填写广告名称！"
 			}
 		},
 		highlight : function(element) {
@@ -35,11 +34,9 @@ $(function() {
 		errorPlacement : function(error, element) {
 			element.parent('div').parent('div').append(error);
 		}
-
 	});
 
 	$("#submit").click(function() {
-
 		if (validator.form()) {
 			csjbotui.ui.msg.waiting({
 				title : "正在修改广告",
@@ -77,7 +74,6 @@ $(function() {
 				}
 			});
 		}
-
 	});
-
+	
 });

@@ -23,7 +23,7 @@ $(function() {
 				rangelength : [ 0, 25 ]
 			},
 			type : {
-				required : true
+				min : 1,
 			}
 		},
 		messages : {
@@ -31,7 +31,7 @@ $(function() {
 				required : "必须填写广告名称！"
 			},
 			type : {
-				required : "必须选择广告类型！"
+				min : "必须选择广告类型！"
 			}
 		},
 		highlight : function(element) {

@@ -35,17 +35,13 @@ $(function() {
 		    		}
 		    	},
 				columns : [{
-					title : "商铺id",
-					data : "id",
-					width : "9%"
-				}, {
 					title : "商铺编码",
 					data : "shop_code",
-					width : "13%"
+					width : "15%"
 				}, {
 					title : "商铺名称",
 					data : "shop_name",
-					width : "13%"
+					width : "15%"
 				}, {
 					title : "商铺地址",
 					data : "shop_address",
@@ -53,7 +49,7 @@ $(function() {
 				}, {
 					title : "备注",
 					data : "memo",
-					width : "15%"
+					width : "20%"
 				}, {
 					title : "创建时间",
 					data : "date_create",
@@ -64,21 +60,18 @@ $(function() {
 					width : "15%",
 					style : "operation-column"
 				}],
-				columnDefs: [/*{
-					targets : [ 0 ], //将商铺id这列隐藏起来
-					visible : false
-				},*/{ 
-		        	targets: [ 5 ],
+				columnDefs: [{ 
+		        	targets: [ 4 ],
 		        	render: function ( data, type, row ) {
 		        		var datetime = new Date(Number(row.date_create)).Format( "yyyy-MM-dd HH:mm");
 		        		return datetime;
 		        	}
 				},{
-	            	targets: [ 6 ],
+	            	targets: [ 5 ],
 	            	render: operation,
 	            	orderable: false
 				}],
-		        order: [[ 1, 'asc' ]],
+		        order: [[ 0, 'asc' ]],
 		        remoteSort : true,
 				pagination : true,
 				paginationParam : {

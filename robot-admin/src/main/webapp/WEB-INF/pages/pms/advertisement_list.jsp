@@ -49,7 +49,7 @@
 	                            <tr>
 	                                <td style="width: 15%;text-align: left;">广告管理</td>
 	                                <td style="width: 10%;text-align: right;">
-	                                       <a type="button" class="btn btn-primary" href="${path}/adv/toAdvertisementAdd">新增广告</a>
+	                                       <a type="button" class="btn btn-primary" href="${path}/adv/toAdvAdd">新增广告</a>
 	                                </td>
 	                            </tr>
 		                      </table>		                 
@@ -63,7 +63,7 @@
 		                                        <div class="form-group">
 		                                            <div class="input-group">
 		                                                <div class="input-group-addon">广告名称</div>
-		                                                <input  class="form-control" type="input" id="name" name="name" maxlength="25" />  
+		                                                <input class="form-control" id="name" name="name" maxlength="25" />  
 		                                            </div>
 		                                        </div>
 		                                    </div>   

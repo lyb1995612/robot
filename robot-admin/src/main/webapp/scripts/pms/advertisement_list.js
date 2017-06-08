@@ -55,18 +55,23 @@ $(function() {
 					width : "20%",
 					style : "operation-column"
 				}],
-				columnDefs: [{ 
-		               targets: [ 3 ],
-		               render: function ( data, type, row ) {
-		            	   var datetime = new Date(Number(row.date_create)).Format( "yyyy-MM-dd HH:mm");
-		                   return datetime;
-		               }
-				},
-	           {
-	               targets: [ 4 ],
-	               render: operation,
-	               orderable: false
-	           }],
+				columnDefs: [{
+					targets: [ 1 ],
+					render: function ( data, type, row ){
+						var type = (row.type == 1 ? "图片/音频" : "视频");
+						return type;
+					}
+				},{ 
+					targets: [ 3 ],
+					render: function ( data, type, row ) {
+						var datetime = new Date(Number(row.date_create)).Format( "yyyy-MM-dd HH:mm");
+						return datetime;
+					}
+				},{
+					targets: [ 4 ],
+					render: operation,
+					orderable: false
+				}],
 		        order: [[ 3, 'desc' ]],
 		        remoteSort : true,
 				pagination : true,
@@ -89,10 +94,10 @@ function operation( data, type, row ) {
                  + "<a class='opt' id='delete_"+row.id+"' href=\"javascript:void(0);\" ><span>删除</span></a>&nbsp;&nbsp;"
              
         $(document).off("click", "#detail_" + row.id).on("click", "#detail_" + row.id, function(){
-        	window.location = _path + "/adv/" + row.id + "/toAdvertisementDetail";
+        	window.location = _path + "/adv/" + row.id + "/toAdvDetail";
          });
 	    $(document).off("click", "#edit_" + row.id).on("click", "#edit_" + row.id, function(){
-	    	window.location = _path + "/adv/" + row.id + "/toAdvertisementUpdate";
+	    	window.location = _path + "/adv/" + row.id + "/toAdvUpdate";
 	     });    
 	    $(document).off("click", "#delete_" + row.id).on("click", "#delete_" + row.id, function(){
 	       	 csjbotui.ui.msg.confirm({
@@ -101,7 +106,7 @@ function operation( data, type, row ) {
 					ok:function(){
 						 $.ajax({
 			        		type : "POST",
-			  	            url : _path + "/adv/" + row.id + "/advertisementDelete",
+			  	            url : _path + "/adv/" + row.id + "/toAdvDelete",
 			  	            dataType : "json",
 			  	            success : function(data){ 
 			  	            	if (data.msg == "S") {
@@ -120,8 +125,3 @@ function operation( data, type, row ) {
 	    
     return editor;
 }
-
-
-	
-	
-	
