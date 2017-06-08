@@ -102,7 +102,7 @@ function operation( data, type, row ) {
 	    $(document).off("click", "#delete_" + row.id).on("click", "#delete_" + row.id, function(){
 	       	 csjbotui.ui.msg.confirm({
 	 		        title : "警告",
-					msg : "您确定要删除该商戶【"+row.sn+"】?",
+					msg : "您确定要删除该机器人【"+row.sn+"】?",
 					ok:function(){
 						 $.ajax({
 			        		type : "POST",
