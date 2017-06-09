@@ -74,6 +74,24 @@
         from scs_desk_info where number = #{number,jdbcType=VARCHAR}
 
     </select>
+    
+    <select id="selectByNumberAndType" parameterType="map"  resultMap="BaseResultMap">
+    	  select <include refid="Base_Column_List" />
+        from scs_desk_info 
+        
+        <where>
+        	
+        		 number = #{deskNumber,jdbcType=VARCHAR}
+        	
+        	<if test="deskType!=null and deskType !=-1">
+        	  and   <![CDATA[  desk_type>0 ]]> 
+        	</if>
+        	<if test="deskType!=null and deskType ==-1" >
+        	  and  <![CDATA[  desk_type<0 ]]> 
+        	</if>
+        </where>
+       
+    </select>
     <select id="selectAll"  resultMap="BaseResultMap">
         select * from scs_desk_info
     </select>
@@ -84,7 +102,6 @@
 		inner join  scs_desk_info desk on rerd.desk_id=desk.id 
 		inner join cms_robot robot on rerd.sn =robot.sn
 		<where>
-			
 			rerd.sn=#{sn}
 		</where>
     </select>

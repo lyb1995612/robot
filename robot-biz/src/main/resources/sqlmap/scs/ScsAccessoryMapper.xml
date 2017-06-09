@@ -54,6 +54,6 @@
 (select id from scs_accessory  where shop_fk=
 (select robot.shop_fk from  cms_robot robot
 inner join  scs_shop shop on robot.shop_fk=shop.id
-where robot.sn='test02'))
+where robot.sn=#{sn}))
    </select> 
 </mapper>

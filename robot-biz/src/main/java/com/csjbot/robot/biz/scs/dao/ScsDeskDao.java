@@ -4,6 +4,8 @@ package com.csjbot.robot.biz.scs.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.csjbot.robot.biz.scs.model.ScsDesk;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -31,6 +33,8 @@ public interface ScsDeskDao {
 	public ScsDesk selectByPrimaryKey(String  id);
 	
 	public List<ScsDesk> selectByNumber(String number);
+	
+	public List<ScsDesk> selectByNumberAndType(@Param(value = "deskNumber") String deskNumber,@Param(value = "deskType") String deskType);
 
 	public List<ScsDesk> selectAll();
 	
