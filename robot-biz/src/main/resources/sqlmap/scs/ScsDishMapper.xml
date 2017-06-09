@@ -29,17 +29,12 @@
 <!-- 		<include refid="Base_Column_List" /> -->
 <!-- 		from scs_dish_info where valid = 1  -->
 
-<!--         select  -->
-<!--         scs_dish_info.id as id, dish_type, type_name, name, memo, valid, price, -->
-<!--         scs_dish_info.date_create as date_create -->
-<!--         from  -->
-<!--         scs_dish_info join scs_dish_type  -->
-<!--         on scs_dish_info.dish_type=scs_dish_type.id -->
 	        select 
 	        a.id, b.type_name, a.name, c.shop_name, a.memo, a.valid, a.price, a.date_create
-	        from scs_dish_info a
+	        from scs_dish_info a 
 	        join scs_dish_type b on a.dish_type=b.id
 	        join scs_shop c on a.shop_fk=c.id
+	        where a.valid = 1
 		<if test="name != null and name !=''">
 			and name LIKE CONCAT('%', #{name},'%')
 		</if>

@@ -5,6 +5,8 @@
     <id column="id" property="id" jdbcType="CHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="shop_fk" property="shop_fk" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shop_name" jdbcType="VARCHAR" />
     <result column="valid" property="valid" jdbcType="TINYINT" />
     <result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
     <result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
@@ -12,12 +14,18 @@
     <result column="date_create" property="date_create" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, memo, valid, updater_fk, creator_fk, date_update, date_create
+    id, name, shop_fk, memo, valid, updater_fk, creator_fk, date_update, date_create
   </sql>
   <select id="page" parameterType="map" resultMap="BaseResultMap">
-		select 
-		<include refid="Base_Column_List" />
-		from scs_accessory where valid = 1
+<!-- 		select  -->
+<!-- 		<include refid="Base_Column_List" /> -->
+<!-- 		from scs_accessory where valid = 1 -->
+
+	        select 
+	        a.id, a.name, b.shop_name, a.memo, a.valid, a.date_create
+	        from scs_accessory a 
+	        join scs_shop b on a.shop_fk=b.id
+            where a.valid = 1
        <if test="name != null and name !=''">
           and name LIKE CONCAT('%',#{name},'%')
        </if>                 
