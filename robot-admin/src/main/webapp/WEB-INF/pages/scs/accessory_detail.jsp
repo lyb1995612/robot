@@ -81,8 +81,17 @@
 													</div>
 												</div>
 											</div>
-											<div class="col-md-6">
-												
+                                            <div class="col-md-6">
+												<div class="form-group">
+													<div class="input-group">
+														<div class="input-group-addon">店铺</div>
+														<select class="form-control" id="shop_fk" name="shop_fk" <c:if test="${editable == 0 }">disabled</c:if>>
+															<c:forEach var="shop_fk" items = "${shop_list}">
+																<option value="${shop_fk.id}" <c:if test="${shop_fk.id eq acce.shop_fk}">selected="selected"</c:if>>${shop_fk.shop_name}</option>
+															</c:forEach>
+														</select>														
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>

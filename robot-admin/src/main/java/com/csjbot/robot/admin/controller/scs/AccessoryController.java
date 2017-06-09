@@ -53,7 +53,7 @@ public class AccessoryController {
 	private SysAttachService attachService;
 	
 	/**
-	 * @discription菜品列表
+	 * @discription附件列表
 	 * @author XMT
 	 * @created 2017�?4�?17�?
 	 */
@@ -65,7 +65,7 @@ public class AccessoryController {
 
 
 	/**
-	 * @discription 跳转菜品新增页面
+	 * @discription 跳转附件新增页面
 	 * @author XMT       
 	 * @created 2017�?4�?17�?
 	 */
@@ -78,7 +78,7 @@ public class AccessoryController {
 	}
 	
 	/**
-	 * @discription 跳转到菜品详情页
+	 * @discription 跳转到附件详情页
 	 * @author XMT       
 	 * @created 2017�?4�?17�?
 	 */
@@ -87,14 +87,16 @@ public class AccessoryController {
 		ScsAccessory scsAccessory = scsService.selectAccessoryByPrimaryKey(id);
 		SysAttachment sysAttachment = attachService.getAttachByTransInfo(scsAccessory.getId(), Constants.Attachment.Type.SC_ACCESSORY);
 		ModelAndView mv = new ModelAndView("scs/accessory_detail");
+		List<ScsShop> shopList=scsService.selectShopAll();
+		mv.addObject("shop_list", shopList);
 		mv.addObject("acce",scsAccessory);
 		mv.addObject("file",sysAttachment);
 		mv.addObject("location","/attach/"+scsAccessory.getId()+"/"+Constants.Attachment.Type.SC_ACCESSORY+"/pic");
-		 mv.addObject("editable",0);
+		mv.addObject("editable",0);
 		return mv;
 	}
 	/**
-	 * 查找全部菜品列表
+	 * 查找全部附件列表
 	 * 
 	 * @param request
 	 * @param response
@@ -141,7 +143,7 @@ public class AccessoryController {
 		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
 	}
 	/**
-	 * @discription 新增菜品
+	 * @discription 新增附件
 	 * @author XMT
 	 * @created 2017�?4�?17�?
 	 */
@@ -187,7 +189,7 @@ public class AccessoryController {
 	}
 
 	/**
-	 * @discription 删除菜品
+	 * @discription 删除附件
 	 * @author XMT
 	 * @created 2017�?4�?17�?
 	 */

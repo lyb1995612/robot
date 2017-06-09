@@ -460,15 +460,15 @@ public class ScsService {
 	public JSONObject addDeskInfo(JSONObject json) {
 		JsonUtil jsonUtil = getJsonUtilEntity(true);
 		String[] key = { "userName", "deskNumber", "deskAlias", "deskMemo", "desk_x", "desk_y", "desk_z", "desk_w",
-				"desk_v", "desk_q", "deskValid", "deskSerialNumber","sn" };
+				"desk_v", "desk_q", "deskValid", "deskSerialNumber" };
 		if (CharacterUtil.judgeJsonFormat(key, json)) {
-			List<ScsDesk> sbn = scsDeskDao.selectByNumber(json.getString("deskNumber"));
+			List<ScsDesk> sbn =scsDeskDao.selectByNumberAndType(json.getString("deskNumber"), json.getString("deskSerialNumber"));
 			Map<String, Object> map = new HashMap<>();
 			map.put("username", json.getString("userName"));
 			map.put("status", 1);
 			User ums_user = userDao.getByUsername(map);
-			if (ums_user != null) {
-				if (sbn.size() == 0) {
+			if(ums_user!=null){
+				if(sbn.size()==0){
 					ScsDesk sdi = new ScsDesk();
 					sdi.setId(RandomUtil.generateString(32));
 					sdi.setNumber(json.getString("deskNumber"));
@@ -487,22 +487,20 @@ public class ScsService {
 					sdi.setDesk_type(json.getByte("deskSerialNumber"));
 					sdi.setUpdater_fk(ums_user.getId().toString());
 					int n = scsDeskDao.insert(sdi);
-					addDeskRobotFef(json.getString("sn"),sdi.getId(),ums_user.getId().toString());
 					if (n != 1) {
 						jsonUtil = getJsonUtilEntity(false);
 						jsonUtil.setMessage("Error from Database operations!");
 					}
-				} else {
+				}else{
 					jsonUtil = getJsonUtilEntity(false);
 					jsonUtil.setMessage("The deskNumber already exists!");
 				}
-				
-				
-			} else {
+			}else{
 				jsonUtil = getJsonUtilEntity(false);
-				jsonUtil.setMessage("The desk already exists!");
+				jsonUtil.setMessage("NO User");
 			}
-		} else {
+			
+			} else {
 			jsonUtil = getJsonUtilEntity(false);
 			jsonUtil.setMessage("Error from json format!");
 		}

@@ -42,11 +42,15 @@ $(function() {
 				title : "附件id",
 				data : "id",
 				hidden : true,
-				width : "30%"
+				width : "20%"
 			}, {
 				title : "附件名",
 				data : "name",
-				width : "20%"
+				width : "15%"
+			}, {
+				title : "店铺名称",
+				data : "shop_name",
+				width : "15%"
 			}, {
 				title : "备注",
 				data : "memo",
@@ -62,19 +66,18 @@ $(function() {
 				style : "operation-column"
 			} ],
 			columnDefs : [ {
-				targets : [ 3 ],
+				targets : [ 4 ],
 				render : function(data, type, row) {
 					var datetime = new Date(Number(row.date_create)).Format("yyyy-MM-dd HH:mm");
-					//  alert(new Date(Number(row.date_create)).Format( "yyyy-MM-dd HH:mm"));
 					return datetime;
 				}
 			},
 				{
-					targets : [ 4 ],
+					targets : [ 5 ],
 					render : operation,
 					orderable : false
 				} ],
-			order : [ [ 3, 'desc' ] ],
+			order : [ [ 4, 'desc' ] ],
 			remoteSort : true,
 			pagination : true,
 			paginationParam : {
