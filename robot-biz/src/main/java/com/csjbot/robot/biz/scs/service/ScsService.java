@@ -468,7 +468,17 @@ public class ScsService {
 			map.put("status", 1);
 			User ums_user = userDao.getByUsername(map);
 			if (ums_user != null) {
-				if (sbn.size() == 0) {
+				boolean flag = false;
+				if (sbn.size() != 0){
+					for (ScsDesk scsdesk:sbn) {
+						if (scsdesk.getDesk_type().toString() == "-1"&& json.getString("deskSerialNumber").toString() == "-1"){
+							flag = true;
+						}else if (scsdesk.getDesk_type().toString() != "-1"&& json.getString("deskSerialNumber").toString() != "-1"){
+							flag = true;
+						}
+					}
+				}
+				if (!flag) {
 					ScsDesk sdi = new ScsDesk();
 					sdi.setId(RandomUtil.generateString(32));
 					sdi.setNumber(json.getString("deskNumber"));
