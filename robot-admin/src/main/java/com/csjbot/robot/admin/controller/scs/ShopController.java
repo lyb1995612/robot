@@ -28,7 +28,7 @@ import com.csjbot.robot.biz.scs.service.ScsService;
 import com.csjbot.robot.biz.ums.model.User;
 
 /**
- * @explain 商铺信息
+ * @explain 店铺信息
  * @author AlexZhang
  * @date 2017年6月5日
  * @company PangolinRobot
@@ -41,7 +41,7 @@ public class ShopController {
 	private ScsService scsService;
 
 	/*
-	 * 初始化商铺信息管理界面
+	 * 初始化店铺信息管理界面
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String listShopURL() {
@@ -49,7 +49,7 @@ public class ShopController {
 	}
 
 	/*
-	 * 显示商铺信息
+	 * 显示店铺信息
 	 */
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public ResponseEntity<ResultEntity> page(HttpServletRequest request, HttpServletResponse response) {
@@ -58,14 +58,14 @@ public class ShopController {
 		response.setCharacterEncoding("UTF-8");
 		ResultEntity result = null;
 		try {
-			Map<String, Object> params = new HashMap<String, Object>(); // 商铺信息参数
+			Map<String, Object> params = new HashMap<String, Object>(); // 店铺信息参数
 			int length = Integer.valueOf(request.getParameter("length")); // 每页记录的长度
 			int start = Integer.valueOf(request.getParameter("start")); // 起始页
 			String dir = request.getParameter("order[0][dir]"); // asc
 			String orderColIndex = request.getParameter("order[0][column]");
 			String orderName = request.getParameter("columns[" + orderColIndex + "][data]"); // shop_code
-			String shop_name = request.getParameter("shop_name"); // 商铺名称
-			String shop_code = request.getParameter("shop_code"); // 商铺编码
+			String shop_name = request.getParameter("shop_name"); // 店铺名称
+			String shop_code = request.getParameter("shop_code"); // 店铺编码
 			if (StringUtil.notEmpty(shop_code)) {
 				params.put("shop_code", shop_code);
 			}
@@ -95,7 +95,7 @@ public class ShopController {
 	}
 
 	/*
-	 * 初始化新增商铺信息界面
+	 * 初始化新增店铺信息界面
 	 */
 	@RequestMapping(value = "/addURL", method = RequestMethod.GET)
 	public String addShopURL() {
@@ -143,7 +143,7 @@ public class ShopController {
 	}
 
 	/*
-	 * 初始化更新商铺信息界面
+	 * 初始化更新店铺信息界面
 	 */
 	@RequestMapping(value = "{id}/shopUpdate", method = RequestMethod.GET)
 	public ModelAndView updateShopURL(@PathVariable String id) {
@@ -174,7 +174,7 @@ public class ShopController {
 	}
 
 	/*
-	 * 商铺信息详情界面
+	 * 店铺信息详情界面
 	 */
 	@RequestMapping(value = "{id}/shopDetail")
 	public ModelAndView detailShopURL(@PathVariable String id) {

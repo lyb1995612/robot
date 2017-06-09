@@ -4,32 +4,34 @@ import java.util.Date;
 
 import com.csjbot.robot.base.web.entity.PaginationParam;
 
-public class CmsRobot extends PaginationParam{
-	
+public class CmsRobot extends PaginationParam {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private String id;
-	
+
 	private String sn;
-	
+
+	private String shop_name;
+
 	private String type;
-	
+
 	private String type_name;
-	
+
 	private Byte valid;
-	
+
 	private Date register;
-	
+
 	private String creator_fk;
-	
+
 	private String updater_fk;
-	
+
 	private Date date_create;
-	
+
 	private Date date_update;
-	
+
 	private String shop_fk;
-	
+
 	public String getType_name() {
 		return type_name;
 	}
@@ -52,6 +54,14 @@ public class CmsRobot extends PaginationParam{
 
 	public void setSn(String sn) {
 		this.sn = sn;
+	}
+
+	public String getShop_name() {
+		return shop_name;
+	}
+
+	public void setShop_name(String shop_name) {
+		this.shop_name = shop_name;
 	}
 
 	public String getType() {

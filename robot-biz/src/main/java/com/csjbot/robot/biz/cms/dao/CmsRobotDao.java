@@ -24,7 +24,9 @@ public interface CmsRobotDao {
 	
 	public int delete(String id);
 	
-	public CmsRobot selectByTypeAndSn(@Param("type")String type,@Param("sn")String sn);
+	public List<String> selectAllSN();
+	
+	public CmsRobot selectBySN(@Param("sn")String sn);
 	
 	<T, K, V> List<T> getRobotGroupRef(Map<String, Object> params);
 	

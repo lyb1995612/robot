@@ -49,8 +49,12 @@ public class CmsRobotService {
 		return cmsRobotDao.delete(id);
 	}
 	
-	public CmsRobot selectByTypeAndSn(String type,String sn){
-		return cmsRobotDao.selectByTypeAndSn(type, sn);
+	public CmsRobot selectBySN(String sn){
+		return cmsRobotDao.selectBySN(sn);
+	}
+	
+	public List<String> selectAllSN(){
+		return cmsRobotDao.selectAllSN();
 	}
 	
 	public <E, K, V> Page<E> page(Map<K, V> params,int current, int pagesize, String sortString) {

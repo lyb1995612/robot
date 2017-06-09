@@ -27,7 +27,7 @@
                             <a href="${path}/">首页</a>
                         </li>
                         <li class="active">机器人管理</li>
-                        <li><a href="${path}/pms/list">机器人清单</a></li>
+                        <li><a href="${path}/crb/list">机器人清单</a></li>
                         <c:if test="${editable == 1 }"><li class="active">清单编辑</li></c:if>
                         <c:if test="${editable == 0 }"><li class="active">清单详情</li></c:if>
                     </ul><!-- .breadcrumb -->
@@ -69,16 +69,34 @@
 											<div class="col-md-6">
 												<div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon">S/N</div>
-														<input class="form-control" type="text" id="sn" name="sn" maxlength="25" value="${robot.sn}" placeholder="请输入机器人唯一识别码" <c:if test="${editable == 0 }">readonly</c:if>/>
+														<div class="input-group-addon"style="width:95px">S / N</div>
+														<input  style="width:478px" class="form-control" type="text" id="sn" name="sn" maxlength="25" value="${robot.sn}" placeholder="请输入机器人唯一识别码" <c:if test="${editable == 0 }">readonly</c:if>/>
 														<input type="text" id="id" name="id" value="${robot.id}" hidden="hidden">
 														<input type="text" id="valid" name="valid" value="${robot.valid}" hidden="hidden">
 														<input type="text" id="register" name="register" value="${robot.register}" hidden="hidden">
-														<input type="text" id=creator_fk name="creator_fk" value="${robot.creator_fk}" hidden="hidden">
+														<input type="text" id="creator_fk" name="creator_fk" value="${robot.creator_fk}" hidden="hidden">
 														<input type="text" id="date_create" name="date_create" value="${robot.date_create}" hidden="hidden">
 													</div>
 												</div>
 											</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+										    <div class="col-md-12">
+										       <div class="col-md-6">
+			                                      <div class="form-group">
+													<div class="input-group">
+														<div class="input-group-addon">店 铺</div>
+			                                        	<select class="form-control" id="shop_name" name="shop_name"  <c:if test="${editable == 0 }">disabled="disabled"</c:if>>
+			                                        		<c:forEach items="${shop_list}" var="shop" >
+			                                         		<option value="${shop.id }" <c:if test="${shop.id eq robot.shop_fk}">selected="selected"</c:if>>${shop.shop_name}</option>
+			                                         		</c:forEach>
+			                                        	</select>
+													</div>
+												</div>
+											  </div>
 											</div>
 										</div>
 									</div>

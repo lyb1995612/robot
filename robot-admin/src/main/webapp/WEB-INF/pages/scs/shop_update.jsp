@@ -22,12 +22,12 @@
 						<li><i class="icon-home home-icon"></i> <a href="${path}/">首页</a>
 						</li>
 						<li class="active">送餐机器人</li>
-						<li><a href="${path}/shop/list">商铺管理</a></li>
+						<li><a href="${path}/shop/list">店铺管理</a></li>
 						<c:if test="${editable == 1 }">
-							<li class="active">商铺编辑</li>
+							<li class="active">店铺编辑</li>
 						</c:if>
 						<c:if test="${editable == 0 }">
-							<li class="active">商铺详情</li>
+							<li class="active">店铺详情</li>
 						</c:if>
 					</ul>
 					<!-- .breadcrumb -->
@@ -42,8 +42,8 @@
 										class="btn btn-primary" type="button" href="${path}/shop/list">返回</a></td>
 									<td class="panel-title"
 										style="width: 96%; text-align: center; font-weight: bold">
-										<c:if test="${editable == 1 }">商铺编辑</c:if> <c:if
-											test="${editable == 0 }">商铺详情</c:if>
+										<c:if test="${editable == 1 }">店铺编辑</c:if> <c:if
+											test="${editable == 0 }">店铺详情</c:if>
 									</td>
 								</tr>
 							</table>
@@ -56,10 +56,10 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon">商铺名称</div>
+														<div class="input-group-addon">店铺名称</div>
 														<input class="form-control" type="text" id="shop_name"
 															name="shop_name" maxlength="32" value="${shop.shop_name}"
-															placeholder="请输入商铺名称"
+															placeholder="请输入店铺名称"
 															<c:if test="${editable == 0 }">readonly</c:if> /> <input
 															type="text" id="id" name="id" value="${shop.id}"
 															hidden="hidden">
@@ -73,10 +73,10 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon">商铺编码</div>
+														<div class="input-group-addon">店铺编码</div>
 														<input class="form-control" type="text" id="shop_code"
 															name="shop_code" maxlength="32" value="${shop.shop_code}"
-															placeholder="请输入商铺编码"
+															placeholder="请输入店铺编码"
 															<c:if test="${editable == 0 }">readonly</c:if> />
 													</div>
 												</div>
@@ -88,10 +88,10 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon">商铺地址</div>
+														<div class="input-group-addon">店铺地址</div>
 														<input class="form-control" type="text" id="shop_address"
 															name="shop_address" maxlength="256" value="${shop.shop_address}"
-															placeholder="请输入商铺地址"
+															placeholder="请输入店铺地址"
 															<c:if test="${editable == 0 }">readonly</c:if> />
 													</div>
 												</div>

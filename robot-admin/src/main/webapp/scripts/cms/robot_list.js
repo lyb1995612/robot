@@ -35,11 +35,15 @@ $(function() {
 		    		}
 		    	},
 				columns : [{
-					title : "类型",
+					title : "机器人类型",
 					data : "type_name",
 					width : "15%"
-				},{
-					title : "S/N",
+				}, {
+					title : "店铺",
+					data : "shop_name",
+					width : "15%"
+				}, {
+					title : "S / N",
 					data : "sn",
 					width : "15%"
 				}, {
@@ -56,24 +60,23 @@ $(function() {
 					style : "operation-column"
 				}],
 				columnDefs: [{ 
-		               targets: [ 2 ],
-		               render: function ( data, type, row ) {
-		            	   var datetime = new Date(Number(row.register)).Format( "yyyy-MM-dd HH:mm");
-		                   return datetime;
-		               }
+					targets: [ 3 ],
+					render: function ( data, type, row ) {
+						var datetime = new Date(Number(row.register)).Format( "yyyy-MM-dd HH:mm");
+						return datetime;
+					}
 				},{ 
-		               targets: [ 3 ],
-		               render: function ( data, type, row ) {
-		            	   var datetime = new Date(Number(row.date_create)).Format( "yyyy-MM-dd HH:mm");
-		                   return datetime;
-		               }
-				},
-					            {
-	               targets: [ 4 ],
-	               render: operation,
-	               orderable: false
+					targets: [ 4 ],
+					render: function ( data, type, row ) {
+						var datetime = new Date(Number(row.date_create)).Format( "yyyy-MM-dd HH:mm");
+						return datetime;
+					}
+				},{
+					targets: [ 5 ],
+					render: operation,
+					orderable: false
 	            }],
-	            order: [[ 3, 'desc' ]],
+	            order: [[ 4, 'desc' ]],
 		        remoteSort : true,
 				pagination : true,
 				paginationParam : {

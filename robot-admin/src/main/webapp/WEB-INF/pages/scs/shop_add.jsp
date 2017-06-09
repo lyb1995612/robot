@@ -23,8 +23,8 @@
 						<li><i class="icon-home home-icon"></i> <a href="${path}/">首页</a>
 						</li>
 						<li class="active">送餐机器人</li>
-						<li><a href="${path}/cms/list">商铺管理</a></li>
-						<li class="active">新增商铺</li>
+						<li><a href="${path}/cms/list">店铺管理</a></li>
+						<li class="active">新增店铺</li>
 					</ul>
 					<!-- .breadcrumb -->
 				</div>
@@ -37,7 +37,7 @@
 									<td style="width: 4%; text-align: left;"><a
 										class="btn btn-primary" type="button" href="${path}/shop/list">返回</a></td>
 									<td class="panel-title"
-										style="width: 96%; text-align: center;">新增商铺</td>
+										style="width: 96%; text-align: center;">新增店铺</td>
 								</tr>
 							</table>
 						</div>
@@ -49,9 +49,9 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon">商铺名称</div>
+														<div class="input-group-addon">店铺名称</div>
 														<input class="form-control" type="text" id="shop_name"
-															name="shop_name" maxlength="15" placeholder="请输入商铺名称" />
+															name="shop_name" maxlength="15" placeholder="请输入店铺名称" />
 													</div>
 												</div>
 											</div>
@@ -62,9 +62,9 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon">商铺编码</div>
+														<div class="input-group-addon">店铺编码</div>
 														<input class="form-control" type="text" id="shop_code"
-															name="shop_code" maxlength="15" placeholder="请输入商铺编码" />
+															name="shop_code" maxlength="15" placeholder="请输入店铺编码" />
 													</div>
 												</div>
 											</div>
@@ -75,9 +75,9 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon">商铺地址</div>
+														<div class="input-group-addon">店铺地址</div>
 														<input class="form-control" type="text" id="shop_address"
-															name="shop_address" maxlength="50" placeholder="请输入商铺地址" />
+															name="shop_address" maxlength="50" placeholder="请输入店铺地址" />
 													</div>
 												</div>
 											</div>

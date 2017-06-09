@@ -40,7 +40,7 @@ $(function(){
 	    });
 	
     $("#submit").click(function(){
-    	var shop_fk = $('.shop option:selected').val();
+    	//var shop_fk = $('.shop option:selected').val();
     	if (validator.form()) {
     		csjbotui.ui.msg.waiting({
     			title : "正在新增产品",
@@ -60,7 +60,7 @@ $(function(){
                 			}
                 		});
                 	} else {
-                		csjbotui.ui.msg.alert("新增机器人清单失败!");
+                		csjbotui.ui.msg.alert("S/N 重复！请重新输入。");
                 	}
                 },  
                 error : function(xhr, msg, error) {  

@@ -64,8 +64,8 @@
 											<div class="col-md-6">
 												<div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon">S/N</div>
-														<input class="form-control" type="text" id="sn" name="sn"
+														<div class="input-group-addon" style="width:95px">S / N</div>
+														<input style="width:478px" class="form-control" type="text" id="sn" name="sn"
 															maxlength="25" placeholder="请输入机器人唯一识别码" />
 													</div>
 												</div>
@@ -73,8 +73,8 @@
 											<div class="col-md-6">
 												<div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon">店铺</div>
-														<select class="form-control" id="shop_fk" name="shop_fk">
+														<div class="input-group-addon" style="width:95px">店 铺</div>
+														<select style="width:478px" class="form-control" id="shop_fk" name="shop_fk">
 															<c:forEach var="shop_fk" items = "${shop_list}">
 																<option value="${shop_fk.id}">${shop_fk.shop_name}</option>
 															</c:forEach>

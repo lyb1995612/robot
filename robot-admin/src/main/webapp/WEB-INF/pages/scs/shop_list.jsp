@@ -32,7 +32,7 @@
                             <a href="${path}/">首页</a>
                         </li>
                         <li class="active">送餐机器人</li>
-                        <li class="active">商铺管理</li>
+                        <li class="active">店铺管理</li>
                     </ul><!-- .breadcrumb -->
                 </div>
                 <div class="page-content">
@@ -41,9 +41,9 @@
 		                 <div class="panel-heading panel-title">
 		                      <table style="width: 100%;">
 	                            <tr>
-	                                <td style="width: 15%;text-align: left;">商铺管理</td>
+	                                <td style="width: 15%;text-align: left;">店铺管理</td>
 	                                <td style="width: 10%;text-align: right;">
-	                                       <a type="button" class="btn btn-primary" href="${path}/shop/addURL">新增商铺</a>
+	                                       <a type="button" class="btn btn-primary" href="${path}/shop/addURL">新增店铺</a>
 	                                </td>
 	                            </tr>
 		                      </table>		                 
@@ -56,7 +56,7 @@
 		                                    <div class="col-md-3">
 		                                        <div class="form-group">
 		                                            <div class="input-group">
-		                                                <div class="input-group-addon">商铺名称</div>
+		                                                <div class="input-group-addon">店铺名称</div>
 		                                                <input  class="form-control" type="text" id="shop_name" name="shop_name" maxlength="100" />  
 		                                            </div>
 		                                        </div>
@@ -64,7 +64,7 @@
 		                                    <div class="col-md-3">
 		                                        <div class="form-group">
 		                                            <div class="input-group">
-		                                                <div class="input-group-addon">商铺编码</div>
+		                                                <div class="input-group-addon">店铺编码</div>
 		                                                <input  class="form-control" type="text" id="shop_code" name="shop_code" maxlength="100" />  
 		                                            </div>
 		                                        </div>

@@ -22,10 +22,10 @@ $(function() {
 		},
 		messages : {
 			shop_name : {
-				required : "必须填写商铺名称."
+				required : "必须填写店铺名称."
 			},
 			shop_code : {
-				required : "必须填写商铺编号."
+				required : "必须填写店铺编码."
 			}
 		},
 		highlight : function(element) {
@@ -43,7 +43,7 @@ $(function() {
 	$("#submit").click(function() {
 		if (validator.form()) {
 			csjbotui.ui.msg.waiting({
-				title : "正在修改商铺",
+				title : "正在修改店铺",
 				msg : "请稍等..."
 			});
 			$("#shop_form").ajaxSubmit({
@@ -54,13 +54,13 @@ $(function() {
 					csjbotui.ui.msg.waiting.remove();
 					if (data.msg == "S") {
 						csjbotui.ui.msg.alert({
-							msg : "修改商铺成功!",
+							msg : "修改店铺成功!",
 							ok : function() {
 								window.location = _path + "/shop/list";
 							}
 						});
 					} else {
-						csjbotui.ui.msg.alert("修改商铺失败!");
+						csjbotui.ui.msg.alert("修改店铺失败!");
 					}
 				},
 				error : function(xhr, msg, error) {

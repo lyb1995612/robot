@@ -5,7 +5,7 @@ import java.util.Date;
 import com.csjbot.robot.base.util.StringUtil;
 
 /**
- * @explain 商铺信息
+ * @explain 店铺信息
  * @author AlexZhang
  * @date 2017年6月5日
  * @company PangolinRobot
@@ -14,11 +14,11 @@ public class ScsShop {
 
 	private String id = StringUtil.createUUID();; // 主键
 
-	private String shop_name; // 商铺名称
+	private String shop_name; // 店铺名称
 
-	private String shop_code; // 商铺编号
+	private String shop_code; // 店铺编号
 
-	private String shop_address; // 商铺地址
+	private String shop_address; // 店铺地址
 
 	private int valid = 1; // 有效标记。默认为1
 

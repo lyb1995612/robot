@@ -35,15 +35,15 @@ $(function() {
 		    		}
 		    	},
 				columns : [{
-					title : "商铺编码",
+					title : "店铺编码",
 					data : "shop_code",
 					width : "15%"
 				}, {
-					title : "商铺名称",
+					title : "店铺名称",
 					data : "shop_name",
 					width : "15%"
 				}, {
-					title : "商铺地址",
+					title : "店铺地址",
 					data : "shop_address",
 					width : "20%"
 				}, {
@@ -102,7 +102,7 @@ function operation( data, type, row ) {
 	$(document).off("click", "#delete_" + row.id).on("click", "#delete_" + row.id, function(){
 		csjbotui.ui.msg.confirm({
 			title : "确认删除",
-			msg : "您确定要删除商铺【"+row.shop_name+"】吗?",
+			msg : "您确定要删除店铺【"+row.shop_name+"】吗?",
 			ok:function(){
 				$.ajax({
 					type : "POST",
