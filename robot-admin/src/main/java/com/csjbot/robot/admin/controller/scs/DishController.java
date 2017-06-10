@@ -62,6 +62,8 @@ public class DishController {
 	@RequestMapping("/list")
 	public ModelAndView protal() {
 		ModelAndView mv = new ModelAndView("/scs/dish_list");
+		List<ScsDishType> dishTypeList = scsService.selectAll();
+		mv.addObject("dishTypeList",dishTypeList);
 		return mv;
 	}
 
@@ -107,14 +109,10 @@ public class DishController {
 	public ModelAndView toDeskDetail(@PathVariable String id) {
 		ScsDish scsDish = scsService.selectDisByPrimaryKey(id);
 		ModelAndView mv = new ModelAndView("scs/dish_detail");
-//		ScsDishType scsDishType = scsService.selectDishTypeByPrimaryKey(scsDish.getDish_type());
 		List<ScsShop> shopList=scsService.selectShopAll();
 		java.util.List<ScsDishType> list = scsService.selectAll();
 		mv.addObject("shop_list", shopList);		
 		mv.addObject("dish_type_list", list);
-//		mv.addObject("dish_type", scsDishType);
-//		mv.addObject("select_style", "none");
-//		mv.addObject("input_style", "block");
 		mv.addObject("dish", scsDish);
 		mv.addObject("location","/attach/" + scsDish.getId() + "/" + Constants.Attachment.Type.DISH_PIC + "/pic");
 		mv.addObject("editable",0);
@@ -212,10 +210,13 @@ public class DishController {
 			String dir = request.getParameter("order[0][dir]");
 			String orderName = request.getParameter("columns[" + orderColIndex + "][data]");
 
-			String name = request.getParameter("name");
-			if (StringUtil.notEmpty(name)) {
-				params.put("name", name);
-			}
+			String name = request.getParameter("name");				
+			String shop_name = request.getParameter("shop_name");				
+			String dish_type = request.getParameter("dish_type");
+			params.put("name", name);
+			params.put("shop_name", shop_name);
+			params.put("dish_type", dish_type);
+			
 			String sortString = null;
 			if (orderName != null && !"".equals(orderName) && dir != null && !"".equals(dir)) {
 				sortString = orderName + "." + dir;

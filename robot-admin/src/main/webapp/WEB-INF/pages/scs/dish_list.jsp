@@ -60,13 +60,34 @@
 									<div class="row" >
 		                                <div class="col-md-12">
 		                                    <div class="col-md-3">
+			                                     <div class="form-group">
+			                                          <div class="input-group">
+			                                              <div class="input-group-addon">菜品类型</div>
+			                                              <select  class="form-control" id="dish_type" name="dish_type">
+			                                             	   <option value="-1">全部</option>
+			                                                   <c:forEach items="${dishTypeList}" var="dish_type" >
+			                                                       <option value="${dish_type.id }">${dish_type.type_name}</option>
+			                                                   </c:forEach>
+			                                              </select>
+			                                          </div>
+			                                      </div>		                                    
+		                                    </div>		                                
+		                                    <div class="col-md-3">
 		                                        <div class="form-group">
 		                                            <div class="input-group">
 		                                                <div class="input-group-addon">菜名</div>
 		                                                <input  class="form-control" type="text" id="name" name="name" maxlength="100" />  
 		                                            </div>
 		                                        </div>
-		                                    </div>   
+		                                    </div>
+		                                    <div class="col-md-3">
+		                                        <div class="form-group">
+		                                            <div class="input-group">
+		                                                <div class="input-group-addon">店铺名</div>
+		                                                <input  class="form-control" type="text" id="shop_name" name="shop_name" maxlength="100" />  
+		                                            </div>
+		                                        </div>
+		                                    </div>                          
 		                                    <div >
 		                                        <input type="button" id="searchButton" class="btn btn-large btn-primary" value="搜索"/>
 		                                        <input type="button" id="resetButton" class="btn btn-primary" value="重置" />

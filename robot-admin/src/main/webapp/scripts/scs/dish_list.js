@@ -21,11 +21,15 @@ $(function() {
 	// ----------------重置搜索条件--------------------------------------------------------
 	$('#resetButton').click(function() {
 		$('#name').val('');
+		$('#shop_name').val('');
+		$('#dish_type').val(-1);
 	});
 
 	function initOptions() {
 		var queryData = {
-			name : $("#name").val()
+			name : $("#name").val(),
+			shop_name : $("#shop_name").val(),
+			dish_type : $("#dish_type").val()
 		};
 		var options = {
 			processing : true,
