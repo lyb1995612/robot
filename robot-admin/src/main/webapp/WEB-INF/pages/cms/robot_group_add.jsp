@@ -52,7 +52,7 @@
 											<div class="col-md-6">
 												<div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon">群组名</div>
+														<div class="input-group-addon" style="width:95px">群 组 名</div>
 														<input class="form-control" type="text" id="group_name" name="group_name"
 															maxlength="25" placeholder="请输入群组名" />
 													</div>

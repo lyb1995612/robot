@@ -53,8 +53,8 @@ public class CmsRobotService {
 		return cmsRobotDao.selectBySN(sn);
 	}
 	
-	public List<String> selectAllSN(){
-		return cmsRobotDao.selectAllSN();
+	public String selectSNById(String id){
+		return cmsRobotDao.selectSNById(id);
 	}
 	
 	public <E, K, V> Page<E> page(Map<K, V> params,int current, int pagesize, String sortString) {

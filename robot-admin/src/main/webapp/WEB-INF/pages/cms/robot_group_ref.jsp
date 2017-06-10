@@ -94,7 +94,7 @@
 		                                    <div class="col-md-3">
 		                                        <div class="form-group">
 		                                            <div class="input-group">
-		                                                <div class="input-group-addon">S/N</div>
+		                                                <div class="input-group-addon" style="width:95px">S / N</div>
 		                                                <input  class="form-control" type="text" id="sn" name="sn" maxlength="25" />  
 		                                            </div>
 		                                        </div>
@@ -127,7 +127,7 @@
 			                <thead>
 			                  <tr>
 			                    <th class="check-column"><input type="checkbox" id="select-all" name="select-all" value="true"/></th>
-			                    <th>S/N号</th>
+			                    <th>S / N</th>
 			                    <th>机器人类型</th>
 			                  </tr>
 			                </thead>

@@ -5,6 +5,7 @@
 	<resultMap id="BaseResultMap" type="com.csjbot.robot.biz.cms.model.CmsRobot">
 		<result property="id" column="id" jdbcType="CHAR" />
 		<result column="sn" property="sn" jdbcType="VARCHAR" />
+		<result column="shop_fk" property="shop_fk" jdbcType="VARCHAR" />
 		<result column="type" property="type" jdbcType="VARCHAR"/>
 		<result column="type_name" property="type_name" jdbcType="VARCHAR" />
 		<result column="shop_name" property="shop_name" jdbcType="VARCHAR"/>
@@ -17,7 +18,7 @@
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id, sn,shop_fk, type, valid, register, updater_fk, creator_fk,
+		id, shop_fk,sn,shop_fk, type, valid, register, updater_fk, creator_fk,
 		date_update,
 		date_create
 	</sql>
@@ -45,9 +46,9 @@
 		where id = #{id,jdbcType=CHAR}
 	</select>
 	
-	<select id="selectAllSN" resultMap="BaseResultMap"
-		parameterType="map">
-		SELECT sn FROM cms_robot 
+	<select id="selectSNById" resultType="String"
+		parameterType="String">
+		SELECT sn FROM cms_robot WHERE id = #{id,jdbcType=CHAR}
 	</select>
 
 	<select id="getCmsRobots" parameterType="map" resultMap="BaseResultMap">
@@ -73,8 +74,7 @@
 
 	<delete id="delete" parameterType="map">
 		delete from cms_robot
-		where id
-		= #{id,jdbcType=CHAR}
+		where id = #{id,jdbcType=CHAR}
 	</delete>
 
 	<insert id="insert" parameterType="com.csjbot.robot.biz.cms.model.CmsRobot">
@@ -93,6 +93,7 @@
 	<update id="updateByPrimaryKey" parameterType="com.csjbot.robot.biz.cms.model.CmsRobot">
 		UPDATE cms_robot
 		SET sn = #{sn,jdbcType=VARCHAR},
+		shop_fk = #{shop_fk,jdbcType=CHAR},
 		type = #{type,jdbcType=INTEGER},
 		valid = #{valid,jdbcType=TINYINT},
 		updater_fk = #{updater_fk,jdbcType=CHAR},

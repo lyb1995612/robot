@@ -75,8 +75,8 @@
 													<div class="input-group">
 														<div class="input-group-addon" style="width:95px">店 铺</div>
 														<select style="width:478px" class="form-control" id="shop_fk" name="shop_fk">
-															<c:forEach var="shop_fk" items = "${shop_list}">
-																<option value="${shop_fk.id}">${shop_fk.shop_name}</option>
+															<c:forEach var="shop" items = "${shop_list}">
+																<option value="${shop.id}">${shop.shop_name}</option>
 															</c:forEach>
 														</select>														
 													</div>

@@ -28,7 +28,7 @@ $(function() {
 	});
 
 	$("#submit").click(function() {
-		var shop = $('.shop option:selected').val();
+		var shop_fk = $('#shop_name option:selected').val();
 		if (validator.form()) {
 			csjbotui.ui.msg.waiting({
 				title : "正在修改机器人清单",
@@ -36,6 +36,7 @@ $(function() {
 			});
 			$("#robot_form").ajaxSubmit({
 				type : "POST",
+				data : {"shop_fk" : shop_fk},
 				url : _path + "/crb/update",
 				dataType : "json",
 				success : function(data) {

@@ -1,7 +1,6 @@
 package com.csjbot.robot.admin.controller.cms;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -99,7 +98,9 @@ public class CmsRobotController {
 	@RequestMapping(value = "{id}/toRobotDetail")
 	public ModelAndView toRobotDetail(@PathVariable String id, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("cms/robot_update");
+		List<ScsShop> shopList = scsService.selectShopAll();
 		mv = vrcEvent(mv, id, request);
+		mv.addObject("shop_list", shopList);
 		mv.addObject("editable", 0);
 		return mv;
 	}
@@ -188,37 +189,20 @@ public class CmsRobotController {
 		User loginUser = (User) request.getSession().getAttribute(Constants.CURRENT_USER);
 		cmsRobot.setUpdater_fk(loginUser.getId());
 		String msg = "";
-		CmsRobot params = cmsRobotService.selectBySN(cmsRobot.getSn());//判断SN是否重复。为空值，则可以修改
-		/*
-		CmsRobot robot=cmsRobotService.selectByPrimaryKey(cmsRobot.getId());
-		if(robot!=null){
-			if(params!=null){
-				//msg = ResultEntity.KW_STATUS_FAIL;
-				if(params.getSn().equals(robot.getSn())){
-					if (cmsRobotService.updateByPrimaryKey(cmsRobot) > 0) {
-						msg = ResultEntity.KW_STATUS_SUCCESS;
-					}else{
-						msg = ResultEntity.KW_STATUS_FAIL;
-					}
-				}
-			}else{
+		String isSN = cmsRobotService.selectSNById(request.getParameter("id")); // 获取当前页面的SN
+		String sn = cmsRobot.getSn(); // 获取输入框的SN
+		CmsRobot params = cmsRobotService.selectBySN(sn); // 判断SN是否重复。为空值，则可以修改
+		if (sn.equals(isSN)) { // 判断输入框中的SN有无变化。如果有变化，则检索该SN在数据库中是否存在；如果没有变化，则进行更新操作
+			cmsRobotService.updateByPrimaryKey(cmsRobot);
+			msg = ResultEntity.KW_STATUS_SUCCESS;
+		} else {
+			if (params == null) { // 判断变更的SN在数据库中是否存在。如果不存在，则进行更新操作；如果存在，则不更新。
 				if (cmsRobotService.updateByPrimaryKey(cmsRobot) > 0) {
 					msg = ResultEntity.KW_STATUS_SUCCESS;
-				}else{
-					msg = ResultEntity.KW_STATUS_FAIL;
 				}
+			} else {
+				msg = ResultEntity.KW_STATUS_FAIL;
 			}
-		}else{
-			msg = ResultEntity.KW_STATUS_FAIL;
-		}
-		*/
-		
-		if (params == null) {
-			if (cmsRobotService.updateByPrimaryKey(cmsRobot) > 0) {
-				msg = ResultEntity.KW_STATUS_SUCCESS;
-			}
-		} else {
-			msg = ResultEntity.KW_STATUS_FAIL;
 		}
 		result.put("msg", msg);
 		return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);

@@ -18,17 +18,17 @@ public interface CmsRobotDao {
 	
 	public int insert(CmsRobot record);
 	
-	CmsRobot selectByPrimaryKey(String id);
+	public CmsRobot selectByPrimaryKey(String id);
 	
 	public int updateByPrimaryKey(CmsRobot record);
 	
 	public int delete(String id);
 	
-	public List<String> selectAllSN();
+	public String selectSNById(String id);
 	
 	public CmsRobot selectBySN(@Param("sn")String sn);
 	
-	<T, K, V> List<T> getRobotGroupRef(Map<String, Object> params);
+	public <T, K, V> List<T> getRobotGroupRef(Map<String, Object> params);
 	
 	public <E, K, V> PageList<E> page(Map<K, V> params, PageBounds pager);
 	

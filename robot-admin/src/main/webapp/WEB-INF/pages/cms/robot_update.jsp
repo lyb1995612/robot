@@ -88,10 +88,10 @@
 										       <div class="col-md-6">
 			                                      <div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon">店 铺</div>
-			                                        	<select class="form-control" id="shop_name" name="shop_name"  <c:if test="${editable == 0 }">disabled="disabled"</c:if>>
+														<div class="input-group-addon" style="width:95px">店 铺</div>
+			                                        	<select class="form-control" style="width:463px" id="shop_name" name="shop_name"  <c:if test="${editable == 0 }">disabled="disabled"</c:if>>
 			                                        		<c:forEach items="${shop_list}" var="shop" >
-			                                         		<option value="${shop.id }" <c:if test="${shop.id eq robot.shop_fk}">selected="selected"</c:if>>${shop.shop_name}</option>
+			                                         		<option id="shop_fk" value="${shop.id }" <c:if test="${shop.id eq robot.shop_fk}">selected="selected"</c:if>>${shop.shop_name}</option>
 			                                         		</c:forEach>
 			                                        	</select>
 													</div>
