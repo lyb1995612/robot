@@ -179,7 +179,7 @@ public class VersionRobotController {
 		        return new ResponseEntity<String>(result.toString() ,headers, HttpStatus.OK);
 		    }
 		}
-		if (ver_file != null) {
+		/*if (ver_file != null) {
 			ErrorRealm errorRealm = new ErrorRealm();
 			url = errorRealm.uploadAndModifyAttach(attach, Constants.Attachment.Type.VERSION_ROBOT_FILE, ver_file,
 					nginx_path, Constants.Attachment.Path.VERSION_ROBOT_FILE_PATH);
@@ -189,7 +189,7 @@ public class VersionRobotController {
 				logger.error("Product upload picture error!");
 				return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
 			}
-		}
+		}*/
 		
 		if (vrcService.insert(sysVersionRobot)) {
 			msg = ResultEntity.KW_STATUS_SUCCESS;
@@ -210,7 +210,8 @@ public class VersionRobotController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		response.setCharacterEncoding("UTF-8");
-		// FileUtil fileUtil = new FileUtil();
+		FileUtil fileUtil = new FileUtil();
+		String ver_file_url = null;
 		User loginUser = (User) request.getSession().getAttribute(Constants.CURRENT_USER);
 		sysVersionRobot.setUpdater_fk(loginUser.getId());
 		String msg = "";
@@ -220,7 +221,21 @@ public class VersionRobotController {
 		attach.setUpdater_fk(loginUser.getId());
 		if (request instanceof MultipartHttpServletRequest) {
 			MultipartFile ver_file = ((MultipartHttpServletRequest) request).getFile("ver_file");
+			
 			if (ver_file != null) {
+				attachService.deleteByTransInfo(attach.getTransaction_id(),attach.getTransaction_type());
+		    	ver_file_url=fileUtil.uploadAndModifyAttach(attachService,attach, ver_file, nginx_path, Constants.Attachment.Path.VERSION_ROBOT_FILE_PATH);
+				
+				if ("error".equals(ver_file_url)) {
+			    	msg = ResultEntity.KW_STATUS_FAIL;
+			    	result.put("msg", msg);
+			    	logger.error("Product upload picture error!");
+			        return new ResponseEntity<String>(result.toString() ,headers, HttpStatus.OK);
+			    }
+			}
+			
+			
+			/*if (ver_file != null) {
 				attachService.deleteByTransInfo(attach.getTransaction_id(),
 						Constants.Attachment.Type.VERSION_ROBOT_FILE);
 				ErrorRealm errorRealm = new ErrorRealm();
@@ -232,7 +247,7 @@ public class VersionRobotController {
 					logger.error("Version file upload error!");
 					return new ResponseEntity<String>(result.toString(), headers, HttpStatus.OK);
 				}
-			}
+			}*/
 		}
 		if (vrcService.updateVersionRobot(sysVersionRobot)) {
 			msg = ResultEntity.KW_STATUS_SUCCESS;
