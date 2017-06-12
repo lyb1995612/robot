@@ -44,7 +44,7 @@ $(function() {
 				}, {
 					title : "桌位类型",
 					data : "desk_type",
-					width : "8%"
+					width : "10%"
 				}, {
 					title : "备注",
 					data : "memo",
@@ -80,7 +80,7 @@ $(function() {
 					width : "10%"
 				}, {
 					title : "操作",
-					width : "15%",
+					width : "13%",
 					style : "operation-column"
 				}],
 				columnDefs: [{ 

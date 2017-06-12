@@ -69,7 +69,7 @@
 											<div class="col-md-6">
 												<div class="form-group">
 													<div class="input-group">
-														<div class="input-group-addon"style="width:95px">S / N</div>
+														<div class="input-group-addon" style="width:95px">S / N</div>
 														<input  style="width:478px" class="form-control" type="text" id="sn" name="sn" maxlength="25" value="${robot.sn}" placeholder="请输入机器人唯一识别码" <c:if test="${editable == 0 }">readonly</c:if>/>
 														<input type="text" id="id" name="id" value="${robot.id}" hidden="hidden">
 														<input type="text" id="valid" name="valid" value="${robot.valid}" hidden="hidden">

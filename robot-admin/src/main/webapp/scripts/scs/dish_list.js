@@ -43,29 +43,25 @@ $(function() {
 				}
 			},
 			columns : [ {
-				title : "菜品id",
-				data : "id",
-				width : "20%"
+				title : "店铺",
+				data : "shop_name",
+				width : "15%"
 			}, {
-				title : "菜品类型",
+				title : "菜类",
 				data : "type_name",
-				width : "10%"
+				width : "15%"
 			}, {
-				title : "菜品名称",
+				title : "菜名",
 				data : "name",
-				width : "10%"
+				width : "15%"
 			}, {
 				title : "价格",
 				data : "price",
-				width : "10%"
-			}, {
-				title : "店铺名称",
-				data : "shop_name",
-				width : "10%"
+				width : "7%"
 			}, {
 				title : "备注",
 				data : "memo",
-				width : "10%"
+				width : "18%"
 			}, {
 				title : "创建时间",
 				data : "date_create",
@@ -77,18 +73,18 @@ $(function() {
 				style : "operation-column"
 			} ],
 			columnDefs : [ {
-				targets : [ 6 ],
+				targets : [ 5 ],
 				render : function(data, type, row) {
 					var datetime = new Date(Number(row.date_create)).Format("yyyy-MM-dd HH:mm");
 					return datetime;
 				}
 			},
 				{
-					targets : [ 7 ],
+					targets : [ 6 ],
 					render : operation,
 					orderable : false
 				} ],
-			order : [ [ 6, 'desc' ] ],
+			order : [ [ 5, 'desc' ] ],
 			remoteSort : true,
 			pagination : true,
 			paginationParam : {

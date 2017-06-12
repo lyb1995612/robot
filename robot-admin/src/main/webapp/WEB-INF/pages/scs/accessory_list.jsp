@@ -62,7 +62,7 @@
 		                                    <div class="col-md-3">
 		                                        <div class="form-group">
 		                                            <div class="input-group">
-		                                                <div class="input-group-addon">附件</div>
+		                                                <div class="input-group-addon" style="width:95px">附&nbsp;件&nbsp;名</div>
 		                                                <input  class="form-control" type="text" id="name" name="name" maxlength="100" />  
 		                                            </div>
 		                                        </div>

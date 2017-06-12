@@ -56,7 +56,7 @@
 		                                    <div class="col-md-3">
 		                                        <div class="form-group">
 		                                            <div class="input-group">
-		                                                <div class="input-group-addon">店铺名称</div>
+		                                                <div class="input-group-addon" style="width:95px">店铺名称</div>
 		                                                <input  class="form-control" type="text" id="shop_name" name="shop_name" maxlength="100" />  
 		                                            </div>
 		                                        </div>
@@ -64,7 +64,7 @@
 		                                    <div class="col-md-3">
 		                                        <div class="form-group">
 		                                            <div class="input-group">
-		                                                <div class="input-group-addon">店铺编码</div>
+		                                                <div class="input-group-addon" style="width:95px">店铺编码</div>
 		                                                <input  class="form-control" type="text" id="shop_code" name="shop_code" maxlength="100" />  
 		                                            </div>
 		                                        </div>

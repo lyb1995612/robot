@@ -39,18 +39,13 @@ $(function() {
 				}
 			},
 			columns : [ {
-				title : "附件id",
-				data : "id",
-				hidden : true,
+				title : "附件",
+				data : "name",
 				width : "20%"
 			}, {
-				title : "附件名",
-				data : "name",
-				width : "15%"
-			}, {
-				title : "店铺名称",
+				title : "店铺",
 				data : "shop_name",
-				width : "15%"
+				width : "20%"
 			}, {
 				title : "备注",
 				data : "memo",
@@ -59,25 +54,25 @@ $(function() {
 				title : "创建时间",
 				data : "date_create",
 				dataType : 'date_create',
-				width : "15%"
+				width : "20%"
 			}, {
 				title : "操作",
-				width : "15%",
+				width : "20%",
 				style : "operation-column"
 			} ],
 			columnDefs : [ {
-				targets : [ 4 ],
+				targets : [ 3 ],
 				render : function(data, type, row) {
 					var datetime = new Date(Number(row.date_create)).Format("yyyy-MM-dd HH:mm");
 					return datetime;
 				}
 			},
 				{
-					targets : [ 5 ],
+					targets : [ 4 ],
 					render : operation,
 					orderable : false
 				} ],
-			order : [ [ 4, 'desc' ] ],
+			order : [ [ 3, 'desc' ] ],
 			remoteSort : true,
 			pagination : true,
 			paginationParam : {

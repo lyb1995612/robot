@@ -64,7 +64,7 @@
 		                                    <div class="col-md-3">
 		                                        <div class="form-group">
 		                                            <div class="input-group">
-		                                                <div class="input-group-addon">桌号</div>
+		                                                <div class="input-group-addon" style="width:95px">桌&nbsp;&nbsp;&nbsp;&nbsp;号</div>
 		                                                <input  class="form-control" type="text" id="number" name="number" maxlength="100" />  
 		                                            </div>
 		                                        </div>

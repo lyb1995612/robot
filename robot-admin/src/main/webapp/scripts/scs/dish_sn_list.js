@@ -34,7 +34,7 @@ $(function() {
 		    		}
 		    	},
 				columns : [{
-					title : "S/N",
+					title : "S / N",
 					data : "sn",
 					width : "20%"
 				},{

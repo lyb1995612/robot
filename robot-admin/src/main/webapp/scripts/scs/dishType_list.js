@@ -37,37 +37,32 @@ $(function() {
 		    		}
 		    	},
 				columns : [{
-					title : "菜类id",
-					data : "id",
-					width : "30%"
-				}, {
-					title : "菜类名称",
+					title : "菜类",
 					data : "type_name",
-					width : "20%"
+					width : "33%"
 				}, {
 					title : "创建时间",
 					data : "date_create",
 					dataType : 'datetime',
-					width : "30%"
+					width : "33%"
 				}, {
 					title : "操作",
-					width : "20%",
+					width : "34%",
 					style : "operation-column"
 				}],
 				columnDefs: [{ 
-		               targets: [ 2 ],
+		               targets: [ 1 ],
 		               render: function ( data, type, row ) {
 		            	   var datetime = new Date(Number(row.date_create)).Format( "yyyy-MM-dd HH:mm");
-		            	 //  alert(new Date(Number(row.date_create)).Format( "yyyy-MM-dd HH:mm"));
 		                   return datetime;
 		               }
 				},
 	           {
-	               targets: [ 3 ],
+	               targets: [ 2 ],
 	               render: operation,
 	               orderable: false
 	           }],
-		        order: [[ 2, 'desc' ]],
+		        order: [[ 1, 'desc' ]],
 		        remoteSort : true,
 				pagination : true,
 				paginationParam : {

@@ -3,7 +3,7 @@
     <div class="navbar-container" id="navbar-container">
         <div class="navbar-header pull-left">
             <a href="${path}/" class="navbar-brand">
-                <small><i class="icon-cloud"></i>  Csjbot后台管理系统</small>
+                <small style="font-size: 20px;font-family: 'SimHei';"><i class="icon-cloud"></i>&nbsp;&nbsp;Csjbot&nbsp;后台管理系统</small>
             </a><!-- /.brand -->
         </div><!-- /.navbar-header -->
 
@@ -13,8 +13,8 @@
                 <li class="light-blue">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         <img class="nav-user-photo" src="${path }/resources/ace/images/user.png"  alt="" />
-                        <span><small>您好,</small></span>
-                        <span><%=request.getUserPrincipal()%></span><small>&nbsp;!&nbsp;&nbsp;</small>  
+                        <span><small>您好&nbsp;！&nbsp;</small></span>
+                        <span><%=request.getUserPrincipal()%></span><small>&nbsp;&nbsp;</small>  
                         <i class="icon-caret-down"></i>
                     </a>
 

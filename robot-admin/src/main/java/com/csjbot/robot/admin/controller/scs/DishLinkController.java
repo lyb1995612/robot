@@ -36,8 +36,8 @@ import com.csjbot.robot.biz.ums.model.User;
 
 /**
  * @explain 菜品绑定
- * @author AlexZhang
- * @date 2017年5月24日
+ * @author  AlexZhang
+ * @date    2017年5月24日
  * @company PangolinRobot
  */
 @Controller
@@ -50,14 +50,69 @@ public class DishLinkController {
 	@Autowired
 	private CmsRobotService cmsRobotService;
 
+	/**
+	 * 初始化菜品绑定界面
+	 * @return
+	 */
 	@RequestMapping("list")
 	public ModelAndView portal() {
 		ModelAndView mv = new ModelAndView("/scs/dish_sn_list");
 		return mv;
 	}
-
+	
 	/**
-	 * 菜品绑定界面
+	@RequestMapping(value = "{id}/toDishSNUpdate")
+	public ModelAndView toProducUpdate(@PathVariable String id) {
+		ScsDishLink scsDishLink = scsService.selectByPK(id);
+		ModelAndView mv = new ModelAndView("scs/dishSN_detail");
+		mv.addObject("select_style", "block");
+		mv.addObject("input_style", "none");
+		mv.addObject("sn", scsDishLink);
+		mv.addObject("location", "/attach/" + scsDishLink.getId() + "/" + Constants.Attachment.Type.DISH_PIC + "/pic");
+		mv.addObject("editable", 1);
+		return mv;
+	}*/
+	 
+	/**
+	 * 初始化关联菜品界面
+	 * @param sn
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/{sn}/toDishSNRef")
+	public ModelAndView assignPermission(@PathVariable String sn, HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		List<ScsDishLink> scsDishLink = null;
+		ModelAndView mv = new ModelAndView("scs/dish_sn_ref");
+		if (StringUtil.notEmpty(sn)) {
+			scsDishLink = scsService.selectBySN(sn);
+			if (scsDishLink == null) {
+				response.sendError(HttpStatus.NOT_FOUND.value());
+				return null;
+			}
+		} else {
+			response.sendError(HttpStatus.NOT_FOUND.value());
+			return null;
+		}
+		List<SysDataDictionary> cplist = scsService.findDictionaryByCode(Constants.DataDictionary.CPFL);
+		mv.addObject("cplist", cplist);
+		mv.addObject("scsDishLink", scsDishLink);
+		int relevance_num = scsService.countDishLinkSize(sn);
+		mv.addObject("relevance_num", relevance_num);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sn", sn);
+		List<Map<String, Object>> dish = scsService.listDish(params);
+		mv.addObject("dish", dish);
+		return mv;
+	}
+	
+	/**
+	 * 获取菜品绑定信息
+	 * @param request
+	 * @param response
+	 * @return
 	 */
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public ResponseEntity<ResultEntity> page(HttpServletRequest request, HttpServletResponse response) {
@@ -99,36 +154,6 @@ public class DishLinkController {
 		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
 	}
 
-	/**
-	 * 关联菜品界面
-	 */
-	@RequestMapping(value = "/{sn}/toDishSNRef")
-	public ModelAndView assignPermission(@PathVariable String sn, HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
-		List<ScsDishLink> scsDishLink = null;
-		ModelAndView mv = new ModelAndView("scs/dish_sn_ref");
-		if (StringUtil.notEmpty(sn)) {
-			scsDishLink = scsService.selectBySN(sn);
-			if (scsDishLink == null) {
-				response.sendError(HttpStatus.NOT_FOUND.value());
-				return null;
-			}
-		} else {
-			response.sendError(HttpStatus.NOT_FOUND.value());
-			return null;
-		}
-		List<SysDataDictionary> cplist = scsService.findDictionaryByCode(Constants.DataDictionary.CPFL);
-		mv.addObject("cplist", cplist);
-		mv.addObject("scsDishLink", scsDishLink);
-		int relevance_num = scsService.countDishLinkSize(sn);
-		mv.addObject("relevance_num", relevance_num);
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("sn", sn);
-		List<Map<String, Object>> dish = scsService.listDish(params);
-		mv.addObject("dish", dish);
-		return mv;
-	}
-
 	@RequestMapping(value = "/{id}/dishLink/search")
 	public ResponseEntity<ResultEntity> searchUser(@PathVariable String id, @RequestBody RobotGroupParam param,
 			HttpServletRequest request, HttpServletResponse response, UriComponentsBuilder builder) {
@@ -146,18 +171,6 @@ public class DishLinkController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(builder.path("/dsn/{id}/dishLink/search").buildAndExpand(id).toUri());
 		return new ResponseEntity<ResultEntity>(result, headers, HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "{id}/toDishSNUpdate")
-	public ModelAndView toProducUpdate(@PathVariable String id) {
-		ScsDishLink scsDishLink = scsService.selectByPK(id);
-		ModelAndView mv = new ModelAndView("scs/dishSN_detail");
-		mv.addObject("select_style", "block");
-		mv.addObject("input_style", "none");
-		mv.addObject("sn", scsDishLink);
-		mv.addObject("location", "/attach/" + scsDishLink.getId() + "/" + Constants.Attachment.Type.DISH_PIC + "/pic");
-		mv.addObject("editable", 1);
-		return mv;
 	}
 
 	@RequestMapping(value = "/{sn}/dishLink/save")

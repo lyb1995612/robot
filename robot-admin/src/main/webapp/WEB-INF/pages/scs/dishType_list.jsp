@@ -47,7 +47,7 @@
 		                 <div class="panel-heading panel-title">
 		                      <table style="width: 100%;">
 	                            <tr>
-	                                <td style="width: 15%;text-align: left;">菜品类型管理</td>
+	                                <td style="width: 15%;text-align: left;">菜类管理</td>
 	                                <td style="width: 10%;text-align: right;">
 	                                       <a type="button" class="btn btn-primary" href="${path}/dte/toDishTypeAdd">新增菜类</a>
 	                                </td>
@@ -62,7 +62,7 @@
 		                                    <div class="col-md-3">
 		                                        <div class="form-group">
 		                                            <div class="input-group">
-		                                                <div class="input-group-addon">菜类</div>
+		                                                <div class="input-group-addon" style="width:95px">菜&nbsp;&nbsp;&nbsp;&nbsp;类</div>
 		                                                <input  class="form-control" type="text" id="type_name" name="type_name" maxlength="100" />  
 		                                            </div>
 		                                        </div>

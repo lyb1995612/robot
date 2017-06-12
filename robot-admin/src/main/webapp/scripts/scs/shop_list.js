@@ -43,7 +43,7 @@ $(function() {
 					data : "shop_name",
 					width : "15%"
 				}, {
-					title : "店铺地址",
+					title : "地址",
 					data : "shop_address",
 					width : "20%"
 				}, {
