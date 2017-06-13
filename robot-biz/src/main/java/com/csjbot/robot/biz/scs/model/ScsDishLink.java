@@ -14,6 +14,8 @@ public class ScsDishLink {
 
 	private String id = StringUtil.createUUID();
 
+	private String shop_fk;
+
 	private String sn;
 
 	private String dish_id;
@@ -22,7 +24,7 @@ public class ScsDishLink {
 
 	private boolean validT = true;
 
-	private boolean checkedF = false;
+	private boolean checked = false;
 
 	private String creator_fk;
 
@@ -36,15 +38,17 @@ public class ScsDishLink {
 		super();
 	}
 
-	public ScsDishLink(String id, String sn, String dish_id, String dish_name, Byte vaild, boolean validT,
-			boolean checkedF, String creator_fk, String updater_fk, Date date_create, Date date_update) {
+	public ScsDishLink(String id, String shop_fk, String sn, String dish_id, String dish_name, Byte vaild,
+			boolean validT, boolean checked, String creator_fk, String updater_fk, Date date_create,
+			Date date_update) {
 		super();
 		this.id = id;
+		this.shop_fk = shop_fk;
 		this.sn = sn;
 		this.dish_id = dish_id;
 		this.valid = vaild;
 		this.validT = validT;
-		this.checkedF = checkedF;
+		this.checked = checked;
 		this.creator_fk = creator_fk;
 		this.updater_fk = updater_fk;
 		this.date_create = date_create;
@@ -57,6 +61,14 @@ public class ScsDishLink {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getShop_fk() {
+		return shop_fk;
+	}
+
+	public void setShop_fk(String shop_fk) {
+		this.shop_fk = shop_fk;
 	}
 
 	public String getSn() {
@@ -91,12 +103,12 @@ public class ScsDishLink {
 		this.validT = validT;
 	}
 
-	public boolean isCheckedF() {
-		return checkedF;
+	public boolean isChecked() {
+		return checked;
 	}
 
-	public void setCheckedF(boolean checkedF) {
-		this.checkedF = checkedF;
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 
 	public String getCreator_fk() {

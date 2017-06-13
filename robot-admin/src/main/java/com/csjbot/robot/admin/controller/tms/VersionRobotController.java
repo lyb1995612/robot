@@ -38,7 +38,6 @@ import com.csjbot.robot.biz.sys.service.SysAttachService;
 
 import com.csjbot.robot.biz.tms.service.VrcService;
 import com.csjbot.robot.biz.ums.model.User;
-import com.csjbot.robot.biz.util.ErrorRealm;
 import com.csjbot.robot.biz.util.FileUtil;
 import com.csjbot.robot.biz.util.ReadUtil;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -140,6 +139,7 @@ public class VersionRobotController {
 	 * @author CJay
 	 * @created 2017�?3�?23�? 上午11:03:26
 	 */
+	@SuppressWarnings("unused")
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> productAdd(SysVersionRobot sysVersionRobot,
 			@RequestParam(required = false) MultipartFile ver_file, HttpServletRequest request,
@@ -203,6 +203,7 @@ public class VersionRobotController {
 	 * @author CJay
 	 * @created 2017�?4�?21�? 下午4:52:52
 	 */
+	@SuppressWarnings("unused")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<String> versionUpdate(SysVersionRobot sysVersionRobot, HttpServletRequest request,
 			HttpServletResponse response) {

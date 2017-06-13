@@ -97,9 +97,12 @@
 									data-url="${path }/dsn/${sn}/dishLink/search">
 									<thead>
 										<tr>
-											<th class="check-column"><input type="checkbox"
+											<th style="width: 3%" class="check-column"><input type="checkbox"
 												id="select-all" name="select-all" value="true" /></th>
-											<th>菜品名称</th>
+											<th style="width: 20%">菜&nbsp;&nbsp;&nbsp;&nbsp;名</th>
+											<th style="width: 20%">菜&nbsp;&nbsp;&nbsp;&nbsp;类</th>
+											<th style="width: 20%">价&nbsp;&nbsp;&nbsp;&nbsp;格</th>
+											<th style="width: 37%">备&nbsp;&nbsp;&nbsp;&nbsp;注</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -115,10 +118,13 @@
 													value="true"
 													<c:if test="${dish.checked eq true}">checked</c:if> /> 
 													<input type="hidden" name="ScsDishLink-${status.index }-id"
-													value="${dish.id}" /> 
+													value="${dish.dish_id}" /> 
 													<input type="hidden" name="ScsDishLink-${status.index }-sn"
 													value="${sn}" /></td>
 												<td>${dish.dish_name }</td>
+												<td>${dish.type_name }</td>
+												<td>${dish.price }</td>
+												<td>${dish.memo }</td>
 											</tr>
 										</c:forEach>
 									</tbody>

@@ -192,7 +192,7 @@ public class DishLinkController {
 				link.setId(sn);
 				link.setCreator_fk(currentUser.getId());
 				link.setUpdater_fk(currentUser.getId());
-				if (link.isCheckedF() == false) {
+				if (link.isChecked() == false) {
 					ScsDishLink dishLink = scsService.getDish(link.getId());
 					if (dishLink != null) {
 						link.setValidT(false);

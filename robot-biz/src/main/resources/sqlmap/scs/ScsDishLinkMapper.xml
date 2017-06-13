@@ -4,11 +4,12 @@
 <mapper namespace="com.csjbot.robot.biz.scs.dao.ScsDishLinkDao">
 	<resultMap id="BaseResultMap" type="com.csjbot.robot.biz.scs.model.ScsDishLink">
 		<result property="id" column="id" jdbcType="CHAR" />
+		<result column="shop_fk" property="shop_fk" jdbcType="CHAR"/>
 		<result column="sn" property="sn" jdbcType="VARCHAR" />
 		<result column="dish_id" property="dish_id" jdbcType="CHAR" />
 		<result column="valid" property="valid" jdbcType="TINYINT" />
 		<result column="validT" property="validT" jdbcType="BOOLEAN" />
-		<result column="checkedF" property="checkedF" jdbcType="BOOLEAN" />
+		<result column="checked" property="checked" jdbcType="BOOLEAN" />
 		<result column="updater_fk" property="updater_fk" jdbcType="CHAR" />
 		<result column="creator_fk" property="creator_fk" jdbcType="CHAR" />
 		<result column="date_update" property="date_update" jdbcType="TIMESTAMP" />
@@ -16,9 +17,15 @@
 	</resultMap>
 
 	<resultMap id="dishPermission" type="java.util.HashMap">
-		<result property="checked" column="checked" javaType="boolean" />
+		<result property="checked" column="checked" javaType="BOOLEAN"  jdbcType="TINYINT"/>
+		<result property="shop_fk" column="shop_fk" jdbcType="CHAR"/>
+		<result property="type_name" column="type_name" jdbcType="VARCHAR"/>
 		<result property="sn" column="sn" jdbcType="VARCHAR" />
-		<result property="id" column="id" jdbcType="VARCHAR" />
+		<result property="dish_id" column="dish_id" jdbcType="VARCHAR" />
+		<result property="dish_name" column="dish_name" jdbcType="VARCHAR"/>
+		<result property="status" column="status" jdbcType="TINYINT"/>
+		<result property="price" column="price" jdbcType="DECIMAL" />
+		<result property="memo" column="memo" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -108,7 +115,8 @@
 		</if>
 		Group BY sn
 	</select>
-
+	
+	<!-- 
 	<select id="listDish" parameterType="map" resultMap="dishPermission">
 		SELECT * FROM
 		(SELECT a.id , IFNULL(a.valid = 1, 0) AS checked,u.id AS
@@ -137,14 +145,59 @@
 		</where>
 		ORDER BY tbl.checked DESC;
 	</select>
-
+	-->
+	<!-- 
+	<select id="listDish" parameterType="map" resultMap="dishPermission">
+		SELECT
+			d.id AS dish_id,
+			r.sn,
+			d.shop_fk,
+			t.type_name,
+			d.NAME AS dish_name,
+			IFNULL(d.valid = 1, 0) AS checked,
+			d.valid AS status,
+			d.price,
+			d.memo
+		FROM scs_dish_info d
+		LEFT JOIN cms_robot r
+		ON d.shop_fk = r.shop_fk
+		LEFT JOIN scs_dish_type t
+		ON d.dish_type=t.id
+		WHERE r.sn=#{sn,jdbcType=VARCHAR}
+		ORDER BY checked DESC;
+	</select>
+	-->
+	
+	<select id="listDish" parameterType="map" resultMap="dishPermission">
+		SELECT
+			d.id AS dish_id,
+			r.sn,
+			d.shop_fk,
+			t.type_name,
+			d. NAME AS dish_name,
+			IFNULL(d.valid = 1, 0) AS checked,
+			d.valid AS STATUS,
+			d.price,
+			d.memo
+		FROM scs_dish_info d
+		LEFT JOIN cms_robot r ON d.shop_fk = r.shop_fk
+		LEFT JOIN scs_dish_type t ON d.dish_type = t.id
+		WHERE
+			d.shop_fk = (
+			SELECT shop_fk FROM cms_robot
+			WHERE sn = #{sn,jdbcType=VARCHAR})
+		GROUP BY d.NAME
+		ORDER BY checked DESC
+	</select>
+	
+	
 	<select id="countDishLinkSize" parameterType="map" resultType="int">
-		SELECT COUNT(a.dish_id) AS amount
-		FROM scs_dish_robot_ref a, cms_robot b
-		WHERE a.valid = 1
-		AND b.valid = 1
-		AND a.sn= b.sn
-		AND a.sn = #{sn,jdbcType=VARCHAR}
+		SELECT COUNT(d.id) AS amount
+		FROM scs_dish_info d, cms_robot r
+		WHERE d.valid = 1
+		AND r.valid = 1
+		AND d.shop_fk= r.shop_fk
+		AND r.sn = #{sn,jdbcType=VARCHAR}
 	</select>
 
 	<select id="getDish" parameterType="map" resultMap="BaseResultMap">

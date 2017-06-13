@@ -30,9 +30,12 @@ $().ready(function() {
 			$.each(data.list, function(i, data) {
 				var $row = $("<tr></tr>");
 				$row.append("<td><input type=\"checkbox\" id=\"ScsDishLink-" + i + "-checked\" name=\"ScsDishLink-" + i + "-checked\" value=\"true\" " + ((data.checked == true) ? "checked" : "") + " />" +
-						        "<input type=\"hidden\" id=\"ScsDishLink-" + i + "-id\"  name=\"ScsDishLink-" + i + "-id\" value=\"" + data.id + "\" />" +
+						        "<input type=\"hidden\" id=\"ScsDishLink-" + i + "-dish_id\"  name=\"ScsDishLink-" + i + "-id\" value=\"" + data.id + "\" />" +
 						        "<input type=\"hidden\" id=\"ScsDishLink-" + i + "-sn\"  name=\"ScsDishLink-" + i + "-sn\" value=\"" + data.sn + "\" /></td>");
 				$row.append("<td>" + data.dish_name + "</td>");
+				$row.append("<td>" + data.type_name + "</td>");
+				$row.append("<td>" + data.price + "</td>");
+				$row.append("<td>" + data.memo + "</td>");
 				// -----------------------------------------------------------------------------------------------------------------------------------------------
 				$table.append($row);
 			});
